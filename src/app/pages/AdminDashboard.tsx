@@ -2099,7 +2099,7 @@ function ReceiptGenerator() {
         </div>
 
         {/* Invoice Preview (Printed) */}
-        <div id="printable-receipt" className="bg-white p-10 rounded-2xl shadow-lg border border-gray-100 print:shadow-none print:border-none print:p-0 relative mx-auto w-full max-w-3xl aspect-[1/1.414]">
+        <div id="printable-receipt" className="bg-white p-10 rounded-2xl shadow-lg border border-gray-100 print:shadow-none print:border-none print:p-0 relative mx-auto w-full max-w-3xl min-h-[800px]">
           <div className="absolute inset-0 bg-white z-0 rounded-2xl print:rounded-none"></div>
           
           <div className="relative z-10 h-full flex flex-col">
@@ -2149,8 +2149,17 @@ function ReceiptGenerator() {
                   <span className="font-bold text-green-600">৳ {data.paid.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between items-center pt-1">
-                  <span className="font-black text-lg text-[#7B1F2E] uppercase">Total Due:</span>
-                  <span className="font-black text-xl text-[#7B1F2E]">৳ {due.toLocaleString()}</span>
+                  {due > 0 ? (
+                    <>
+                      <span className="font-black text-lg text-[#7B1F2E] uppercase">Total Due:</span>
+                      <span className="font-black text-xl text-[#7B1F2E]">৳ {due.toLocaleString()}</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="font-black text-lg text-green-600 uppercase">Status:</span>
+                      <span className="font-black text-xl text-green-600">FULLY PAID</span>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
