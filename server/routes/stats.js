@@ -4,6 +4,7 @@ const User = require('../models/User');
 const Scholarship = require('../models/Scholarship');
 const Lead = require('../models/Lead');
 const Application = require('../models/Application');
+const Payment = require('../models/Payment');
 
 router.get('/', async (req, res) => {
   try {
@@ -11,9 +12,22 @@ router.get('/', async (req, res) => {
     const scholarshipCount = await Scholarship.countDocuments();
     const leadCount = await Lead.countDocuments({ unread: true });
     
+    // Real applications count
+    const totalApplications = await Application.countDocuments();
+    
+    // Pending Documents calculation
+    const pendingDocsCount = await Application.countDocuments({
+      status: { $in: ["Document Checking", "Missing Documents"] }
+    });
+
+    // Total Revenue calculation
+    const acceptedPayments = await Payment.find({ status: 'accepted' });
+    const totalRevenueSum = acceptedPayments.reduce((acc, curr) => acc + (curr.amount || 0), 0);
+    // Format to currency-like string if needed, else raw number
+    const formattedRevenue = totalRevenueSum > 0 ? `৳ ${totalRevenueSum.toLocaleString()}` : "৳ 0";
+
     // For analytics page
     const totalLeads = await Lead.countDocuments();
-    const totalApplications = await Application.countDocuments();
 
     // Top Countries from Leads
     const topCountriesAgg = await Lead.aggregate([
@@ -25,29 +39,24 @@ router.get('/', async (req, res) => {
     
     const topCountries = topCountriesAgg.map(c => ({
       country: c._id,
-      percent: Math.round((c.count / (totalLeads || 1)) * 100) || 1
+      percent: Math.round((c.count / (totalLeads || 1)) * 100) || 1,
+      count: c.count
     }));
 
     res.json({
       totalStudents: studentCount,
-      activeApplications: totalApplications, // real applications
+      activeApplications: totalApplications,
       openScholarships: scholarshipCount,
       newLeads: leadCount,
-      pendingDocuments: 12,
-      totalRevenue: "4.2L",
+      pendingDocuments: pendingDocsCount,
+      totalRevenue: formattedRevenue,
       
-      // New fields for Analytics
-      pageViews: 14287, 
+      // Untracked metrics set to 0 instead of fake data
+      pageViews: 0, 
       profileChecks: totalLeads,
-      whatsappClicks: 891, 
+      whatsappClicks: 0, 
       applicationsStarted: totalApplications,
-      topCountries: topCountries.length > 0 ? topCountries : [
-        { country: "Hungary", percent: 35 },
-        { country: "Romania", percent: 28 },
-        { country: "Russia", percent: 20 },
-        { country: "Japan", percent: 15 },
-        { country: "Turkey", percent: 12 }
-      ]
+      topCountries: topCountries
     });
   } catch (err) {
     res.status(500).json({ message: err.message });

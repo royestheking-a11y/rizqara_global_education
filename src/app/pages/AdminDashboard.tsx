@@ -256,12 +256,12 @@ function AdminOverview() {
   if (loading) return <DashboardSkeleton />;
 
   const stats = [
-    { label: "Total Students", value: statsData?.totalStudents?.toString() || "...", change: "+12 this week", icon: <Users size={20} />, color: "#7B1F2E" },
-    { label: "Active Applications", value: statsData?.activeApplications?.toString() || "...", change: "+5 today", icon: <ClipboardList size={20} />, color: "#7B1F2E" },
-    { label: "Open Scholarships", value: statsData?.openScholarships?.toString() || "...", change: "3 closing soon", icon: <GraduationCap size={20} />, color: "#10B981" },
-    { label: "New Leads", value: statsData?.newLeads?.toString() || "...", change: "From Profile Form", icon: <MessageSquare size={20} />, color: "#3B82F6" },
-    { label: "Pending Documents", value: statsData?.pendingDocuments?.toString() || "...", change: "+8 today", icon: <FileText size={20} />, color: "#EF4444" },
-    { label: "Total Revenue", value: statsData?.totalRevenue || "...", change: "+৳ 35k this week", icon: <DollarSign size={20} />, color: "#8B5CF6" },
+    { label: "Total Students", value: statsData?.totalStudents?.toString() || "0", change: "Registered Accounts", icon: <Users size={20} />, color: "#7B1F2E" },
+    { label: "Active Applications", value: statsData?.activeApplications?.toString() || "0", change: "In Progress", icon: <ClipboardList size={20} />, color: "#7B1F2E" },
+    { label: "Open Scholarships", value: statsData?.openScholarships?.toString() || "0", change: "Available", icon: <GraduationCap size={20} />, color: "#10B981" },
+    { label: "New Leads", value: statsData?.newLeads?.toString() || "0", change: "Unread Messages", icon: <MessageSquare size={20} />, color: "#3B82F6" },
+    { label: "Pending Documents", value: statsData?.pendingDocuments?.toString() || "0", change: "Awaiting Review", icon: <FileText size={20} />, color: "#EF4444" },
+    { label: "Total Revenue", value: statsData?.totalRevenue || "৳ 0", change: "From Accepted Payments", icon: <DollarSign size={20} />, color: "#8B5CF6" },
   ];
 
   return (
@@ -1368,23 +1368,23 @@ function Analytics() {
       <h2 className="font-bold text-gray-900">Analytics Overview</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: "Page Views", value: statsData?.pageViews?.toLocaleString() || "0", trend: "+23%", icon: <Eye size={22} />, color: "#7B1F2E" },
-          { label: "Profile Checks", value: statsData?.profileChecks?.toLocaleString() || "0", trend: "+18%", icon: <UserCheck size={22} />, color: "#3B82F6" },
-          { label: "WhatsApp Clicks", value: statsData?.whatsappClicks?.toLocaleString() || "0", trend: "+35%", icon: <MessageCircle size={22} />, color: "#10B981" },
-          { label: "Applications Started", value: statsData?.applicationsStarted?.toLocaleString() || "0", trend: "+12%", icon: <ClipboardList size={22} />, color: "#F59E0B" },
+          { label: "Page Views", value: statsData?.pageViews?.toLocaleString() || "0", trend: "Tracking Disabled", icon: <Eye size={22} />, color: "#7B1F2E" },
+          { label: "Profile Checks", value: statsData?.profileChecks?.toLocaleString() || "0", trend: "Total Leads", icon: <UserCheck size={22} />, color: "#3B82F6" },
+          { label: "WhatsApp Clicks", value: statsData?.whatsappClicks?.toLocaleString() || "0", trend: "Tracking Disabled", icon: <MessageCircle size={22} />, color: "#10B981" },
+          { label: "Applications Started", value: statsData?.applicationsStarted?.toLocaleString() || "0", trend: "Total Applications", icon: <ClipboardList size={22} />, color: "#F59E0B" },
         ].map((s, i) => (
           <div key={i} className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 transition-all hover:shadow-md">
             <div className="mb-2" style={{ color: s.color }}>{s.icon}</div>
             <div className="text-xl font-black text-gray-900 mb-0.5">{s.value}</div>
             <div className="text-xs text-gray-500">{s.label}</div>
-            <div className="text-xs font-semibold text-green-600 mt-1">{s.trend} this month</div>
+            <div className="text-xs font-semibold text-gray-400 mt-1">{s.trend}</div>
           </div>
         ))}
       </div>
 
       <div className="grid md:grid-cols-2 gap-5">
         <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-          <h4 className="font-bold text-gray-900 mb-4">Top Scholarship Views</h4>
+          <h4 className="font-bold text-gray-900 mb-4">Recently Added Scholarships</h4>
           {loading ? (
             <div className="space-y-3">
               {[1, 2, 3, 4, 5].map(i => (
@@ -1401,10 +1401,7 @@ function Analytics() {
                 <span>{s.countryFlag}</span>
                 <span className="text-sm text-gray-700 flex-1 line-clamp-1">{s.name}</span>
                 <div className="flex items-center gap-2">
-                  <div className="w-16 h-1.5 bg-gray-100 rounded-full">
-                    <div className="h-full rounded-full" style={{ width: `${80 - i * 12}%`, backgroundColor: "#7B1F2E" }} />
-                  </div>
-                  <span className="text-xs text-gray-500">{280 - i * 40} views</span>
+                  <span className="text-[10px] text-gray-500 bg-gray-100 px-2 py-1 rounded-md">{s.fundingType || "Funded"}</span>
                 </div>
               </div>
             ))
