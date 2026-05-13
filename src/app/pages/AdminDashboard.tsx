@@ -1342,20 +1342,25 @@ function FAQManagement({ showToast }: any) {
 // === ANALYTICS ===
 function Analytics() {
   const [scholarshipList, setScholarshipList] = useState<any[]>([]);
+  const [statsData, setStatsData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchScholarships = async () => {
+    const fetchAnalytics = async () => {
       try {
-        const data = await api.get('/scholarships');
-        setScholarshipList(data);
+        const [scholars, stats] = await Promise.all([
+          api.get('/scholarships'),
+          api.get('/stats')
+        ]);
+        setScholarshipList(scholars);
+        setStatsData(stats);
       } catch (err) {
-        console.error("Failed to fetch scholarships for analytics", err);
+        console.error("Failed to fetch analytics data", err);
       } finally {
         setLoading(false);
       }
     };
-    fetchScholarships();
+    fetchAnalytics();
   }, []);
 
   return (
@@ -1363,10 +1368,10 @@ function Analytics() {
       <h2 className="font-bold text-gray-900">Analytics Overview</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: "Page Views", value: "14,287", trend: "+23%", icon: <Eye size={22} />, color: "#7B1F2E" },
-          { label: "Profile Checks", value: "342", trend: "+18%", icon: <UserCheck size={22} />, color: "#3B82F6" },
-          { label: "WhatsApp Clicks", value: "891", trend: "+35%", icon: <MessageCircle size={22} />, color: "#10B981" },
-          { label: "Applications Started", value: "67", trend: "+12%", icon: <ClipboardList size={22} />, color: "#F59E0B" },
+          { label: "Page Views", value: statsData?.pageViews?.toLocaleString() || "0", trend: "+23%", icon: <Eye size={22} />, color: "#7B1F2E" },
+          { label: "Profile Checks", value: statsData?.profileChecks?.toLocaleString() || "0", trend: "+18%", icon: <UserCheck size={22} />, color: "#3B82F6" },
+          { label: "WhatsApp Clicks", value: statsData?.whatsappClicks?.toLocaleString() || "0", trend: "+35%", icon: <MessageCircle size={22} />, color: "#10B981" },
+          { label: "Applications Started", value: statsData?.applicationsStarted?.toLocaleString() || "0", trend: "+12%", icon: <ClipboardList size={22} />, color: "#F59E0B" },
         ].map((s, i) => (
           <div key={i} className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 transition-all hover:shadow-md">
             <div className="mb-2" style={{ color: s.color }}>{s.icon}</div>
@@ -1408,23 +1413,28 @@ function Analytics() {
 
         <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
           <h4 className="font-bold text-gray-900 mb-4">Top Countries by Interest</h4>
-          {[
-            { country: "🇭🇺 Hungary", percent: 35 },
-            { country: "🇷🇴 Romania", percent: 28 },
-            { country: "🇷🇺 Russia", percent: 20 },
-            { country: "🇯🇵 Japan", percent: 15 },
-            { country: "🇹🇷 Turkey", percent: 12 },
-          ].map((c, i) => (
-            <div key={i} className="py-2 border-b border-gray-50 last:border-b-0">
-              <div className="flex justify-between text-sm mb-1">
-                <span>{c.country}</span>
-                <span className="font-semibold" style={{ color: "#7B1F2E" }}>{c.percent}%</span>
-              </div>
-              <div className="h-1.5 bg-gray-100 rounded-full">
-                <div className="h-full rounded-full" style={{ width: `${c.percent}%`, backgroundColor: "#7B1F2E" }} />
-              </div>
+          {loading ? (
+             <div className="space-y-3">
+              {[1, 2, 3, 4, 5].map(i => (
+                <div key={i} className="flex flex-col gap-2 py-2">
+                  <div className="flex justify-between"><Skeleton className="h-4 w-24 rounded" /><Skeleton className="h-4 w-8 rounded" /></div>
+                  <Skeleton className="h-1.5 w-full rounded" />
+                </div>
+              ))}
             </div>
-          ))}
+          ) : (
+            (statsData?.topCountries || []).map((c: any, i: number) => (
+              <div key={i} className="py-2 border-b border-gray-50 last:border-b-0">
+                <div className="flex justify-between text-sm mb-1">
+                  <span>{c.country}</span>
+                  <span className="font-semibold" style={{ color: "#7B1F2E" }}>{c.percent}%</span>
+                </div>
+                <div className="h-1.5 bg-gray-100 rounded-full">
+                  <div className="h-full rounded-full" style={{ width: `${c.percent}%`, backgroundColor: "#7B1F2E" }} />
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>
