@@ -15,6 +15,19 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Get single application (Admin)
+router.get('/:id', async (req, res) => {
+  try {
+    const app = await Application.findById(req.params.id)
+      .populate('student', '-password')
+      .populate('scholarship');
+    if (!app) return res.status(404).json({ message: 'Application not found' });
+    res.json(app);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // Get my applications (Student)
 router.get('/me', async (req, res) => {
   try {
