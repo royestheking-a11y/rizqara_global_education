@@ -2161,7 +2161,7 @@ function ReceiptGenerator() {
               <p className="text-xs text-gray-500 mt-1">If you have any questions concerning this invoice, please contact our support.</p>
               <div className="flex justify-center items-center gap-6 mt-4 text-[10px] font-bold text-gray-400">
                 <span className="flex items-center gap-1"><Globe size={10} /> rizqaraglobaleducation.vercel.app</span>
-                <span className="flex items-center gap-1"><Mail size={10} /> support@rizqara.com</span>
+                <span className="flex items-center gap-1"><Mail size={10} /> rizqaraglobaleducation@gmail.com</span>
               </div>
             </div>
           </div>
@@ -2171,6 +2171,11 @@ function ReceiptGenerator() {
       {/* Print CSS Injection */}
       <style>{`
         @media print {
+          @page { margin: 0; size: A4 portrait; }
+          body { 
+            -webkit-print-color-adjust: exact; 
+            print-color-adjust: exact; 
+          }
           body * {
             visibility: hidden;
           }
@@ -2181,12 +2186,17 @@ function ReceiptGenerator() {
             position: absolute;
             left: 0;
             top: 0;
-            width: 100% !important;
+            width: 100vw !important;
+            height: 100vh !important;
             max-width: 100% !important;
+            max-height: 100vh !important;
             margin: 0 !important;
-            padding: 40px !important;
+            padding: 30px 40px !important;
             border: none !important;
             box-shadow: none !important;
+            box-sizing: border-box !important;
+            page-break-after: avoid !important;
+            page-break-inside: avoid !important;
           }
           .print\\:hidden {
             display: none !important;
