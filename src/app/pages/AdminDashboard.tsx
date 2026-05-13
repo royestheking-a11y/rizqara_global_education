@@ -1283,6 +1283,7 @@ function BlogManagement({ showToast }: any) {
               <span className="text-xs px-2 py-0.5 rounded bg-gray-100 text-gray-500">{p.category}</span>
               <h4 className="font-bold text-gray-900 text-sm mt-2 mb-1 line-clamp-2">{p.title}</h4>
               <p className="text-xs text-gray-400">{p.date} • {p.readTime}</p>
+              <p className="text-xs text-gray-500 mt-2 line-clamp-2">{p.excerpt}</p>
               <div className="flex gap-2 mt-3">
                 <Link to={`/blog/${p.slug || p._id || p.id}`} className="flex-1 py-1.5 text-xs text-center border rounded-lg" style={{ borderColor: "#7B1F2E30", color: "#7B1F2E" }}>View</Link>
                 <button onClick={() => { setEditItem(p); setForm({ title: p.title, slug: p.slug || "", category: p.category, excerpt: p.excerpt, image: p.image }); setShowModal(true); }} className="flex-1 py-1.5 text-xs text-white rounded-lg" style={{ backgroundColor: "#7B1F2E" }}>Edit</button>
