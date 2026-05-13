@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router";
+import { useParams, Link, useNavigate } from "react-router";
 import {
   Calendar, CheckCircle, Shield, Bookmark, ArrowRight, X, Star,
   Globe, Clock, AlertTriangle, ChevronRight, Users, DollarSign, Plane,
@@ -7,7 +7,7 @@ import {
   Banknote, HelpCircle, AlertCircle
 } from "lucide-react";
 import { api } from "../services/api";
-import { useSavedScholarships } from "../hooks/useAuth";
+import { useSavedScholarships, useAuth } from "../hooks/useAuth";
 import { SEO } from "../components/SEO";
 
 import { DetailsSkeleton } from "../components/ui/PremiumSkeletons";
@@ -23,6 +23,28 @@ export default function ScholarshipDetails() {
   const [eligibilityOpen, setEligibilityOpen] = useState(false);
   const [eligibilityAnswers, setEligibilityAnswers] = useState<any>({});
   const [eligibilityResult, setEligibilityResult] = useState<string | null>(null);
+  const { user, isLoggedIn } = useAuth();
+  const navigate = useNavigate();
+
+  const handleApply = async () => {
+    if (!isLoggedIn || !user) {
+      navigate("/register");
+      return;
+    }
+    
+    try {
+      await api.post('/applications', {
+        student: user.id || (user as any)._id,
+        scholarship: scholarship._id || scholarship.id,
+        status: 'Profile Received',
+        progress: 5
+      });
+      navigate("/dashboard");
+    } catch (err) {
+      console.error("Failed to apply", err);
+      navigate("/dashboard");
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -200,12 +222,12 @@ export default function ScholarshipDetails() {
             </div>
 
             <div className="flex flex-col gap-3 flex-shrink-0 w-full lg:w-56">
-              <Link
-                to="/contact"
-                className="py-3.5 px-6 rounded-xl font-semibold text-sm text-center transition-all duration-200 bg-white text-[#7B1F2E] hover:bg-gray-50 active:scale-95"
+              <button
+                onClick={handleApply}
+                className="py-3.5 px-6 rounded-xl font-semibold text-sm text-center transition-all duration-200 bg-white text-[#7B1F2E] hover:bg-gray-50 active:scale-95 w-full"
               >
                 Apply with Guidance
-              </Link>
+              </button>
               <button
                 onClick={toggleSave}
                 className={`py-3.5 px-6 rounded-xl font-semibold text-sm border-2 flex items-center justify-center gap-2 transition ${saved ? "bg-white/20 border-white text-white" : "border-white text-white hover:bg-white/20"}`}
@@ -623,9 +645,9 @@ export default function ScholarshipDetails() {
                     <p className="text-sm text-gray-600 mb-5">You may not meet all requirements, but don't worry! RizQara can find alternative scholarships that match your profile.</p>
                   </>
                 )}
-                <Link to="/contact" onClick={() => setEligibilityOpen(false)} className="block py-3 rounded-xl text-white font-semibold text-sm hover:opacity-90" style={{ backgroundColor: "#7B1F2E" }}>
+                <button onClick={() => { setEligibilityOpen(false); handleApply(); }} className="w-full block py-3 rounded-xl text-white font-semibold text-sm hover:opacity-90" style={{ backgroundColor: "#7B1F2E" }}>
                   Get Free Profile Check
-                </Link>
+                </button>
               </div>
             )}
           </div>

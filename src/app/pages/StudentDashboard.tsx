@@ -231,8 +231,8 @@ function Overview({ user, applications, savedIds, setActiveTab }: any) {
         {[
           { label: "Active Applications", value: applications.length.toString(), icon: <FileBadge size={20} />, color: "#7B1F2E" },
           { label: "Saved Scholarships", value: savedIds.length.toString(), icon: <Bookmark size={20} />, color: "#7B1F2E" },
-          { label: "Pending Documents", value: "3", icon: <FileText size={20} />, color: "#EF4444" },
-          { label: "Profile Completion", value: `${user.profileCompletion || 30}%`, icon: <UserCheck size={20} />, color: "#10B981" },
+          { label: "Pending Documents", value: applications.filter((a: any) => a.status === "Missing Documents" || a.status === "Document Checking").length.toString(), icon: <FileText size={20} />, color: "#EF4444" },
+          { label: "Profile Completion", value: `${Math.round((['name', 'email', 'phone', 'gpa', 'targetDegree', 'targetCountry', 'targetSubject', 'ieltsStatus', 'budget', 'passportStatus'].filter(f => user[f] && user[f].toString().trim() !== "").length / 10) * 100)}%`, icon: <UserCheck size={20} />, color: "#10B981" },
         ].map((s, i) => (
           <div key={i} className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
             <div className="mb-2" style={{ color: s.color }}>{s.icon}</div>

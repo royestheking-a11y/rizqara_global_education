@@ -7,7 +7,11 @@ const User = require('../models/User');
 // Register
 router.post('/register', async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { 
+      name, email, password, role, 
+      phone, educationLevel, gpa, targetDegree, targetCountry, targetSubject, ieltsStatus, budget, passportStatus 
+    } = req.body;
+    
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ message: 'User already exists' });
 
@@ -18,7 +22,16 @@ router.post('/register', async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role: role || 'student'
+      role: role || 'student',
+      phone,
+      educationLevel,
+      gpa,
+      targetDegree,
+      targetCountry,
+      targetSubject,
+      ieltsStatus,
+      budget,
+      passportStatus
     });
 
     await user.save();
