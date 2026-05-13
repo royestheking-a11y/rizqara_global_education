@@ -49,4 +49,21 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+
+  // Self-ping to keep Render server alive
+  const url = process.env.RENDER_EXTERNAL_URL || process.env.SERVER_URL || `http://localhost:${PORT}`;
+  setInterval(() => {
+    console.log(`[Self-Ping] Pinging server (${url}) to keep it alive...`);
+    try {
+      if (url.startsWith('https')) {
+        const https = require('https');
+        https.get(url).on('error', (err) => console.error('Ping Error:', err.message));
+      } else {
+        const http = require('http');
+        http.get(url).on('error', (err) => console.error('Ping Error:', err.message));
+      }
+    } catch (error) {
+      console.error('Self-ping failed:', error.message);
+    }
+  }, 14 * 60 * 1000); // Every 14 minutes
 });
