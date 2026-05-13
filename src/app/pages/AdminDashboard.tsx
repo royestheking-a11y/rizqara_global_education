@@ -5,7 +5,7 @@ import {
   MessageSquare, MessageCircle, Star, HelpCircle, Settings, LogOut, Plus, Edit,
   Trash2, Eye, Search, ChevronDown, X, Shield, Globe, BarChart3,
   TrendingUp, AlertCircle, CheckCircle, Clock, ClipboardList,
-  DollarSign, Megaphone, Mail, Phone, ArrowLeft, MoreVertical, Paperclip, Send, ArrowRight
+  DollarSign, Megaphone, Mail, Phone, ArrowLeft, MoreVertical, Paperclip, Send, ArrowRight, Receipt
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { TableSkeleton, DashboardSkeleton, GenericGridSkeleton } from "../components/ui/PremiumSkeletons";
@@ -101,6 +101,7 @@ const navItems = [
   { id: "faq", label: "FAQ", icon: <HelpCircle size={15} /> },
   { id: "analytics", label: "Analytics", icon: <BarChart3 size={15} /> },
   { id: "payments", label: "Payments", icon: <DollarSign size={15} /> },
+  { id: "receipts", label: "Receipts", icon: <Receipt size={15} /> },
   { id: "messages", label: "Messages", icon: <MessageSquare size={15} /> },
 ];
 
@@ -145,6 +146,7 @@ export default function AdminDashboard() {
       case "faq": return <FAQManagement showToast={showToast} />;
       case "analytics": return <Analytics />;
       case "payments": return <PaymentManagement showToast={showToast} />;
+      case "receipts": return <ReceiptGenerator />;
       case "messages": return <AdminMessages />;
       default: return <AdminOverview />;
     }
@@ -2024,6 +2026,176 @@ function PaymentManagement({ showToast }: { showToast: (msg: string, type?: "suc
           </table>
         </div>
       </div>
+    </div>
+  );
+}
+
+// === RECEIPTS ===
+function ReceiptGenerator() {
+  const [data, setData] = useState({
+    name: "",
+    number: "",
+    className: "",
+    services: "",
+    totalPayment: 0,
+    paid: 0
+  });
+
+  const due = Math.max(0, data.totalPayment - data.paid);
+  const invoiceNo = `INV-${new Date().getTime().toString().slice(-6)}`;
+  const date = new Date().toLocaleDateString('en-GB');
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  return (
+    <div className="space-y-6">
+      <h2 className="font-bold text-gray-900 text-lg">Generate Receipt</h2>
+      <p className="text-sm text-gray-500 -mt-4">Create and print premium receipts for students.</p>
+
+      <div className="grid lg:grid-cols-2 gap-8 print:block">
+        {/* Form Controls (Hidden during print) */}
+        <div className="space-y-5 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 print:hidden h-fit">
+          <h3 className="font-bold text-[#7B1F2E] border-b pb-2 mb-4">Receipt Details</h3>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Student Name</label>
+              <input type="text" className="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-[#7B1F2E]/20 outline-none" value={data.name} onChange={e => setData({...data, name: e.target.value})} placeholder="e.g. John Doe" />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Phone Number</label>
+              <input type="text" className="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-[#7B1F2E]/20 outline-none" value={data.number} onChange={e => setData({...data, number: e.target.value})} placeholder="e.g. 017..." />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Class / Target Degree</label>
+            <input type="text" className="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-[#7B1F2E]/20 outline-none" value={data.className} onChange={e => setData({...data, className: e.target.value})} placeholder="e.g. Masters / BSc" />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Services Provided</label>
+            <textarea rows={3} className="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-[#7B1F2E]/20 outline-none" value={data.services} onChange={e => setData({...data, services: e.target.value})} placeholder="e.g. University Application, Visa Support..." />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Total Payment (৳)</label>
+              <input type="number" className="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-[#7B1F2E]/20 outline-none" value={data.totalPayment || ""} onChange={e => setData({...data, totalPayment: Number(e.target.value)})} placeholder="0" />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Paid Amount (৳)</label>
+              <input type="number" className="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-[#7B1F2E]/20 outline-none" value={data.paid || ""} onChange={e => setData({...data, paid: Number(e.target.value)})} placeholder="0" />
+            </div>
+          </div>
+
+          <div className="pt-4 border-t border-gray-100 flex justify-end">
+            <button onClick={handlePrint} className="px-6 py-2.5 bg-[#7B1F2E] text-white font-bold rounded-lg shadow-md hover:bg-[#3D0F17] transition-all flex items-center gap-2">
+              <Receipt size={16} /> Print / Save as PDF
+            </button>
+          </div>
+        </div>
+
+        {/* Invoice Preview (Printed) */}
+        <div id="printable-receipt" className="bg-white p-10 rounded-2xl shadow-lg border border-gray-100 print:shadow-none print:border-none print:p-0 relative mx-auto w-full max-w-3xl aspect-[1/1.414]">
+          <div className="absolute inset-0 bg-white z-0 rounded-2xl print:rounded-none"></div>
+          
+          <div className="relative z-10 h-full flex flex-col">
+            {/* Header */}
+            <div className="flex justify-between items-start border-b-2 border-[#7B1F2E] pb-6 mb-8">
+              <div className="flex items-center gap-4">
+                <img src="/mainlogo.png" alt="Rizqara Global Education" className="h-16 object-contain" />
+                <div>
+                  <h1 className="text-2xl font-black text-[#7B1F2E] tracking-tight uppercase">Rizqara Global Education</h1>
+                  <p className="text-sm text-gray-500 font-medium tracking-wide">Your Gateway to Global Success</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <h2 className="text-3xl font-black text-gray-200 uppercase tracking-widest mb-2">INVOICE</h2>
+                <p className="text-sm font-bold text-gray-800">No: <span className="text-gray-500 font-medium">{invoiceNo}</span></p>
+                <p className="text-sm font-bold text-gray-800">Date: <span className="text-gray-500 font-medium">{date}</span></p>
+              </div>
+            </div>
+
+            {/* Client Info */}
+            <div className="bg-gray-50/80 p-5 rounded-xl border border-gray-100 mb-8 flex justify-between">
+              <div>
+                <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Billed To</h3>
+                <p className="font-bold text-lg text-gray-900">{data.name || "Student Name"}</p>
+                <p className="text-sm text-gray-600 mt-1 flex items-center gap-2"><Phone size={12}/> {data.number || "Phone Number"}</p>
+                <p className="text-sm text-gray-600 mt-0.5 flex items-center gap-2"><GraduationCap size={12}/> {data.className || "Class / Degree"}</p>
+              </div>
+            </div>
+
+            {/* Services */}
+            <div className="flex-1">
+              <h3 className="text-sm font-bold text-[#7B1F2E] uppercase tracking-wider mb-3 border-b pb-2">Description of Services</h3>
+              <div className="p-4 border rounded-xl border-gray-200 bg-white min-h-[120px] whitespace-pre-wrap text-sm text-gray-700 leading-relaxed">
+                {data.services || "Enter services provided..."}
+              </div>
+            </div>
+
+            {/* Payment Summary */}
+            <div className="mt-auto pt-8">
+              <div className="w-full md:w-1/2 ml-auto space-y-3">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-bold text-gray-600">Total Payment:</span>
+                  <span className="font-bold text-gray-900">৳ {data.totalPayment.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between items-center text-sm border-b pb-3">
+                  <span className="font-bold text-gray-600">Amount Paid:</span>
+                  <span className="font-bold text-green-600">৳ {data.paid.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between items-center pt-1">
+                  <span className="font-black text-lg text-[#7B1F2E] uppercase">Total Due:</span>
+                  <span className="font-black text-xl text-[#7B1F2E]">৳ {due.toLocaleString()}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="mt-12 pt-6 border-t border-gray-100 text-center">
+              <p className="text-sm font-bold text-gray-800">Thank you for choosing Rizqara Global Education!</p>
+              <p className="text-xs text-gray-500 mt-1">If you have any questions concerning this invoice, please contact our support.</p>
+              <div className="flex justify-center items-center gap-6 mt-4 text-[10px] font-bold text-gray-400">
+                <span className="flex items-center gap-1"><Globe size={10} /> rizqaraglobaleducation.vercel.app</span>
+                <span className="flex items-center gap-1"><Mail size={10} /> support@rizqara.com</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Print CSS Injection */}
+      <style>{`
+        @media print {
+          body * {
+            visibility: hidden;
+          }
+          #printable-receipt, #printable-receipt * {
+            visibility: visible;
+          }
+          #printable-receipt {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 40px !important;
+            border: none !important;
+            box-shadow: none !important;
+          }
+          .print\\:hidden {
+            display: none !important;
+          }
+          .print\\:block {
+            display: block !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
