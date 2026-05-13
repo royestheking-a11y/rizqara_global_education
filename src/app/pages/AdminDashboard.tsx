@@ -809,7 +809,17 @@ function ApplicationManagement({ showToast, filter, setFilter }: any) {
                   {statuses.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
                 <button 
-                  onClick={() => setSelectedApp(app)}
+                  onClick={async () => {
+                    setLoading(true);
+                    try {
+                      const details = await api.get(`/applications/${app._id || app.id}`);
+                      setSelectedApp(details);
+                    } catch (err) {
+                      showToast("Failed to fetch application details", "error");
+                    } finally {
+                      setLoading(false);
+                    }
+                  }}
                   className="p-1.5 rounded-lg hover:bg-gray-100 text-blue-500 transition-all active:scale-95 border border-gray-100"
                   title="View Full Application Details"
                 >
@@ -884,6 +894,7 @@ function ApplicationManagement({ showToast, filter, setFilter }: any) {
                   {[
                     { label: "Email", value: selectedApp.student?.email, icon: <Mail size={12} /> },
                     { label: "Phone", value: selectedApp.student?.phone || "Not provided", icon: <Phone size={12} /> },
+                    { label: "Current Education", value: selectedApp.student?.educationLevel, icon: <BookOpen size={12} /> },
                     { label: "GPA / Result", value: selectedApp.student?.gpa, icon: <BarChart3 size={12} /> },
                     { label: "IELTS Status", value: selectedApp.student?.ieltsStatus, icon: <FileText size={12} /> },
                     { label: "Target Degree", value: selectedApp.student?.targetDegree, icon: <GraduationCap size={12} /> },
@@ -903,9 +914,29 @@ function ApplicationManagement({ showToast, filter, setFilter }: any) {
 
               {/* Uploaded Documents Section */}
               <div>
-                <h4 className="flex items-center gap-2 font-black text-gray-900 mb-4 text-sm border-l-4 border-[#7B1F2E] pl-3">
-                  <Paperclip size={16} className="text-[#7B1F2E]" /> Verification Documents
-                </h4>
+                <div className="flex items-center justify-between mb-4 border-l-4 border-[#7B1F2E] pl-3">
+                  <h4 className="flex items-center gap-2 font-black text-gray-900 text-sm">
+                    <Paperclip size={16} className="text-[#7B1F2E]" /> Verification Documents
+                  </h4>
+                  {selectedApp.student?.documents && Object.keys(selectedApp.student.documents).length > 1 && (
+                    <button 
+                      onClick={() => {
+                        Object.values(selectedApp.student.documents).forEach((url: any) => {
+                          const link = document.createElement('a');
+                          link.href = url;
+                          link.download = '';
+                          link.target = '_blank';
+                          document.body.appendChild(link);
+                          link.click();
+                          document.body.removeChild(link);
+                        });
+                      }}
+                      className="text-[10px] font-bold text-white bg-[#7B1F2E] px-2 py-1 rounded-lg flex items-center gap-1 hover:opacity-90 shadow-sm"
+                    >
+                      <Download size={10} /> Download All
+                    </button>
+                  )}
+                </div>
                 <div className="space-y-2">
                   {selectedApp.student?.documents && Object.keys(selectedApp.student.documents).length > 0 ? (
                     Object.entries(selectedApp.student.documents).map(([key, url]: any) => (

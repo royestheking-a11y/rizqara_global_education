@@ -186,7 +186,7 @@ export default function Home() {
 
   const handleProfileCheck = () => {
     if (isLoggedIn) {
-      navigate("/dashboard");
+      navigate("/dashboard/messages");
     } else {
       navigate("/register");
     }
@@ -246,26 +246,39 @@ export default function Home() {
   }, []);
 
   const getCategoryCount = (catName: string) => {
-    if (!runningScholarships.length) return 0;
-    const name = catName.toLowerCase();
+    if (!runningScholarships || !runningScholarships.length) return 0;
+    const name = catName.toLowerCase().trim();
     
+    // Type Filters
     if (name.includes("government")) return runningScholarships.filter(s => s.scholarshipType === "Government").length;
     if (name.includes("university")) return runningScholarships.filter(s => s.scholarshipType === "University").length;
+    if (name.includes("private")) return runningScholarships.filter(s => s.scholarshipType === "Private").length;
+    
+    // Funding Filters
     if (name.includes("fully funded")) return runningScholarships.filter(s => s.fundingType === "Fully Funded").length;
-    if (name.includes("no ielts")) return runningScholarships.filter(s => !s.ieltsRequired).length;
+    if (name.includes("partially funded")) return runningScholarships.filter(s => s.fundingType === "Partially Funded").length;
     
-    if (name.includes("bachelor")) return runningScholarships.filter(s => s.degree?.includes("Bachelor")).length;
-    if (name.includes("master") || name.includes("mba") || name.includes("business")) return runningScholarships.filter(s => s.degree?.includes("Masters") || s.degree?.includes("MBA") || s.subjects?.some(sub => sub.toLowerCase().includes("business"))).length;
-    if (name.includes("phd") || name.includes("research")) return runningScholarships.filter(s => s.degree?.includes("PhD")).length;
-    if (name.includes("mbbs") || name.includes("medical")) return runningScholarships.filter(s => s.degree?.includes("MBBS") || s.subjects?.some(sub => sub.toLowerCase().includes("medical"))).length;
+    // Requirement Filters
+    if (name.includes("no ielts") || name.includes("without ielts")) return runningScholarships.filter(s => !s.ieltsRequired).length;
+    if (name.includes("moi accepted")) return runningScholarships.filter(s => s.moiAccepted).length;
     
+    // Degree Level Filters
+    if (name.includes("bachelor")) return runningScholarships.filter(s => s.degree?.some(d => d.toLowerCase().includes("bachelor"))).length;
+    if (name.includes("master")) return runningScholarships.filter(s => s.degree?.some(d => d.toLowerCase().includes("master"))).length;
+    if (name.includes("phd") || name.includes("research")) return runningScholarships.filter(s => s.degree?.some(d => d.toLowerCase().includes("phd") || d.toLowerCase().includes("research"))).length;
+    if (name.includes("mbbs") || name.includes("medical")) return runningScholarships.filter(s => s.degree?.some(d => d.toLowerCase().includes("mbbs") || d.toLowerCase().includes("medical")) || s.subjects?.some(sub => sub.toLowerCase().includes("medical") || sub.toLowerCase().includes("medicine"))).length;
+    
+    // Subject Filters
     if (name.includes("engineering")) return runningScholarships.filter(s => s.subjects?.some(sub => sub.toLowerCase().includes("engineering"))).length;
+    if (name.includes("mba") || name.includes("business") || name.includes("management")) return runningScholarships.filter(s => s.subjects?.some(sub => sub.toLowerCase().includes("business") || sub.toLowerCase().includes("management") || sub.toLowerCase().includes("mba"))).length;
     if (name.includes("arts") || name.includes("design")) return runningScholarships.filter(s => s.subjects?.some(sub => sub.toLowerCase().includes("art") || sub.toLowerCase().includes("design"))).length;
     if (name.includes("social")) return runningScholarships.filter(s => s.subjects?.some(sub => sub.toLowerCase().includes("social"))).length;
     if (name.includes("law") || name.includes("legal")) return runningScholarships.filter(s => s.subjects?.some(sub => sub.toLowerCase().includes("law") || sub.toLowerCase().includes("legal"))).length;
-    
-    if (name.includes("europe")) return runningScholarships.filter(s => s.country === "Hungary" || s.country === "Romania" || s.country === "Russia").length;
-    if (name.includes("asia")) return runningScholarships.filter(s => s.country === "Japan" || s.country === "Saudi Arabia" || s.country === "Turkey").length;
+    if (name.includes("computer") || name.includes("it") || name.includes("science")) return runningScholarships.filter(s => s.subjects?.some(sub => sub.toLowerCase().includes("computer") || sub.toLowerCase().includes("science") || sub.toLowerCase().includes("it"))).length;
+
+    // Region Filters
+    if (name.includes("europe")) return runningScholarships.filter(s => ["Hungary", "Romania", "Russia", "Germany", "Poland", "Italy", "France", "Spain"].includes(s.country)).length;
+    if (name.includes("asia")) return runningScholarships.filter(s => ["Japan", "Saudi Arabia", "Turkey", "China", "South Korea", "Malaysia", "Indonesia"].includes(s.country)).length;
     
     return 0;
   };

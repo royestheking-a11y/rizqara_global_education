@@ -36,7 +36,9 @@ router.post('/register', async (req, res) => {
 
     await user.save();
     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
+    const userWithoutPassword = user.toObject();
+    delete userWithoutPassword.password;
+    res.json({ token, user: userWithoutPassword });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -66,7 +68,9 @@ router.post('/login', async (req, res) => {
     }
 
     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '30d' });
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
+    const userWithoutPassword = user.toObject();
+    delete userWithoutPassword.password;
+    res.json({ token, user: userWithoutPassword });
   } catch (err) {
     console.error('Login error:', err);
     res.status(500).json({ message: err.message });

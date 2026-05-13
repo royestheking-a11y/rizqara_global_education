@@ -510,7 +510,7 @@ export function BlogDetailsPage() {
 
   const handleProfileCheck = () => {
     if (isLoggedIn) {
-      navigate("/dashboard");
+      navigate("/dashboard/messages");
     } else {
       navigate("/register");
     }

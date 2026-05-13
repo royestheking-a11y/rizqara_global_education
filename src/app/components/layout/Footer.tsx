@@ -1,8 +1,20 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube, ArrowRight, Shield } from "lucide-react";
 import { Logo } from "./Logo";
+import { useAuth } from "../../hooks/useAuth";
 
 export function Footer() {
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
+
+  const handleProfileCheck = () => {
+    if (isLoggedIn) {
+      navigate("/dashboard/messages");
+    } else {
+      navigate("/register");
+    }
+  };
+
   return (
     <footer style={{ backgroundColor: "#FFFFFF", borderTop: "1px solid #f3f4f6" }} className="text-gray-600">
       {/* CTA Banner */}
@@ -13,13 +25,13 @@ export function Footer() {
             <p className="text-red-200 text-sm">Get your free profile check and discover scholarships that match your profile.</p>
           </div>
           <div className="flex gap-3 flex-shrink-0">
-            <Link
-              to="/contact"
+            <button
+              onClick={handleProfileCheck}
               className="px-6 py-3 bg-white text-sm font-bold rounded-xl transition-all hover:bg-gray-50 shadow-sm"
               style={{ color: "#7B1F2E" }}
             >
               Free Profile Check
-            </Link>
+            </button>
             <Link
               to="/scholarships"
               className="px-6 py-3 text-sm font-bold rounded-xl border-2 border-white/40 text-white transition-all hover:bg-white/10"
