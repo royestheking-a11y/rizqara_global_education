@@ -6,7 +6,7 @@ const Application = require('../models/Application');
 router.get('/', async (req, res) => {
   try {
     const apps = await Application.find()
-      .populate('student', 'name email')
+      .populate('student', '-password')
       .populate('scholarship', 'name country countryFlag')
       .sort({ updatedAt: -1 });
     res.json(apps);

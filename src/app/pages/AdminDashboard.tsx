@@ -5,7 +5,7 @@ import {
   MessageSquare, MessageCircle, Star, HelpCircle, Settings, LogOut, Plus, Edit,
   Trash2, Eye, Search, ChevronDown, X, Shield, Globe, BarChart3,
   TrendingUp, AlertCircle, CheckCircle, Clock, ClipboardList,
-  DollarSign, Megaphone, Mail, Phone, ArrowLeft, MoreVertical, Paperclip, Send, ArrowRight, Receipt
+  DollarSign, Megaphone, Mail, Phone, ArrowLeft, MoreVertical, Paperclip, Send, ArrowRight, Receipt, Download
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { TableSkeleton, DashboardSkeleton, GenericGridSkeleton } from "../components/ui/PremiumSkeletons";
@@ -741,6 +741,7 @@ function StudentManagement({ showToast, setActiveTab, setAppFilter }: any) {
 function ApplicationManagement({ showToast, filter, setFilter }: any) {
   const [apps, setApps] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedApp, setSelectedApp] = useState<any>(null);
 
   const fetchApps = async () => {
     try {
@@ -764,7 +765,13 @@ function ApplicationManagement({ showToast, filter, setFilter }: any) {
     : apps;
 
   const statuses = ["Profile Received", "Document Checking", "Missing Documents", "SOP/CV Preparing", "Application Form Started", "Submitted", "Waiting for Result", "Interview Stage", "Visa Guidance", "Completed", "Rejected"];
-  const statusColors: any = { "Profile Received": "bg-blue-100 text-blue-700", "Document Checking": "bg-yellow-100 text-yellow-700", "SOP/CV Preparing": "bg-purple-100 text-purple-700", "Submitted": "bg-green-100 text-green-700", "Waiting for Result": "bg-gray-100 text-gray-700" };
+  const statusColors: any = { 
+    "Profile Received": "bg-blue-100 text-blue-700", 
+    "Document Checking": "bg-yellow-100 text-yellow-700", 
+    "SOP/CV Preparing": "bg-purple-100 text-purple-700", 
+    "Submitted": "bg-green-100 text-green-700", 
+    "Waiting for Result": "bg-gray-100 text-gray-700" 
+  };
 
   const updateStatus = async (id: string, status: string) => {
     try {
@@ -784,6 +791,7 @@ function ApplicationManagement({ showToast, filter, setFilter }: any) {
           <button onClick={() => setFilter(null)} className="text-xs text-[#7B1F2E] font-bold hover:underline">Clear Filter</button>
         )}
       </div>
+
       <div className="space-y-4">
         {filteredApps.map(app => (
           <div key={app._id || app.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
@@ -797,9 +805,16 @@ function ApplicationManagement({ showToast, filter, setFilter }: any) {
                 <p className="text-xs text-gray-400 mt-1">Advisor: {app.advisor} • Updated: {app.updatedAt ? new Date(app.updatedAt).toLocaleDateString() : app.lastUpdate}</p>
               </div>
               <div className="flex items-center gap-2">
-                <select value={app.status} onChange={e => updateStatus(app._id || app.id, e.target.value)} className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 bg-white focus:outline-none">
+                <select value={app.status} onChange={e => updateStatus(app._id || app.id, e.target.value)} className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 bg-white focus:outline-none font-medium">
                   {statuses.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
+                <button 
+                  onClick={() => setSelectedApp(app)}
+                  className="p-1.5 rounded-lg hover:bg-gray-100 text-blue-500 transition-all active:scale-95 border border-gray-100"
+                  title="View Full Application Details"
+                >
+                  <Eye size={16} />
+                </button>
               </div>
             </div>
             <div>
@@ -814,6 +829,146 @@ function ApplicationManagement({ showToast, filter, setFilter }: any) {
           </div>
         ))}
       </div>
+
+      {/* Full Application Details Modal */}
+      {selectedApp && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full my-auto overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            {/* Modal Header */}
+            <div className="relative h-28 bg-gradient-to-r from-[#7B1F2E] to-[#3D0F17] p-6 flex items-end">
+              <button 
+                onClick={() => setSelectedApp(null)} 
+                className="absolute top-4 right-4 p-2 bg-black/20 hover:bg-black/40 text-white rounded-full transition-colors"
+              >
+                <X size={18} />
+              </button>
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-2xl bg-white p-1 shadow-lg">
+                  <div className="w-full h-full rounded-xl flex items-center justify-center text-white text-2xl font-black" style={{ backgroundColor: "#7B1F2E" }}>
+                    {selectedApp.student?.name?.charAt(0)}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-white">{selectedApp.student?.name}</h3>
+                  <p className="text-red-100/70 text-xs font-medium">Application ID: {selectedApp._id || selectedApp.id}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
+              {/* Status & Progress Section */}
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Current Status</p>
+                  <span className={`text-xs px-3 py-1 rounded-full font-bold ${statusColors[selectedApp.status] || "bg-gray-100 text-gray-600"}`}>
+                    {selectedApp.status}
+                  </span>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Completion</p>
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="h-full bg-[#7B1F2E] rounded-full" style={{ width: `${selectedApp.progress}%` }} />
+                    </div>
+                    <span className="text-xs font-black text-[#7B1F2E]">{selectedApp.progress}%</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Student Profile Info */}
+              <div className="mb-8">
+                <h4 className="flex items-center gap-2 font-black text-gray-900 mb-4 text-sm border-l-4 border-[#7B1F2E] pl-3">
+                  <Users size={16} className="text-[#7B1F2E]" /> Student Profile Information
+                </h4>
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { label: "Email", value: selectedApp.student?.email, icon: <Mail size={12} /> },
+                    { label: "Phone", value: selectedApp.student?.phone || "Not provided", icon: <Phone size={12} /> },
+                    { label: "GPA / Result", value: selectedApp.student?.gpa, icon: <BarChart3 size={12} /> },
+                    { label: "IELTS Status", value: selectedApp.student?.ieltsStatus, icon: <FileText size={12} /> },
+                    { label: "Target Degree", value: selectedApp.student?.targetDegree, icon: <GraduationCap size={12} /> },
+                    { label: "Target Country", value: selectedApp.student?.targetCountry, icon: <Globe size={12} /> },
+                    { label: "Budget", value: selectedApp.student?.budget, icon: <DollarSign size={12} /> },
+                    { label: "Passport", value: selectedApp.student?.passportStatus, icon: <CheckCircle size={12} /> },
+                  ].map((field, idx) => (
+                    <div key={idx} className="p-3 bg-white border border-gray-100 rounded-xl hover:border-[#7B1F2E30] transition-colors">
+                      <div className="text-[10px] font-bold text-gray-400 uppercase flex items-center gap-1.5 mb-1">
+                        {field.icon} {field.label}
+                      </div>
+                      <div className="text-xs font-bold text-gray-800 break-words">{field.value || "N/A"}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Uploaded Documents Section */}
+              <div>
+                <h4 className="flex items-center gap-2 font-black text-gray-900 mb-4 text-sm border-l-4 border-[#7B1F2E] pl-3">
+                  <Paperclip size={16} className="text-[#7B1F2E]" /> Verification Documents
+                </h4>
+                <div className="space-y-2">
+                  {selectedApp.student?.documents && Object.keys(selectedApp.student.documents).length > 0 ? (
+                    Object.entries(selectedApp.student.documents).map(([key, url]: any) => (
+                      <div key={key} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100 hover:bg-white hover:shadow-sm transition-all group">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-[#7B1F2E10] text-[#7B1F2E] flex items-center justify-center">
+                            <FileText size={14} />
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-gray-800 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</p>
+                            <p className="text-[10px] text-gray-400">PDF/Image Document</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <a 
+                            href={url} 
+                            target="_blank" 
+                            rel="noreferrer"
+                            className="p-2 bg-white text-[#7B1F2E] rounded-lg border border-gray-200 hover:border-[#7B1F2E] transition-colors shadow-sm"
+                            title="Preview Document"
+                          >
+                            <Eye size={14} />
+                          </a>
+                          <a 
+                            href={url} 
+                            download
+                            className="p-2 bg-[#7B1F2E] text-white rounded-lg hover:opacity-90 transition-colors shadow-md shadow-[#7B1F2E20]"
+                            title="Download Document"
+                          >
+                            <Download size={14} />
+                          </a>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-6 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
+                      <p className="text-xs text-gray-500">No documents uploaded yet by the student.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 bg-gray-50 border-t border-gray-100 flex gap-3">
+              <button 
+                onClick={() => setSelectedApp(null)}
+                className="flex-1 py-2.5 text-xs font-bold text-gray-600 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
+              >
+                Close View
+              </button>
+              <button 
+                onClick={() => {
+                  window.open(`mailto:${selectedApp.student?.email}?subject=RizQara Application Update: ${selectedApp.scholarship?.name}`, '_blank');
+                }}
+                className="flex-1 py-2.5 text-xs font-bold text-white bg-[#7B1F2E] rounded-xl hover:opacity-90 transition-colors shadow-lg shadow-[#7B1F2E20] flex items-center justify-center gap-2"
+              >
+                <Mail size={14} /> Contact Student
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
