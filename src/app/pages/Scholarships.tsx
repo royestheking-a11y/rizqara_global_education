@@ -333,7 +333,7 @@ function ScholarshipGridCard({ s, onCompare, inCompare }: { s: any; onCompare: (
   return (
     <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all border border-gray-100 flex flex-col group">
       <div className="relative h-40 overflow-hidden">
-        <img src={s.image} alt={s.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+        <img src={s.image || "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop"} alt={s.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
         <div className="absolute top-3 left-3 flex gap-1.5">
           <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${statusColors[s.status]}`}>{s.status}</span>
@@ -426,7 +426,7 @@ function ScholarshipListCard({ s, onCompare, inCompare }: { s: any; onCompare: (
   return (
     <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex gap-4 hover:shadow-md transition-all">
       <div className="w-24 h-20 rounded-xl overflow-hidden flex-shrink-0">
-        <img src={s.image} alt={s.name} className="w-full h-full object-cover" />
+        <img src={s.image || "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop"} alt={s.name} className="w-full h-full object-cover" />
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2 mb-1">

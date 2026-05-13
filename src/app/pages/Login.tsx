@@ -31,26 +31,7 @@ export default function Login() {
     setLoading(false);
   };
 
-  const loginDemo = async (type: "student" | "admin") => {
-    const creds = type === "admin"
-      ? { email: "admin@rizqara.com", password: "admin123" }
-      : { email: "student@rizqara.com", password: "student123" };
-    
-    setEmail(creds.email);
-    setPassword(creds.password);
-    
-    setLoading(true);
-    setError("");
-    const result = await login(creds.email, creds.password);
-    console.log("Demo Login Result:", result);
-    if (result.success && result.user) {
-      console.log("Redirecting to:", result.user.role === "admin" ? "/admin" : "/dashboard");
-      navigate(result.user.role === "admin" ? "/admin" : "/dashboard");
-    } else {
-      setError(result.message);
-    }
-    setLoading(false);
-  };
+
 
   return (
     <div className="min-h-screen flex" style={{ backgroundColor: "#FDF8F5" }}>
@@ -108,18 +89,7 @@ export default function Login() {
           <h1 className="text-2xl font-bold text-gray-900 mb-1">Sign in to your account</h1>
           <p className="text-gray-500 mb-6 text-sm">Don't have an account? <Link to="/register" className="font-semibold" style={{ color: "#7B1F2E" }}>Create one free</Link></p>
 
-          {/* Demo Credentials */}
-          <div className="mb-5 p-4 rounded-xl border-2 border-dashed" style={{ borderColor: "#7B1F2E20", backgroundColor: "#7B1F2E05" }}>
-            <p className="text-xs font-semibold mb-2" style={{ color: "#7B1F2E" }}>🎯 Demo Login Credentials</p>
-            <div className="flex gap-2">
-              <button onClick={() => loginDemo("student")} className="flex-1 py-1.5 text-xs rounded-lg border font-medium transition hover:bg-white" style={{ borderColor: "#7B1F2E30", color: "#7B1F2E" }}>
-                👨‍🎓 Student Demo
-              </button>
-              <button onClick={() => loginDemo("admin")} className="flex-1 py-1.5 text-xs rounded-lg border font-medium transition hover:bg-white" style={{ borderColor: "#7B1F2E30", color: "#7B1F2E" }}>
-                <Shield size={10} className="inline mr-1" /> Admin Demo
-              </button>
-            </div>
-          </div>
+
 
           {error && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">

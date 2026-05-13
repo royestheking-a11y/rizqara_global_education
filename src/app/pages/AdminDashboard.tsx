@@ -1033,7 +1033,7 @@ function BlogManagement({ showToast }: any) {
         {posts.map((p, i) => (
           <div key={p._id || p.id || i} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="h-32 overflow-hidden">
-              <img src={p.image} alt={p.title} className="w-full h-full object-cover" />
+              <img src={p.image || "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop"} alt={p.title} className="w-full h-full object-cover" />
             </div>
             <div className="p-4">
               <span className="text-xs px-2 py-0.5 rounded bg-gray-100 text-gray-500">{p.category}</span>

@@ -608,7 +608,7 @@ function SavedTab({ scholarships: saved }: { scholarships: any[] }) {
           {saved.map(s => (
             <div key={s._id || s.id} className="border border-gray-100 rounded-xl overflow-hidden">
               <div className="h-24 overflow-hidden">
-                <img src={s.image} alt={s.name} className="w-full h-full object-cover" />
+                <img src={s.image || "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop"} alt={s.name} className="w-full h-full object-cover" />
               </div>
               <div className="p-3">
                 <div className="flex items-center gap-1.5 mb-1">

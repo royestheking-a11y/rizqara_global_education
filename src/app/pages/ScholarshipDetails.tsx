@@ -145,7 +145,7 @@ export default function ScholarshipDetails() {
         description={`Detailed guide on ${s.name} for Bangladeshi students. Learn about eligibility, required documents, and how to apply successfully.`}
         keywords={`${s.name}, ${s.country} scholarship, study in ${s.country} from Bangladesh, scholarship application guide`}
         canonical={`/scholarships/${s.slug || s._id}`}
-        ogImage={s.image}
+        ogImage={s.image || "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop"}
         schema={[scholarshipSchema, breadcrumbSchema]}
       />
       {/* Hero */}
