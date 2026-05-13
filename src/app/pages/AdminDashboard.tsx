@@ -661,20 +661,76 @@ function StudentManagement({ showToast, setActiveTab, setAppFilter }: any) {
                 <p className="text-gray-500 flex items-center gap-1.5 mt-1 text-sm"><Phone size={14} /> {viewItem.phone || "No phone added"}</p>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 mb-8">
+              <div className="grid grid-cols-2 gap-3 mb-8">
                 {[
                   { label: "Target Country", value: viewItem.targetCountry, icon: <Globe size={14} /> },
-                  { label: "GPA", value: viewItem.gpa, icon: <BarChart3 size={14} /> },
-                  { label: "Degree Level", value: viewItem.targetDegree, icon: <GraduationCap size={14} /> },
+                  { label: "GPA / Result", value: viewItem.gpa, icon: <BarChart3 size={14} /> },
+                  { label: "Current Education", value: viewItem.educationLevel, icon: <BookOpen size={14} /> },
+                  { label: "Target Degree", value: viewItem.targetDegree, icon: <GraduationCap size={14} /> },
+                  { label: "Target Subject", value: viewItem.targetSubject, icon: <BookOpen size={14} /> },
                   { label: "IELTS Status", value: viewItem.ieltsStatus, icon: <FileText size={14} /> },
+                  { label: "Budget Range", value: viewItem.budget, icon: <DollarSign size={14} /> },
+                  { label: "Passport Status", value: viewItem.passportStatus, icon: <UserCheck size={14} /> },
                 ].map((item, idx) => (
                   <div key={idx} className="bg-gray-50 p-3 rounded-2xl border border-gray-100">
                     <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-1.5">
                       <span className="text-[#7B1F2E]">{item.icon}</span> {item.label}
                     </div>
-                    <div className="text-sm font-bold text-gray-800">{item.value}</div>
+                    <div className="text-xs font-bold text-gray-800 truncate">{item.value || "N/A"}</div>
                   </div>
                 ))}
+              </div>
+
+              {/* Uploaded Documents Section */}
+              <div className="mb-8">
+                <div className="flex items-center justify-between mb-4 border-l-4 border-[#7B1F2E] pl-3">
+                  <h4 className="flex items-center gap-2 font-black text-gray-900 text-sm">
+                    <Paperclip size={16} className="text-[#7B1F2E]" /> Verification Documents
+                  </h4>
+                  {viewItem.documents && Object.keys(viewItem.documents).length > 0 && (
+                    <button 
+                      onClick={() => {
+                        Object.values(viewItem.documents).forEach((url: any) => {
+                          const link = document.createElement('a');
+                          link.href = url;
+                          link.download = '';
+                          link.target = '_blank';
+                          document.body.appendChild(link);
+                          link.click();
+                          document.body.removeChild(link);
+                        });
+                      }}
+                      className="text-[10px] font-bold text-white bg-[#7B1F2E] px-2 py-1 rounded-lg flex items-center gap-1 hover:opacity-90 shadow-sm"
+                    >
+                      <Download size={10} /> Download All
+                    </button>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  {viewItem.documents && Object.keys(viewItem.documents).length > 0 ? (
+                    Object.entries(viewItem.documents).map(([key, url]: any) => (
+                      <div key={key} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100 hover:bg-white hover:shadow-sm transition-all group">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-[#7B1F2E10] text-[#7B1F2E] flex items-center justify-center">
+                            <FileText size={14} />
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-gray-800 capitalize truncate w-32 sm:w-40">{key.replace(/([A-Z])/g, ' $1').trim()}</p>
+                            <p className="text-[10px] text-gray-400">PDF/Image Document</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <a href={url} target="_blank" rel="noreferrer" className="p-1.5 bg-white text-[#7B1F2E] rounded-lg border border-gray-100 hover:border-[#7B1F2E] transition-colors"><Eye size={12} /></a>
+                          <a href={url} download className="p-1.5 bg-[#7B1F2E] text-white rounded-lg hover:opacity-90 transition-colors shadow-sm"><Download size={12} /></a>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-6 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
+                      <p className="text-xs text-gray-500 font-medium">No documents uploaded yet.</p>
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="space-y-4">
