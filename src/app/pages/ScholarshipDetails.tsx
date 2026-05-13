@@ -17,7 +17,7 @@ export default function ScholarshipDetails() {
   const [relatedScholarships, setRelatedScholarships] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const { isSaved, toggle } = useSavedScholarships();
-  const saved = isSaved(id || "");
+  const saved = scholarship ? isSaved(scholarship._id || scholarship.id) : false;
   const [activeTab, setActiveTab] = useState("overview");
   const [eligibilityOpen, setEligibilityOpen] = useState(false);
   const [eligibilityAnswers, setEligibilityAnswers] = useState<any>({});
@@ -481,7 +481,7 @@ export default function ScholarshipDetails() {
             <h3 className="text-xl font-bold text-gray-900 mb-5">Related Scholarships</h3>
             <div className="grid md:grid-cols-3 gap-5">
               {relatedScholarships.map(rs => (
-                <Link key={rs.id} to={`/scholarships/${rs.id}`} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition border border-gray-100">
+                <Link key={rs.slug || rs.id || rs._id} to={`/scholarships/${rs.slug || rs.id || rs._id}`} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition border border-gray-100">
                   <div className="h-28 overflow-hidden">
                     <img src={rs.image} alt={rs.name} className="w-full h-full object-cover" />
                   </div>

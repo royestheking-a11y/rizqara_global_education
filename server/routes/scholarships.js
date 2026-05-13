@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const router = express.Router();
 const Scholarship = require('../models/Scholarship');
 
@@ -20,7 +21,15 @@ router.get('/', async (req, res) => {
 // Get single scholarship
 router.get('/:id', async (req, res) => {
   try {
-    const scholarship = await Scholarship.findById(req.params.id);
+    let scholarship;
+    if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+      scholarship = await Scholarship.findById(req.params.id);
+    }
+    
+    if (!scholarship) {
+      scholarship = await Scholarship.findOne({ slug: req.params.id });
+    }
+
     if (!scholarship) return res.status(404).json({ message: 'Scholarship not found' });
     res.json(scholarship);
   } catch (err) {

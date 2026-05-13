@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
+const slugify = require('../utils/slugify');
 
 const countrySchema = new mongoose.Schema({
   name: { type: String, required: true },
+  slug: { type: String, required: true, unique: true },
   flag: { type: String },
   continent: { type: String },
   tuitionRange: { type: String },
@@ -16,5 +18,11 @@ const countrySchema = new mongoose.Schema({
   currency: { type: String },
   language: { type: String }
 }, { timestamps: true });
+
+countrySchema.pre('validate', function() {
+  if (this.name && !this.slug) {
+    this.slug = slugify(this.name);
+  }
+});
 
 module.exports = mongoose.model('Country', countrySchema);

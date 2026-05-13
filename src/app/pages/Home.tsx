@@ -938,7 +938,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {blogList.slice(0, 3).map((b: any) => (
-              <Link key={b._id || b.id} to={`/blog/${b.slug}`} className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all border border-gray-100">
+              <Link key={b._id || b.id} to={`/blog/${b.slug || b._id || b.id}`} className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all border border-gray-100">
                 <div className="relative h-44 overflow-hidden">
                   <img src={b.image} alt={b.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
@@ -1133,7 +1133,7 @@ function ScholarshipCard({ scholarship: s }: { scholarship: any }) {
         {/* Buttons */}
         <div className="flex gap-2">
           <Link
-            to={`/scholarships/${scId}`}
+            to={`/scholarships/${s.slug || s._id || s.id}`}
             className="flex-1 py-2.5 text-xs font-bold text-white text-center rounded-xl transition hover:opacity-90"
             style={{ backgroundColor: "#7B1F2E" }}
           >

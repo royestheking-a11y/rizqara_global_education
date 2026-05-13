@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import {
   LayoutDashboard, GraduationCap, Users, UserCheck, FileText, Bell, BookOpen,
   MessageSquare, MessageCircle, Star, HelpCircle, Settings, LogOut, Plus, Edit,
@@ -107,7 +107,9 @@ const navItems = [
 export default function AdminDashboard() {
   const { user, isLoggedIn, isAdmin, logout, loading } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("overview");
+  const { tab } = useParams();
+  const activeTab = tab || "overview";
+  const setActiveTab = (t: string) => navigate(`/admin/${t}`);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [toasts, setToasts] = useState<any[]>([]);
   const [appFilter, setAppFilter] = useState<string | null>(null);
@@ -373,7 +375,7 @@ function ScholarshipManagement({ showToast }: any) {
     };
     try {
       if (editItem) {
-        await api.put(`/scholarships/${editItem.id}`, finalForm);
+        await api.put(`/scholarships/${editItem._id || editItem.id}`, finalForm);
         showToast("Scholarship updated successfully");
       } else {
         await api.post('/scholarships', finalForm);
@@ -453,9 +455,9 @@ function ScholarshipManagement({ showToast }: any) {
                   <td className="px-4 py-3 text-xs text-gray-600">{s.daysLeft ? `${s.daysLeft}d` : "—"}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1">
-                      <Link to={`/scholarships/${s.id}`} className="p-1.5 rounded hover:bg-gray-100 text-blue-500"><Eye size={13} /></Link>
+                      <Link to={`/scholarships/${s.slug || s._id || s.id}`} className="p-1.5 rounded hover:bg-gray-100 text-blue-500"><Eye size={13} /></Link>
                       <button onClick={() => { setEditItem(s); setForm({ name: s.name, country: s.country, degree: s.degree.join(", "), fundingType: s.fundingType, status: s.status, ieltsRequired: s.ieltsRequired, deadline: s.deadline, university: s.university, description: s.description }); setShowModal(true); }} className="p-1.5 rounded hover:bg-gray-100 text-gray-500"><Edit size={13} /></button>
-                      <button onClick={() => handleDelete(s.id)} className="p-1.5 rounded hover:bg-gray-100 text-red-500"><Trash2 size={13} /></button>
+                      <button onClick={() => handleDelete(s._id || s.id)} className="p-1.5 rounded hover:bg-gray-100 text-red-500"><Trash2 size={13} /></button>
                     </div>
                   </td>
                 </tr>
@@ -841,7 +843,7 @@ function NoticeManagement({ showToast }: any) {
   const handleSave = async () => {
     try {
       if (editItem) {
-        await api.put(`/notices/${editItem.id}`, form);
+        await api.put(`/notices/${editItem._id || editItem.id}`, form);
         showToast("Notice updated");
       } else {
         await api.post('/notices', form);
@@ -895,7 +897,7 @@ function NoticeManagement({ showToast }: any) {
               </div>
               <div className="flex items-center gap-1">
                 <button onClick={() => { setEditItem(n); setForm({ title: n.title, content: n.content, category: n.category, isUrgent: n.isUrgent, isImportant: n.isImportant }); setShowModal(true); }} className="p-1.5 rounded hover:bg-gray-100 text-yellow-500"><Edit size={13} /></button>
-                <button onClick={() => handleDelete(n.id)} className="p-1.5 rounded hover:bg-gray-100 text-red-500"><Trash2 size={13} /></button>
+                <button onClick={() => handleDelete(n._id || n.id)} className="p-1.5 rounded hover:bg-gray-100 text-red-500"><Trash2 size={13} /></button>
               </div>
             </div>
           </div>
@@ -988,7 +990,7 @@ function BlogManagement({ showToast }: any) {
     }
     try {
       if (editItem) {
-        await api.put(`/blogs/${editItem.id}`, form);
+        await api.put(`/blogs/${editItem._id || editItem.id}`, form);
         showToast("Blog post updated successfully");
       } else {
         await api.post('/blogs', form);
@@ -1037,9 +1039,9 @@ function BlogManagement({ showToast }: any) {
               <h4 className="font-bold text-gray-900 text-sm mt-2 mb-1 line-clamp-2">{p.title}</h4>
               <p className="text-xs text-gray-400">{p.date} • {p.readTime}</p>
               <div className="flex gap-2 mt-3">
-                <Link to={`/blog/${p.slug}`} className="flex-1 py-1.5 text-xs text-center border rounded-lg" style={{ borderColor: "#7B1F2E30", color: "#7B1F2E" }}>View</Link>
+                <Link to={`/blog/${p.slug || p._id || p.id}`} className="flex-1 py-1.5 text-xs text-center border rounded-lg" style={{ borderColor: "#7B1F2E30", color: "#7B1F2E" }}>View</Link>
                 <button onClick={() => { setEditItem(p); setForm({ title: p.title, category: p.category, excerpt: p.excerpt, image: p.image }); setShowModal(true); }} className="flex-1 py-1.5 text-xs text-white rounded-lg" style={{ backgroundColor: "#7B1F2E" }}>Edit</button>
-                <button onClick={() => handleDelete(p.id)} className="p-1.5 rounded hover:bg-gray-100 text-red-500 transition-colors"><Trash2 size={13} /></button>
+                <button onClick={() => handleDelete(p._id || p.id)} className="p-1.5 rounded hover:bg-gray-100 text-red-500 transition-colors"><Trash2 size={13} /></button>
               </div>
             </div>
           </div>
@@ -1167,7 +1169,7 @@ function TestimonialManagement({ showToast }: any) {
               <span className={`text-xs px-2 py-0.5 rounded-full ${t.status === "Enrolled" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"}`}>{t.status}</span>
               <div className="flex gap-1">
                 <button onClick={() => { setEditItem(t); setForm({ name: t.name, country: t.country, program: t.program, feedback: t.feedback, status: t.status }); setShowModal(true); }} className="p-1 rounded hover:bg-gray-100 text-yellow-500"><Edit size={12} /></button>
-                <button onClick={() => handleDelete(t.id)} className="p-1.5 rounded hover:bg-gray-100 text-red-500 transition-colors"><Trash2 size={13} /></button>
+                <button onClick={() => handleDelete(t._id || t.id)} className="p-1.5 rounded hover:bg-gray-100 text-red-500 transition-colors"><Trash2 size={13} /></button>
               </div>
             </div>
           </div>

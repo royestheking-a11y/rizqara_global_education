@@ -303,10 +303,10 @@ function FilterChip({ label, active, onClick }: { label: string; active: boolean
 
 function ScholarshipGridCard({ s, onCompare, inCompare }: { s: any; onCompare: (id: string) => void; inCompare: boolean }) {
   const { isSaved, toggle } = useSavedScholarships();
-  const saved = isSaved(s._id || s.id);
+  const saved = isSaved(s.slug || s._id || s.id);
   const toggleSave = (e: React.MouseEvent) => {
     e.preventDefault();
-    toggle(s._id || s.id);
+    toggle(s.slug || s._id || s.id);
   };
 
   const statusColors: any = {
@@ -338,7 +338,7 @@ function ScholarshipGridCard({ s, onCompare, inCompare }: { s: any; onCompare: (
         </div>
         <div className="absolute top-3 right-3 flex gap-1.5">
           <button
-            onClick={(e) => { e.preventDefault(); onCompare(s._id || s.id); }}
+            onClick={(e) => { e.preventDefault(); onCompare(s.slug || s._id || s.id); }}
             className={`w-7 h-7 rounded-full flex items-center justify-center transition ${inCompare ? "bg-[#7B1F2E] text-white" : "bg-white/90 text-gray-500 hover:bg-white"}`}
           >
             <Scale size={11} />
@@ -393,7 +393,7 @@ function ScholarshipGridCard({ s, onCompare, inCompare }: { s: any; onCompare: (
         )}
 
         <div className="flex gap-2 mt-auto">
-          <Link to={`/scholarships/${s._id || s.id}`} className="flex-1 py-2 text-xs font-semibold text-white text-center rounded-lg transition hover:opacity-90" style={{ backgroundColor: "#7B1F2E" }}>
+          <Link to={`/scholarships/${s.slug || s._id || s.id}`} className="flex-1 py-2 text-xs font-semibold text-white text-center rounded-lg transition hover:opacity-90" style={{ backgroundColor: "#7B1F2E" }}>
             View Details
           </Link>
           <Link 
@@ -433,7 +433,7 @@ function ScholarshipListCard({ s, onCompare, inCompare }: { s: any; onCompare: (
             <p className="text-xs text-gray-500">{s.country} • {s.university}</p>
           </div>
           <div className="flex gap-1.5 flex-shrink-0">
-            <button onClick={() => onCompare(s._id || s.id)} className={`w-7 h-7 rounded-full flex items-center justify-center border transition ${inCompare ? "bg-[#7B1F2E] text-white border-[#7B1F2E]" : "border-gray-200 text-gray-400"}`}><Scale size={11} /></button>
+            <button onClick={() => onCompare(s.slug || s._id || s.id)} className={`w-7 h-7 rounded-full flex items-center justify-center border transition ${inCompare ? "bg-[#7B1F2E] text-white border-[#7B1F2E]" : "border-gray-200 text-gray-400"}`}><Scale size={11} /></button>
           </div>
         </div>
         <div className="flex flex-wrap gap-3 text-xs text-gray-500 mt-2">
@@ -445,7 +445,7 @@ function ScholarshipListCard({ s, onCompare, inCompare }: { s: any; onCompare: (
       </div>
       <div className="flex flex-col gap-2 flex-shrink-0">
         <Link 
-          to={`/scholarships/${s._id || s.id}`} 
+          to={`/scholarships/${s.slug || s._id || s.id}`} 
           className="px-4 py-2 text-xs font-semibold text-white rounded-lg text-center transition-all hover:opacity-90 active:scale-95" 
           style={{ backgroundColor: "#7B1F2E" }}
         >
@@ -463,7 +463,7 @@ function ScholarshipListCard({ s, onCompare, inCompare }: { s: any; onCompare: (
 }
 
 function CompareModal({ ids, onClose, scholarshipList }: { ids: string[]; onClose: () => void; scholarshipList: any[] }) {
-  const items = scholarshipList.filter(s => ids.includes(s._id || s.id));
+  const items = scholarshipList.filter(s => ids.includes(s.slug || s._id || s.id));
 
   const fields = [
     { label: "Country", key: "country" },
@@ -489,7 +489,7 @@ function CompareModal({ ids, onClose, scholarshipList }: { ids: string[]; onClos
               <tr style={{ backgroundColor: "#FDF8F5" }}>
                 <th className="text-left p-4 text-gray-500 font-medium w-32">Feature</th>
                 {items.map(s => (
-                  <th key={s._id || s.id} className="p-4 text-center">
+                  <th key={s.slug || s._id || s.id} className="p-4 text-center">
                     <div className="text-2xl mb-1">{s.countryFlag}</div>
                     <div className="font-bold text-gray-900 text-xs">{s.name}</div>
                     <div className="text-xs text-gray-500">{s.country}</div>
@@ -502,7 +502,7 @@ function CompareModal({ ids, onClose, scholarshipList }: { ids: string[]; onClos
                 <tr key={i} className="border-t border-gray-100">
                   <td className="p-4 text-gray-500 text-xs font-medium">{f.label}</td>
                   {items.map(s => (
-                    <td key={s._id || s.id} className="p-4 text-center text-xs font-medium text-gray-800">
+                    <td key={s.slug || s._id || s.id} className="p-4 text-center text-xs font-medium text-gray-800">
                       {f.render ? f.render(s) : (s[f.key as keyof typeof s] as string) || "—"}
                     </td>
                   ))}
@@ -511,8 +511,8 @@ function CompareModal({ ids, onClose, scholarshipList }: { ids: string[]; onClos
               <tr className="border-t border-gray-100">
                 <td className="p-4 text-gray-500 text-xs font-medium">Action</td>
                 {items.map(s => (
-                  <td key={s._id || s.id} className="p-4 text-center">
-                    <Link to={`/scholarships/${s._id || s.id}`} onClick={onClose} className="inline-block px-3 py-1.5 text-xs text-white rounded-lg" style={{ backgroundColor: "#7B1F2E" }}>
+                  <td key={s.slug || s._id || s.id} className="p-4 text-center">
+                    <Link to={`/scholarships/${s.slug || s._id || s.id}`} onClick={onClose} className="inline-block px-3 py-1.5 text-xs text-white rounded-lg" style={{ backgroundColor: "#7B1F2E" }}>
                       View Details
                     </Link>
                   </td>

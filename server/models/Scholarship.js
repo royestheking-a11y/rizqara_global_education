@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
+const slugify = require('../utils/slugify');
 
 const scholarshipSchema = new mongoose.Schema({
   name: { type: String, required: true },
+  slug: { type: String, required: true, unique: true },
   country: { type: String, required: true },
   countryFlag: { type: String },
   university: { type: String },
@@ -35,5 +37,11 @@ const scholarshipSchema = new mongoose.Schema({
   isVerified: { type: Boolean, default: false },
   rizqaraNote: { type: String }
 }, { timestamps: true });
+
+scholarshipSchema.pre('validate', function() {
+  if (this.name && !this.slug) {
+    this.slug = slugify(this.name);
+  }
+});
 
 module.exports = mongoose.model('Scholarship', scholarshipSchema);

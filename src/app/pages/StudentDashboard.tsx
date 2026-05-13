@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import {
   LayoutDashboard, User, Users, BookOpen, FileText, Bookmark, MessageSquare,
   Bell, CreditCard, Zap, LogOut, ChevronRight, CheckCircle, Clock,
@@ -49,7 +49,9 @@ export default function StudentDashboard() {
   const { user, isLoggedIn, logout, updateProfile, loading: authLoading } = useAuth();
   const { saved: savedIds } = useSavedScholarships();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("overview");
+  const { tab } = useParams();
+  const activeTab = tab || "overview";
+  const setActiveTab = (t: string) => navigate(`/dashboard/${t}`);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [applications, setApplications] = useState<any[]>([]);
   const [savedScholarships, setSavedScholarships] = useState<any[]>([]);

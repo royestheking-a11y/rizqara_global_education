@@ -5,7 +5,7 @@ import {
   Globe, Users, Award, BookOpen, Star, Bot, BarChart3, HelpCircle, 
   Sparkles, Target, Info, Lightbulb, UserCheck, Banknote, GraduationCap,
   Building2, Wallet, Stethoscope, MessageSquare, FileCheck, MapPin,
-  ClipboardList, AlertCircle, MessageCircle, Building
+  ClipboardList, AlertCircle, MessageCircle, Building, ShieldCheck
 } from "lucide-react";
 import { api } from "../services/api";
 import { 
@@ -60,8 +60,8 @@ export function CountriesPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {filtered.map(c => (
               <Link 
-                key={c.id || c._id} 
-                to={`/countries/${c.id || c._id}`} 
+                key={c.slug || c.id || c._id} 
+                to={`/countries/${c.slug || c.id || c._id}`} 
                 className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 border border-gray-100"
               >
                 <div className="relative h-48 overflow-hidden">
@@ -192,7 +192,7 @@ export function CountryDetailsPage() {
             <h3 className="font-bold text-gray-900 mb-4">Available Scholarships in {country.name}</h3>
             <div className="grid md:grid-cols-2 gap-4">
               {relatedScholarships.map((s: any) => (
-                <Link key={s.id || s._id} to={`/scholarships/${s.id || s._id}`} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition border border-gray-100 flex gap-3 p-4">
+                <Link key={s.slug || s.id || s._id} to={`/scholarships/${s.slug || s.id || s._id}`} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition border border-gray-100 flex gap-3 p-4">
                   <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">
                     <img src={s.image} alt={s.name} className="w-full h-full object-cover" />
                   </div>
@@ -244,26 +244,26 @@ export function ServicesPage() {
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
             {services.map(s => (
-              <div key={s.id || s._id} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition">
+              <Link key={s.slug || s.id || s._id} to={`/services/${s.slug || s.id || s._id}`} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 block">
                 <div className="flex justify-between items-start mb-4">
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center text-[#7B1F2E]" style={{ backgroundColor: "#7B1F2E10" }}>
                     {s.isFree ? <CheckCircle size={22} /> : <Target size={22} />}
                   </div>
                   <span className={`px-3 py-1 rounded-full text-xs font-bold ${s.isFree ? "bg-green-100 text-green-700" : "bg-amber-50 text-amber-700"}`}>{s.isFree ? "FREE" : s.price}</span>
                 </div>
-                <h3 className="font-bold text-gray-900 mb-2">{s.title}</h3>
-                <p className="text-sm text-gray-500 mb-4 leading-relaxed">{s.description}</p>
+                <h3 className="font-bold text-gray-900 mb-2 group-hover:text-[#7B1F2E] transition-colors">{s.title}</h3>
+                <p className="text-sm text-gray-500 mb-4 leading-relaxed line-clamp-2">{s.description}</p>
                 <ul className="space-y-2 mb-5">
-                  {s.features?.map((f: string, i: number) => (
+                  {s.features?.slice(0, 3).map((f: string, i: number) => (
                     <li key={i} className="flex items-start gap-2 text-xs text-gray-600">
                       <CheckCircle size={12} className="text-green-500 flex-shrink-0 mt-0.5" />{f}
                     </li>
                   ))}
                 </ul>
-                <Link to="/contact" className="block py-2.5 text-center text-sm font-semibold text-white rounded-xl hover:opacity-90 transition" style={{ backgroundColor: "#7B1F2E" }}>
-                  {s.isFree ? "Get Free Check" : "Book Service"}
-                </Link>
-              </div>
+                <div className="py-2.5 text-center text-sm font-bold text-[#7B1F2E] rounded-xl bg-[#7B1F2E08] border border-[#7B1F2E15]">
+                  View Details <ArrowRight size={14} className="inline ml-1" />
+                </div>
+              </Link>
             ))}
           </div>
         )}
@@ -273,6 +273,98 @@ export function ServicesPage() {
           <Link to="/contact" className="inline-block px-8 py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition" style={{ backgroundColor: "white", color: "#7B1F2E" }}>
             Book Free Consultation
           </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function ServiceDetailsPage() {
+  const { id } = useParams();
+  const [service, setService] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchService = async () => {
+      try {
+        const data = await api.get(`/services/${id}`);
+        setService(data);
+      } catch (err) {
+        console.error("Failed to fetch service details", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchService();
+  }, [id]);
+
+  if (loading) return <DetailsSkeleton />;
+
+  if (!service) return <div className="min-h-screen flex items-center justify-center"><div className="text-center"><h2 className="text-2xl font-bold mb-4">Service not found</h2><Link to="/services" className="text-white px-5 py-2 rounded-xl" style={{ backgroundColor: "#7B1F2E" }}>Back to Services</Link></div></div>;
+
+  return (
+    <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
+      <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-12">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="flex items-center gap-2 text-red-200 text-xs mb-4">
+            <Link to="/" className="hover:text-white">Home</Link><ChevronRight size={12} />
+            <Link to="/services" className="hover:text-white">Services</Link><ChevronRight size={12} />
+            <span className="text-white">{service.title}</span>
+          </div>
+          <h1 className="text-3xl font-bold text-white mb-3">{service.title}</h1>
+          <p className="text-red-200 max-w-2xl leading-relaxed">{service.description}</p>
+        </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-4 py-10">
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="md:col-span-2 space-y-6">
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <Sparkles size={20} className="text-[#7B1F2E]" /> What's Included
+              </h3>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {service.features?.map((f: string, i: number) => (
+                  <div key={i} className="flex items-start gap-3 p-4 rounded-xl bg-gray-50 border border-gray-100">
+                    <CheckCircle size={18} className="text-green-500 flex-shrink-0" />
+                    <span className="text-sm text-gray-700 font-medium">{f}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <Info size={20} className="text-[#7B1F2E]" /> Service Description
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                {service.description}. Our expert team at RizQara Global Education ensures that you receive the highest quality of service and guidance. We have helped hundreds of students achieve their dreams with this specific service.
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 sticky top-24">
+              <div className="text-center mb-6">
+                <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Service Price</div>
+                <div className="text-3xl font-black text-gray-900">{service.isFree ? "FREE" : service.price}</div>
+              </div>
+              <Link to="/contact" className="block w-full py-3.5 text-center font-bold text-white rounded-xl shadow-lg shadow-[#7B1F2E30] transition hover:opacity-90 active:scale-95 mb-4" style={{ backgroundColor: "#7B1F2E" }}>
+                Book This Service
+              </Link>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 text-xs text-gray-500">
+                  <Clock size={14} className="text-[#7B1F2E]" /> 24/7 Support
+                </div>
+                <div className="flex items-center gap-3 text-xs text-gray-500">
+                  <UserCheck size={14} className="text-[#7B1F2E]" /> Expert Guidance
+                </div>
+                <div className="flex items-center gap-3 text-xs text-gray-500">
+                  <ShieldCheck size={14} className="text-[#7B1F2E]" /> Verified Process
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -336,7 +428,7 @@ export function BlogPage() {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
               {filtered.map(b => (
-                <Link key={b.id || b._id} to={`/blog/${b.slug}`} className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all border border-gray-100">
+                <Link key={b.id || b._id} to={`/blog/${b.slug || b._id || b.id}`} className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all border border-gray-100">
                   <div className="relative h-44 overflow-hidden">
                     <img src={b.image} alt={b.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                     <div className="absolute top-3 left-3">
@@ -367,13 +459,15 @@ export function BlogPage() {
 // ======================== BLOG DETAILS ========================
 export function BlogDetailsPage() {
   const { slug } = useParams();
+  const id = slug; // Parameter name is 'slug' in routes but used for ID/Slug lookup in API
   const [post, setPost] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const data = await api.get(`/blogs/${slug}`);
+        if (!id) return;
+        const data = await api.get(`/blogs/${id}`);
         setPost(data);
       } catch (err) {
         console.error("Failed to fetch blog post", err);

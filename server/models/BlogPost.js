@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('../utils/slugify');
 
 const blogPostSchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -12,5 +13,11 @@ const blogPostSchema = new mongoose.Schema({
   author: { type: String },
   tags: [{ type: String }]
 }, { timestamps: true });
+
+blogPostSchema.pre('validate', function() {
+  if (this.title && !this.slug) {
+    this.slug = slugify(this.title);
+  }
+});
 
 module.exports = mongoose.model('BlogPost', blogPostSchema);

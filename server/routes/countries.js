@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const router = express.Router();
 const Country = require('../models/Country');
 
@@ -6,6 +7,24 @@ router.get('/', async (req, res) => {
   try {
     const countries = await Country.find();
     res.json(countries);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  try {
+    let country;
+    if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+      country = await Country.findById(req.params.id);
+    }
+    
+    if (!country) {
+      country = await Country.findOne({ slug: req.params.id });
+    }
+
+    if (!country) return res.status(404).json({ message: 'Country not found' });
+    res.json(country);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
