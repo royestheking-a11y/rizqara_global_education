@@ -1304,35 +1304,44 @@ function BlogManagement({ showToast }: any) {
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-          <div className="bg-white rounded-2xl p-6 max-w-md w-full">
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] flex flex-col">
+            <div className="flex items-center justify-between mb-4 flex-shrink-0">
               <h3 className="font-bold text-gray-900">{editItem ? "Edit Post" : "Add Post"}</h3>
               <button onClick={() => { setShowModal(false); setEditItem(null); }}><X size={18} /></button>
             </div>
-            <div className="space-y-3">
-              <div>
-                <label className="text-xs text-gray-500 mb-1 block">Title</label>
-                <input value={form.title} onChange={e => setForm((p: any) => ({ ...p, title: e.target.value }))} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none" />
+            
+            <div className="flex-1 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
+              <div className="grid sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs text-gray-500 mb-1 block">Title</label>
+                  <input value={form.title} onChange={e => setForm((p: any) => ({ ...p, title: e.target.value }))} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none" />
+                </div>
+                <div>
+                  <label className="text-xs text-gray-500 mb-1 block">URL Slug (Custom)</label>
+                  <input value={form.slug} onChange={e => setForm((p: any) => ({ ...p, slug: e.target.value }))} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none" placeholder="e.g. mext-scholarship-guide" />
+                </div>
               </div>
-              <div>
-                <label className="text-xs text-gray-500 mb-1 block">URL Slug (Custom)</label>
-                <input value={form.slug} onChange={e => setForm((p: any) => ({ ...p, slug: e.target.value }))} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none" placeholder="e.g. mext-scholarship-guide" />
-              </div>
+
               <div>
                 <label className="text-xs text-gray-500 mb-1 block">Category</label>
                 <input value={form.category} onChange={e => setForm((p: any) => ({ ...p, category: e.target.value }))} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none" />
               </div>
-              <div>
-                <label className="text-xs text-gray-500 mb-1 block">Excerpt</label>
-                <textarea value={form.excerpt} onChange={e => setForm((p: any) => ({ ...p, excerpt: e.target.value }))} rows={3} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none resize-none" />
-              </div>
+
               <div>
                 <label className="text-xs text-gray-500 mb-1 block">Full Content (HTML Supported)</label>
-                <textarea value={form.content} onChange={e => {
-                  const val = e.target.value;
-                  setForm((p: any) => ({ ...p, content: val, readTime: calculateReadTime(val) }));
-                }} rows={8} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none" placeholder="Write your blog content here..." />
+                <textarea 
+                  value={form.content} 
+                  onChange={e => {
+                    const val = e.target.value;
+                    const autoExcerpt = val.substring(0, 150).replace(/<[^>]*>?/gm, '') + (val.length > 150 ? '...' : '');
+                    setForm((p: any) => ({ ...p, content: val, excerpt: autoExcerpt, readTime: calculateReadTime(val) }));
+                  }} 
+                  rows={10} 
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none" 
+                  placeholder="Write your blog content here..." 
+                />
               </div>
+
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs text-gray-500 mb-1 block">Author</label>
@@ -1343,9 +1352,11 @@ function BlogManagement({ showToast }: any) {
                   <input value={form.readTime} onChange={e => setForm((p: any) => ({ ...p, readTime: e.target.value }))} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none" />
                 </div>
               </div>
+
               <ImageUpload value={form.image} onChange={val => setForm((p: any) => ({ ...p, image: val }))} label="Blog Cover Image" />
             </div>
-            <div className="flex gap-2 mt-4">
+
+            <div className="flex gap-2 mt-6 pt-4 border-t border-gray-100 flex-shrink-0">
               <button 
                 onClick={handleSave} 
                 className="flex-1 py-2.5 bg-[#7B1F2E] text-white rounded-lg font-semibold text-sm transition-all duration-200 hover:opacity-90 active:scale-95 focus:ring-2 focus:ring-[#7B1F2E30]"
@@ -1359,6 +1370,7 @@ function BlogManagement({ showToast }: any) {
                 Cancel
               </button>
             </div>
+          </div>
           </div>
         </div>
       )}
