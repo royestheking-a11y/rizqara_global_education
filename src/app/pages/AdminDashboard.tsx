@@ -1371,7 +1371,6 @@ function BlogManagement({ showToast }: any) {
               </button>
             </div>
           </div>
-          </div>
         </div>
       )}
     </div>

@@ -584,7 +584,7 @@ export function BlogDetailsPage() {
               <span className="flex items-center gap-1"><Calendar size={14} />{post.date}</span>
               <span className="flex items-center gap-1"><Clock size={14} />{post.readTime}</span>
             </div>
-            <div className="text-gray-600 leading-relaxed mb-5 blog-content" dangerouslySetInnerHTML={{ __html: post.content }} />
+            <div className="text-gray-600 leading-relaxed mb-5 blog-content whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: post.content }} />
             <div className="mt-8 pt-6 border-t border-gray-100">
               <p className="text-sm font-bold text-gray-900 mb-3">Share this guide:</p>
               <div className="flex items-center gap-3">
