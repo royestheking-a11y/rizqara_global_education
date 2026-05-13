@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { Shield, FileText, RefreshCw, ChevronRight } from "lucide-react";
+import { SEO } from "../components/SEO";
 
 const LegalLayout = ({ title, icon, children }: { title: string; icon: React.ReactNode; children: React.ReactNode }) => (
   <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
@@ -36,6 +37,12 @@ const LegalLayout = ({ title, icon, children }: { title: string; icon: React.Rea
 export function PrivacyPolicyPage() {
   return (
     <LegalLayout title="Privacy Policy" icon={<Shield size={32} />}>
+      <SEO 
+        title="Privacy Policy | RizQara Global Education"
+        description="Learn how RizQara Global Education collects, uses, and protects your personal information and documents."
+        keywords="privacy policy RizQara, data protection"
+        canonical="/privacy-policy"
+      />
       <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase tracking-wider">1. Information We Collect</h2>
       <p className="mb-6">
         At RizQara Global Education, we collect information you provide directly to us when you create an account, apply for scholarships, or contact our support team. This includes your name, email address, educational background, and any documents uploaded for scholarship applications.
@@ -66,6 +73,12 @@ export function PrivacyPolicyPage() {
 export function TermsConditionsPage() {
   return (
     <LegalLayout title="Terms & Conditions" icon={<FileText size={32} />}>
+      <SEO 
+        title="Terms & Conditions | RizQara Global Education"
+        description="Read the terms and conditions for using the RizQara Global Education portal and services."
+        keywords="terms and conditions RizQara"
+        canonical="/terms-conditions"
+      />
       <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase tracking-wider">1. Acceptance of Terms</h2>
       <p className="mb-6">
         By accessing and using the RizQara Global Education portal, you agree to be bound by these Terms and Conditions and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this site.
@@ -92,6 +105,12 @@ export function TermsConditionsPage() {
 export function RefundPolicyPage() {
   return (
     <LegalLayout title="Refund Policy" icon={<RefreshCw size={32} />}>
+      <SEO 
+        title="Refund Policy | RizQara Global Education"
+        description="Our policy regarding refunds for premium services like SOP writing and visa consultation."
+        keywords="refund policy RizQara"
+        canonical="/refund-policy"
+      />
       <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase tracking-wider">1. Service Fees</h2>
       <p className="mb-6">
         RizQara Global Education offers various premium services including document review, SOP writing assistance, and visa consultation. Fees for these services are clearly communicated before any transaction is initiated.

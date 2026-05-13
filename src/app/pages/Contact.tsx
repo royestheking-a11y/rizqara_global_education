@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Phone, Mail, MapPin, MessageCircle, Clock, Send, CheckCircle, ArrowLeft, MoreVertical } from "lucide-react";
 import { api } from "../services/api";
+import { SEO } from "../components/SEO";
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", phone: "", email: "", gpa: "", targetCountry: "", targetSubject: "", budget: "", ieltsStatus: "No IELTS", message: "" });
@@ -23,6 +24,12 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
+      <SEO 
+        title="Contact Us & Free Profile Check | RizQara Global Education"
+        description="Get a free profile check for scholarships. Contact RizQara Global Education for study abroad guidance, university admission, and visa support."
+        keywords="contact RizQara, free scholarship profile check, study abroad consultation Bangladesh"
+        canonical="/contact"
+      />
       {/* Header */}
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-12">
         <div className="max-w-6xl mx-auto px-4 text-center">

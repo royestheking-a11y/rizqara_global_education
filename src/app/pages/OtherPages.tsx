@@ -4,10 +4,11 @@ import {
   Search, Calendar, Clock, ArrowRight, ChevronRight, CheckCircle, 
   Globe, Users, Award, BookOpen, Star, Bot, BarChart3, HelpCircle, 
   Sparkles, Target, Info, Lightbulb, UserCheck, Banknote, GraduationCap,
-  Building2, Wallet, Stethoscope, MessageSquare, FileCheck, MapPin,
-  ClipboardList, AlertCircle, MessageCircle, Building, ShieldCheck
+  Building2, Wallet, Stethoscope, MessageSquare, FileText, Plane, FolderOpen, MessageCircle,
+  AlertCircle, ShieldCheck, MapPin, Facebook, Linkedin, Link2, FileCheck
 } from "lucide-react";
 import { api } from "../services/api";
+import { SEO } from "../components/SEO";
 import { 
   GenericGridSkeleton, 
   ServiceSkeleton, 
@@ -42,6 +43,12 @@ export function CountriesPage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
+      <SEO 
+        title="Study Abroad Countries for Bangladeshi Students | Cost, Visa & Scholarships"
+        description="Compare study abroad countries including Japan, Russia, Turkey, Saudi Arabia, Hungary, Romania, Italy, China and more for Bangladeshi students."
+        keywords="best countries to study abroad from Bangladesh, low cost study abroad, study in Europe from Bangladesh"
+        canonical="/countries"
+      />
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-12">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <h1 className="text-3xl font-bold text-white mb-2">Study Abroad Destinations</h1>
@@ -140,6 +147,22 @@ export function CountryDetailsPage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
+      <SEO 
+        title={`Study in ${country.name} from Bangladesh | Cost, Visa & Scholarships`}
+        description={`Learn about tuition fees, living costs, IELTS requirements, and scholarships for studying in ${country.name} for Bangladeshi students.`}
+        keywords={`study in ${country.name} from Bangladesh, ${country.name} student visa cost, ${country.name} scholarship for Bangladeshi students`}
+        canonical={`/countries/${country.slug || country._id}`}
+        ogImage={country.image}
+        schema={[{
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://rizqaraglobaleducation.vercel.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Countries", "item": "https://rizqaraglobaleducation.vercel.app/countries" },
+            { "@type": "ListItem", "position": 3, "name": country.name, "item": `https://rizqaraglobaleducation.vercel.app/countries/${country.slug || country._id}` }
+          ]
+        }]}
+      />
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-10">
         <div className="max-w-5xl mx-auto px-4">
           <div className="flex items-center gap-2 text-red-200 text-xs mb-4">
@@ -232,6 +255,12 @@ export function ServicesPage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
+      <SEO 
+        title="Study Abroad Consultancy Services in Bangladesh | RizQara Global Education"
+        description="Get profile evaluation, scholarship matching, university shortlisting, SOP, CV, recommendation letter, application and visa guidance support."
+        keywords="study abroad consultancy Bangladesh, scholarship application support, SOP writing Bangladesh, visa guidance Bangladesh"
+        canonical="/services"
+      />
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-12 text-center">
         <div className="max-w-4xl mx-auto px-4">
           <h1 className="text-3xl font-bold text-white mb-2">Our Services</h1>
@@ -304,6 +333,13 @@ export function ServiceDetailsPage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
+      <SEO 
+        title={`${service.title} | Study Abroad Services in Bangladesh`}
+        description={service.description}
+        keywords={`${service.title} Bangladesh, study abroad ${service.title}, scholarship support Bangladesh`}
+        canonical={`/services/${service.slug || service._id}`}
+        ogImage={service.image}
+      />
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-12">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex items-center gap-2 text-red-200 text-xs mb-4">
@@ -401,7 +437,13 @@ export function BlogPage() {
   });
 
   return (
-    <div className="min-screen" style={{ backgroundColor: "#FDF8F5" }}>
+    <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
+      <SEO 
+        title="Study Abroad Blog Bangladesh | Scholarship, Visa & Admission Tips"
+        description="Read useful guides about scholarships, no IELTS study abroad, university admission, SOP writing, visa preparation and country-wise study options."
+        keywords="study abroad blog Bangladesh, scholarship guidance, admission tips"
+        canonical="/blog"
+      />
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-12">
         <div className="max-w-5xl mx-auto px-4 text-center">
           <h1 className="text-3xl font-bold text-white mb-2">Blog & Knowledge Hub</h1>
@@ -484,6 +526,39 @@ export function BlogDetailsPage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
+      <SEO 
+        title={`${post.title} | RizQara Global Education Blog`}
+        description={post.excerpt}
+        keywords={`${post.title}, ${post.category}, scholarship tips, study abroad guide`}
+        canonical={`/blog/${post.slug || post._id}`}
+        ogImage={post.image}
+        ogType="article"
+        schema={[
+          {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": post.title,
+            "description": post.excerpt,
+            "image": post.image,
+            "author": { "@type": "Person", "name": post.author },
+            "publisher": {
+              "@type": "Organization",
+              "name": "RizQara Global Education",
+              "logo": { "@type": "ImageObject", "url": "https://rizqaraglobaleducation.vercel.app/logo.png" }
+            },
+            "datePublished": post.createdAt || post.date
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://rizqaraglobaleducation.vercel.app/" },
+              { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://rizqaraglobaleducation.vercel.app/blog" },
+              { "@type": "ListItem", "position": 3, "name": post.title, "item": `https://rizqaraglobaleducation.vercel.app/blog/${post.slug || post._id}` }
+            ]
+          }
+        ]}
+      />
       <div className="max-w-3xl mx-auto px-4 py-8">
         <div className="flex items-center gap-2 text-sm text-gray-500 mb-5">
           <Link to="/">Home</Link><ChevronRight size={12} /><Link to="/blog">Blog</Link><ChevronRight size={12} /><span className="text-gray-800">{post.category}</span>
@@ -499,7 +574,38 @@ export function BlogDetailsPage() {
               <span className="flex items-center gap-1"><Clock size={14} />{post.readTime}</span>
             </div>
             <div className="text-gray-600 leading-relaxed mb-5 blog-content" dangerouslySetInnerHTML={{ __html: post.content }} />
-            <div className="flex flex-wrap gap-2 pt-5 border-t border-gray-100">
+            <div className="mt-8 pt-6 border-t border-gray-100">
+              <p className="text-sm font-bold text-gray-900 mb-3">Share this guide:</p>
+              <div className="flex items-center gap-3">
+                <a 
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`} 
+                  target="_blank" rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full bg-[#1877F2]/10 text-[#1877F2] flex items-center justify-center hover:bg-[#1877F2] hover:text-white transition-all"
+                  title="Share on Facebook"
+                >
+                  <Facebook size={18} />
+                </a>
+                <a 
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`} 
+                  target="_blank" rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full bg-[#0A66C2]/10 text-[#0A66C2] flex items-center justify-center hover:bg-[#0A66C2] hover:text-white transition-all"
+                  title="Share on LinkedIn"
+                >
+                  <Linkedin size={18} />
+                </a>
+                <button 
+                  onClick={() => {
+                    navigator.clipboard.writeText(window.location.href);
+                    alert("Link copied to clipboard! You can now share it on Instagram or other platforms.");
+                  }}
+                  className="w-10 h-10 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center hover:bg-gray-200 transition-all"
+                  title="Copy Link"
+                >
+                  <Link2 size={18} />
+                </button>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2 pt-5 mt-5 border-t border-gray-50">
               {post.tags?.map((tag: string) => <span key={tag} className="px-3 py-1 rounded-full text-xs border" style={{ borderColor: "#7B1F2E30", color: "#7B1F2E" }}>{tag}</span>)}
             </div>
           </div>
@@ -539,6 +645,12 @@ export function NoticePage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
+      <SEO 
+        title="Scholarship Notices & Deadline Updates | RizQara Global Education"
+        description="Get latest scholarship notices, deadline reminders, embassy updates, application announcements and study abroad news for Bangladeshi students."
+        keywords="scholarship notices Bangladesh, scholarship deadlines, latest scholarship updates"
+        canonical="/notice"
+      />
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-12 text-center">
         <div className="max-w-4xl mx-auto px-4">
           <h1 className="text-3xl font-bold text-white mb-2">Notices & Announcements</h1>
@@ -607,6 +719,12 @@ export function SuccessGalleryPage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
+      <SEO 
+        title="Student Success Gallery | RizQara Global Education Achievements"
+        description="View the success stories of Bangladeshi students who achieved their study abroad dreams and scholarships with RizQara Global Education."
+        keywords="study abroad success stories, scholarship winners Bangladesh"
+        canonical="/success-gallery"
+      />
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-12 text-center">
         <div className="max-w-4xl mx-auto px-4">
           <h1 className="text-3xl font-bold text-white mb-2">Success Gallery</h1>
@@ -660,6 +778,12 @@ export function SuccessGalleryPage() {
 export function AboutPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
+      <SEO 
+        title="About RizQara Global Education | Scholarship Guidance Platform Bangladesh"
+        description="RizQara Global Education helps Bangladeshi students find scholarships, prepare documents, apply to universities and track their study abroad journey."
+        keywords="RizQara Global Education, about study abroad consultancy Bangladesh"
+        canonical="/about"
+      />
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-16 text-center">
         <div className="max-w-4xl mx-auto px-4">
           <h1 className="text-3xl font-bold text-white mb-3">About RizQara Global Education</h1>
@@ -759,6 +883,24 @@ export function FAQPage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
+      <SEO 
+        title="Frequently Asked Questions | RizQara Global Education Support"
+        description="Find answers to common questions about scholarships, study abroad process, document preparation, and RizQara services."
+        keywords="study abroad FAQ, scholarship application FAQ, RizQara support"
+        canonical="/faq"
+        schema={faqs.length > 0 ? [{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqs.slice(0, 10).map(f => ({
+            "@type": "Question",
+            "name": f.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": f.answer
+            }
+          }))
+        }] : undefined}
+      />
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-12 text-center">
         <div className="max-w-4xl mx-auto px-4">
           <h1 className="text-3xl font-bold text-white mb-2">Frequently Asked Questions</h1>
@@ -839,6 +981,12 @@ export function AIGuidePage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
+      <SEO 
+        title="AI Scholarship Guide | Personalized Matching by RizQara"
+        description="Use our AI-powered scholarship guide to find the best matching opportunities based on your academic profile and preferences."
+        keywords="AI scholarship matching, personalized scholarship guide Bangladesh"
+        canonical="/ai-guide"
+      />
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-12 text-center">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-white mb-3 flex justify-center"><Sparkles size={48} /></div>
@@ -905,6 +1053,134 @@ export function AIGuidePage() {
             </div>
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+
+// ======================== NO IELTS LANDING PAGE ========================
+export function NoIELTSPage() {
+  const [scholarships, setScholarships] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchScholarships = async () => {
+      try {
+        const data = await api.get('/scholarships');
+        // Filter for No IELTS
+        setScholarships(data.filter((s: any) => !s.ieltsRequired));
+      } catch (err) {
+        console.error("Failed to fetch scholarships", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchScholarships();
+  }, []);
+
+  return (
+    <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
+      <SEO 
+        title="Study Abroad Without IELTS for Bangladeshi Students | 2027 Guide"
+        description="Find fully funded scholarships and universities that don't require IELTS for Bangladeshi students. Learn about MOI, Duolingo, and other alternatives."
+        keywords="study abroad without IELTS from Bangladesh, no IELTS scholarship 2027, MOI accepted universities"
+        canonical="/no-ielts-scholarships-for-bangladeshi-students"
+      />
+      
+      <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-16 text-center">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md mb-4 text-white">
+            <ShieldCheck size={14} />
+            <span className="text-[10px] font-bold tracking-wider uppercase">Verified Alternatives</span>
+          </div>
+          <h1 className="text-3xl md:text-5xl font-black text-white mb-4">Study Abroad Without IELTS</h1>
+          <p className="text-red-100 text-lg max-w-2xl mx-auto leading-relaxed">
+            Discover 500+ scholarships and universities in Japan, Hungary, Russia, and more that accept MOI or have no IELTS requirements for Bangladeshi students.
+          </p>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 py-12">
+        <div className="grid md:grid-cols-3 gap-8">
+          <div className="md:col-span-2">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Available No-IELTS Scholarships</h2>
+            {loading ? (
+              <div className="grid sm:grid-cols-2 gap-5">
+                {[1,2,3,4].map(i => <div key={i} className="h-64 bg-white rounded-2xl animate-pulse" />)}
+              </div>
+            ) : (
+              <div className="grid sm:grid-cols-2 gap-5">
+                {scholarships.map(s => (
+                  <Link key={s._id} to={`/scholarships/${s.slug || s._id}`} className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-xl transition-all">
+                    <img src={s.image} alt={s.name} className="w-full h-32 object-cover rounded-xl mb-4" />
+                    <h3 className="font-bold text-gray-900 text-sm mb-1 line-clamp-1">{s.name}</h3>
+                    <p className="text-xs text-gray-500 mb-3">{s.country} • {s.scholarshipType}</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-50 text-green-700 uppercase">MOI Accepted</span>
+                      <span className="text-xs font-bold text-[#7B1F2E]">Apply Now <ArrowRight size={12} className="inline" /></span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-6">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+              <h3 className="font-bold text-gray-900 mb-4">IELTS Alternatives</h3>
+              <div className="space-y-4">
+                {[
+                  { title: "MOI Certificate", desc: "Medium of Instruction certificate from your previous institution." },
+                  { title: "Duolingo English Test", desc: "Faster and cheaper alternative to IELTS, accepted by many." },
+                  { title: "English Interview", desc: "Some universities conduct internal interviews to assess skills." },
+                  { title: "Internal Test", desc: "University's own English proficiency test after arrival." },
+                ].map((item, i) => (
+                  <div key={i} className="flex gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-[#7B1F2E08] flex items-center justify-center flex-shrink-0">
+                      <CheckCircle size={16} className="text-[#7B1F2E]" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-gray-800">{item.title}</h4>
+                      <p className="text-xs text-gray-500 mt-0.5">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-[#7B1F2E] to-[#3D0F17] rounded-2xl p-6 text-white shadow-lg">
+              <h3 className="font-bold mb-2">Need a MOI Draft?</h3>
+              <p className="text-red-100 text-xs mb-5 leading-relaxed">
+                We provide professionally drafted Medium of Instruction (MOI) templates that are accepted by global universities.
+              </p>
+              <Link to="/contact" className="block text-center py-3 bg-white text-[#7B1F2E] font-bold rounded-xl text-sm hover:scale-[1.02] transition-all">
+                Request MOI Guide
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-16 bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-gray-100">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Frequently Asked Questions</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div>
+              <h4 className="font-bold text-gray-800 mb-2">Is a MOI certificate valid for Japan MEXT?</h4>
+              <p className="text-sm text-gray-500">Yes, for the MEXT University Recommendation track, many Japanese universities accept a Medium of Instruction (MOI) certificate if your previous degree was in English.</p>
+            </div>
+            <div>
+              <h4 className="font-bold text-gray-800 mb-2">Which European countries accept MOI?</h4>
+              <p className="text-sm text-gray-500">Hungary (Stipendium Hungaricum), Romania, Russia, and some universities in Italy and Germany accept MOI for certain programs.</p>
+            </div>
+            <div>
+              <h4 className="font-bold text-gray-800 mb-2">Can I get a student visa without IELTS?</h4>
+              <p className="text-sm text-gray-500">Yes, if you have an unconditional offer letter from a university that waived IELTS, most embassies (like Japan, Russia, Hungary) will issue a visa.</p>
+            </div>
+            <div>
+              <h4 className="font-bold text-gray-800 mb-2">Is Duolingo accepted everywhere?</h4>
+              <p className="text-sm text-gray-500">No, it's widely accepted in the USA and Canada, but limited in Europe and Asia. Always check the specific university requirements.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

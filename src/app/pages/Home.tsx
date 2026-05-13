@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { api } from "../services/api";
 import { useSavedScholarships } from "../hooks/useAuth";
+import { SEO } from "../components/SEO";
 import type { Scholarship } from "../data/demoData";
 import { 
   HeroSkeleton, 
@@ -123,6 +124,45 @@ function generateAIResponse(query: string): string {
 }
 
 // ─── HOME PAGE ────────────────────────────────────────────────────
+// ─── SEO Schemas ──────────────────────────────────────────────
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "RizQara Global Education",
+  "url": "https://rizqaraglobaleducation.vercel.app",
+  "logo": "https://rizqaraglobaleducation.vercel.app/logo.png",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+8801915342776",
+    "contactType": "customer service",
+    "areaServed": "BD",
+    "availableLanguage": ["English", "Bengali"]
+  }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How to get a fully funded scholarship from Bangladesh?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "To get a fully funded scholarship, you need to maintain a high GPA, participate in extracurricular activities, and have a strong SOP. RizQara Global Education provides a personalized roadmap for Bangladeshi students to achieve this."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I study abroad without IELTS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, many universities in countries like China, Turkey, and some European countries accept Medium of Instruction (MOI) certificates. RizQara can help you find these opportunities."
+      }
+    }
+  ]
+};
+
 export default function Home() {
   const [categories, setCategories] = useState<any[]>([]);
   const [runningScholarships, setRunningScholarships] = useState<Scholarship[]>([]);
@@ -238,6 +278,29 @@ export default function Home() {
     }, 1500);
   };
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Can I study abroad without IELTS from Bangladesh?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, some countries and universities may accept MOI or alternative English proof, but requirements vary by scholarship, university and program."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does RizQara Global Education help with scholarship applications?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "RizQara Global Education helps students with profile evaluation, scholarship matching, document checklist, SOP/CV support, application guidance and visa file preparation."
+        }
+      }
+    ]
+  };
+
   const slide = heroSlides.length > 0 ? heroSlides[currentSlide] : null;
 
   if (loading) {
@@ -266,6 +329,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO 
+        title="RizQara Global Education | Study Abroad & Scholarship Guidance in Bangladesh"
+        description="Find scholarships, study abroad options, university admission guidance, SOP/CV support, and visa file guidance for Bangladeshi students with RizQara Global Education."
+        keywords="study abroad Bangladesh, scholarship guidance Bangladesh, foreign university admission, RizQara Global Education, বিদেশে উচ্চশিক্ষা, স্কলারশিপ আবেদন"
+        schema={[organizationSchema, faqSchema]}
+      />
 
       {/* ══════════════════════════════ HERO ══════════════════════════════ */}
       <section
@@ -287,44 +356,43 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
 
             {/* ── LEFT: Headline + CTAs ── */}
-            <div>
-              {/* Badge */}
-              <div
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6 backdrop-blur-sm"
-                style={{ backgroundColor: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.3)", color: "white" }}
-              >
-                <HeroBadgeIcon name={activeSlide.badgeIcon} />
-                {activeSlide.badge}
+            <div className="flex-1 text-center lg:text-left space-y-6">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md mb-4">
+                  <HeroBadgeIcon name={slide?.badgeIcon || "CheckCircle"} />
+                  <span className="text-[10px] font-bold tracking-wider uppercase text-white">{slide?.badge || "Explore"}</span>
+                </div>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-6">
+                  {slide?.title || "Start Your Journey"}<br />
+                  <span className="text-red-200">{slide?.highlight || "With RizQara"}</span>
+                </h1>
+                <p className="text-lg text-red-50/90 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                  {slide?.subtitle || "Find your dream scholarship and study abroad opportunity today."}
+                </p>
+                <p className="text-sm text-red-100/80 mt-4 max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                  RizQara Global Education helps Bangladeshi students find suitable scholarships, compare study abroad countries, prepare documents, and apply with a clear step-by-step process. From fully funded scholarships to no IELTS study options, our platform is designed to make international education guidance easier, organized and realistic.
+                </p>
               </div>
-              <h1
-                className="text-4xl md:text-5xl text-white mb-4 leading-[1.15]"
-                style={{ fontWeight: 800 }}
-              >
-                {activeSlide.title}
-                <br />
-                <span className="text-white">{activeSlide.highlight}</span>
-              </h1>
-              <p className="text-gray-300 mb-8 leading-relaxed max-w-md text-base">{activeSlide.subtitle}</p>
 
-              <div className="flex flex-wrap gap-3 mb-10">
+              <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
                 <Link
                   to="/scholarships"
                   className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm transition-all hover:shadow-xl hover:scale-[1.02] border border-white"
                   style={{ backgroundColor: "white", color: "#7B1F2E" }}
                 >
-                  {activeSlide.cta1} <ArrowRight size={15} />
+                  {slide?.cta1 || "View Scholarships"} <ArrowRight size={15} />
                 </Link>
                 <Link
                   to="/contact"
                   className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm border-2 text-white transition-all hover:bg-white/10"
                   style={{ borderColor: "rgba(255,255,255,0.35)" }}
                 >
-                  {activeSlide.cta2}
+                  {slide?.cta2 || "Contact Us"}
                 </Link>
               </div>
 
               {/* Stats row */}
-              <div className="flex flex-wrap gap-6 pt-7 border-t border-white/10">
+              <div className="flex flex-wrap gap-6 pt-7 border-t border-white/10 justify-center lg:justify-start">
                 {stats.map(s => (
                   <div key={s.label} className="flex items-center gap-2.5">
                     <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(255,255,255,0.15)" }}>
@@ -456,10 +524,12 @@ export default function Home() {
       {/* ══════════════════════ SCHOLARSHIP CATEGORIES ════════════════════ */}
       <section className="py-16" style={{ backgroundColor: "#FDF8F5" }}>
         <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-10">
-            <SectionLabel>Browse Categories</SectionLabel>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Scholarship Categories</h2>
-            <p className="text-gray-500 max-w-xl mx-auto text-sm">Find scholarships by category — government, fully funded, no IELTS, MBBS, and more.</p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+            <div className="max-w-2xl">
+              <SectionLabel>Opportunity Hub</SectionLabel>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">Find Scholarships by Country, Degree and Funding Type</h2>
+              <p className="text-gray-500 leading-relaxed">Explore government, university, fully funded, no IELTS, Bachelor, Master’s, PhD and MBBS scholarships for Bangladeshi students.</p>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -491,15 +561,10 @@ export default function Home() {
       {/* ════════════════════════ RUNNING SCHOLARSHIPS ════════════════════ */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10 gap-4">
-            <div>
-              <SectionLabel>Currently Open</SectionLabel>
-              <h2 className="text-3xl font-bold text-gray-900">Running Scholarships</h2>
-              <p className="text-gray-500 text-sm mt-1">Apply now before deadlines pass</p>
-            </div>
-            <Link to="/scholarships" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition hover:opacity-90 flex-shrink-0" style={{ backgroundColor: "#7B1F2E" }}>
-              View All <ArrowRight size={14} />
-            </Link>
+          <div className="text-center mb-10">
+            <SectionLabel>Open Now</SectionLabel>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Currently Open Scholarships</h2>
+            <p className="text-gray-500">Don't miss out! These programs are currently accepting applications from Bangladeshi students.</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
@@ -514,11 +579,11 @@ export default function Home() {
       {/* ════════════════════════════ COUNTRIES ═══════════════════════════ */}
       <section className="py-16" style={{ backgroundColor: "#FDF8F5" }}>
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10 gap-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
             <div>
-              <SectionLabel>Study Destinations</SectionLabel>
-              <h2 className="text-3xl font-bold text-gray-900">Explore by Country</h2>
-              <p className="text-gray-500 text-sm mt-1">Find scholarships in your dream destination</p>
+              <SectionLabel>Global Reach</SectionLabel>
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">Study Abroad Countries for Bangladeshi Students</h2>
+              <p className="text-gray-500">Explore educational opportunities in your dream destination.</p>
             </div>
             <Link to="/countries" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition hover:opacity-90 flex-shrink-0" style={{ backgroundColor: "#7B1F2E" }}>
               All Countries <ArrowRight size={14} />
@@ -563,9 +628,9 @@ export default function Home() {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <SectionLabel>Simple Process</SectionLabel>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">How RizQara Works</h2>
-            <p className="text-gray-500 text-sm max-w-xl mx-auto">6 simple steps from profile creation to visa approval</p>
+            <SectionLabel>Our Expertise</SectionLabel>
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">Our Study Abroad Services</h2>
+            <p className="text-gray-500 max-w-2xl mx-auto">Get profile evaluation, scholarship matching, university shortlisting, SOP, CV, recommendation letter, application and visa guidance support.</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

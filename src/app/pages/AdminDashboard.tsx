@@ -349,7 +349,7 @@ function ScholarshipManagement({ showToast }: any) {
   const [showModal, setShowModal] = useState(false);
   const [editItem, setEditItem] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState<any>({ name: "", country: "", degree: "", fundingType: "Fully Funded", status: "Open", ieltsRequired: false, deadline: "", university: "", description: "" });
+  const [form, setForm] = useState<any>({ name: "", slug: "", country: "", degree: "", fundingType: "Fully Funded", status: "Open", ieltsRequired: false, deadline: "", university: "", description: "" });
 
   const fetchScholarships = async () => {
     try {
@@ -384,7 +384,7 @@ function ScholarshipManagement({ showToast }: any) {
       fetchScholarships();
       setShowModal(false);
       setEditItem(null);
-      setForm({ name: "", country: "", degree: "", fundingType: "Fully Funded", status: "Open", ieltsRequired: false, deadline: "", university: "", description: "" });
+      setForm({ name: "", slug: "", country: "", degree: "", fundingType: "Fully Funded", status: "Open", ieltsRequired: false, deadline: "", university: "", description: "" });
     } catch (err) {
       showToast("Save failed", "error");
     }
@@ -456,7 +456,7 @@ function ScholarshipManagement({ showToast }: any) {
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1">
                       <Link to={`/scholarships/${s.slug || s._id || s.id}`} className="p-1.5 rounded hover:bg-gray-100 text-blue-500"><Eye size={13} /></Link>
-                      <button onClick={() => { setEditItem(s); setForm({ name: s.name, country: s.country, degree: s.degree.join(", "), fundingType: s.fundingType, status: s.status, ieltsRequired: s.ieltsRequired, deadline: s.deadline, university: s.university, description: s.description }); setShowModal(true); }} className="p-1.5 rounded hover:bg-gray-100 text-gray-500"><Edit size={13} /></button>
+                      <button onClick={() => { setEditItem(s); setForm({ name: s.name, slug: s.slug || "", country: s.country, degree: s.degree.join(", "), fundingType: s.fundingType, status: s.status, ieltsRequired: s.ieltsRequired, deadline: s.deadline, university: s.university, description: s.description }); setShowModal(true); }} className="p-1.5 rounded hover:bg-gray-100 text-gray-500"><Edit size={13} /></button>
                       <button onClick={() => handleDelete(s._id || s.id)} className="p-1.5 rounded hover:bg-gray-100 text-red-500"><Trash2 size={13} /></button>
                     </div>
                   </td>
@@ -478,6 +478,7 @@ function ScholarshipManagement({ showToast }: any) {
             <div className="space-y-3">
               {[
                 { label: "Scholarship Name", key: "name", type: "text" },
+                { label: "URL Slug (Custom)", key: "slug", type: "text", placeholder: "e.g., turkiye-burslari-2027" },
                 { label: "Country", key: "country", type: "text" },
                 { label: "University", key: "university", type: "text" },
                 { label: "Degree Level(s)", key: "degree", type: "text", placeholder: "Bachelor, Master's, PhD" },
@@ -964,7 +965,7 @@ function BlogManagement({ showToast }: any) {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editItem, setEditItem] = useState<any>(null);
-  const [form, setForm] = useState<any>({ title: "", category: "", excerpt: "", image: "" });
+  const [form, setForm] = useState<any>({ title: "", slug: "", category: "", excerpt: "", image: "" });
 
   const fetchBlogs = async () => {
     try {
@@ -999,7 +1000,7 @@ function BlogManagement({ showToast }: any) {
       fetchBlogs();
       setShowModal(false);
       setEditItem(null);
-      setForm({ title: "", category: "", excerpt: "", image: "" });
+      setForm({ title: "", slug: "", category: "", excerpt: "", image: "" });
     } catch (err) {
       showToast("Save failed", "error");
     }
@@ -1040,7 +1041,7 @@ function BlogManagement({ showToast }: any) {
               <p className="text-xs text-gray-400">{p.date} • {p.readTime}</p>
               <div className="flex gap-2 mt-3">
                 <Link to={`/blog/${p.slug || p._id || p.id}`} className="flex-1 py-1.5 text-xs text-center border rounded-lg" style={{ borderColor: "#7B1F2E30", color: "#7B1F2E" }}>View</Link>
-                <button onClick={() => { setEditItem(p); setForm({ title: p.title, category: p.category, excerpt: p.excerpt, image: p.image }); setShowModal(true); }} className="flex-1 py-1.5 text-xs text-white rounded-lg" style={{ backgroundColor: "#7B1F2E" }}>Edit</button>
+                <button onClick={() => { setEditItem(p); setForm({ title: p.title, slug: p.slug || "", category: p.category, excerpt: p.excerpt, image: p.image }); setShowModal(true); }} className="flex-1 py-1.5 text-xs text-white rounded-lg" style={{ backgroundColor: "#7B1F2E" }}>Edit</button>
                 <button onClick={() => handleDelete(p._id || p.id)} className="p-1.5 rounded hover:bg-gray-100 text-red-500 transition-colors"><Trash2 size={13} /></button>
               </div>
             </div>
@@ -1059,6 +1060,10 @@ function BlogManagement({ showToast }: any) {
               <div>
                 <label className="text-xs text-gray-500 mb-1 block">Title</label>
                 <input value={form.title} onChange={e => setForm((p: any) => ({ ...p, title: e.target.value }))} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none" />
+              </div>
+              <div>
+                <label className="text-xs text-gray-500 mb-1 block">URL Slug (Custom)</label>
+                <input value={form.slug} onChange={e => setForm((p: any) => ({ ...p, slug: e.target.value }))} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none" placeholder="e.g. mext-scholarship-guide" />
               </div>
               <div>
                 <label className="text-xs text-gray-500 mb-1 block">Category</label>
@@ -1490,6 +1495,7 @@ function AdminMessages() {
       studentId: l._id,
       student: l.name,
       message: `Profile Check: ${l.targetCountry} | ${l.targetSubject || l.targetDegree} | GPA: ${l.gpa}`,
+      fullLeadData: l,
       time: l.createdAt ? new Date(l.createdAt).toLocaleDateString() : "Just now",
       unread: l.unread,
       isLead: true,
@@ -1558,6 +1564,32 @@ function AdminMessages() {
           <div className="text-center">
             <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-white px-3 py-1 rounded-full border border-gray-50">Conversation Started</span>
           </div>
+
+          {selectedMsg.isLead && (
+            <div className="bg-white rounded-2xl p-5 border border-blue-100 shadow-sm space-y-4">
+              <div className="flex items-center gap-2 text-blue-600 font-bold text-xs uppercase tracking-wider">
+                <FileText size={14} /> Profile Check Details
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {[
+                  { label: "Target Country", value: selectedMsg.fullLeadData?.targetCountry },
+                  { label: "Target Subject", value: selectedMsg.fullLeadData?.targetSubject },
+                  { label: "GPA/Result", value: selectedMsg.fullLeadData?.gpa },
+                  { label: "IELTS Status", value: selectedMsg.fullLeadData?.ieltsStatus },
+                  { label: "Budget", value: selectedMsg.fullLeadData?.budget },
+                ].map((f, idx) => (
+                  <div key={idx}>
+                    <div className="text-[10px] text-gray-400 font-bold uppercase">{f.label}</div>
+                    <div className="text-sm font-semibold text-gray-800">{f.value || "—"}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="pt-3 border-t border-gray-50">
+                <div className="text-[10px] text-gray-400 font-bold uppercase mb-1">Student Message</div>
+                <p className="text-sm text-gray-600 italic">"{selectedMsg.fullLeadData?.message || "No additional message"}"</p>
+              </div>
+            </div>
+          )}
           
           {chatHistory.map((m: any, i: number) => (
             <div key={m._id || i} className={`flex ${m.isAdmin ? "justify-end" : "justify-start"}`}>

@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { api } from "../services/api";
 import { useSavedScholarships } from "../hooks/useAuth";
+import { SEO } from "../components/SEO";
 
 import { ScholarshipsSkeleton } from "../components/ui/PremiumSkeletons";
 
@@ -89,6 +90,12 @@ export default function Scholarships() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
+      <SEO 
+        title="Scholarships for Bangladeshi Students | Fully Funded & No IELTS Options"
+        description="Explore government, university, fully funded, no IELTS, Bachelor, Master’s, PhD and MBBS scholarships for Bangladeshi students."
+        keywords="scholarships for Bangladeshi students, fully funded scholarship Bangladesh, no IELTS scholarship, study abroad scholarship"
+        canonical="/scholarships"
+      />
       {/* Header */}
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-12">
         <div className="max-w-7xl mx-auto px-4">

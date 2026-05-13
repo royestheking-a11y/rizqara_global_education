@@ -117,6 +117,7 @@ export function Footer() {
                 { label: "Success Gallery",  path: "/success-gallery" },
                 { label: "About Us",         path: "/about" },
                 { label: "Contact",          path: "/contact" },
+                { label: "No IELTS Guide",   path: "/no-ielts-scholarships-for-bangladeshi-students" },
               ].map(link => (
                 <li key={link.path}>
                   <Link

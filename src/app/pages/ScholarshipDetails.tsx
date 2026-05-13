@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { api } from "../services/api";
 import { useSavedScholarships } from "../hooks/useAuth";
+import { SEO } from "../components/SEO";
 
 import { DetailsSkeleton } from "../components/ui/PremiumSkeletons";
 
@@ -91,8 +92,62 @@ export default function ScholarshipDetails() {
     else setEligibilityResult("not-eligible");
   };
 
+  const scholarshipSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": `${s.name} for Bangladeshi Students`,
+    "description": s.description || `Apply for ${s.name} in ${s.country}. Explore eligibility, benefits, and application process.`,
+    "image": s.image || "/og-image.png",
+    "author": {
+      "@type": "Organization",
+      "name": "RizQara Global Education"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "RizQara Global Education",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://rizqaraglobaleducation.vercel.app/logo.png"
+      }
+    },
+    "datePublished": s.createdAt || "2026-05-13"
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://rizqaraglobaleducation.vercel.app/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Scholarships",
+        "item": "https://rizqaraglobaleducation.vercel.app/scholarships"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": s.name,
+        "item": `https://rizqaraglobaleducation.vercel.app/scholarships/${s.slug || s._id}`
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
+      <SEO 
+        title={`${s.name} | Scholarship Details for Bangladeshi Students`}
+        description={`Detailed guide on ${s.name} for Bangladeshi students. Learn about eligibility, required documents, and how to apply successfully.`}
+        keywords={`${s.name}, ${s.country} scholarship, study in ${s.country} from Bangladesh, scholarship application guide`}
+        canonical={`/scholarships/${s.slug || s._id}`}
+        ogImage={s.image}
+        schema={[scholarshipSchema, breadcrumbSchema]}
+      />
       {/* Hero */}
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-10">
         <div className="max-w-6xl mx-auto px-4">
