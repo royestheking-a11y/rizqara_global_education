@@ -1,17 +1,40 @@
 import { useState, useEffect } from "react";
-import { useSearchParams, Link } from "react-router";
+import { useSearchParams, Link, useNavigate } from "react-router";
 import {
   Search, Filter, X, ChevronDown, Bookmark, Star, Shield,
   Calendar, ArrowRight, SlidersHorizontal, Grid3X3, List, Scale,
   Landmark, Clock, CheckCircle
 } from "lucide-react";
 import { api } from "../services/api";
-import { useSavedScholarships } from "../hooks/useAuth";
+import { useSavedScholarships, useAuth } from "../hooks/useAuth";
 import { SEO } from "../components/SEO";
 
 import { ScholarshipsSkeleton } from "../components/ui/PremiumSkeletons";
 
 export default function Scholarships() {
+  const { user, isLoggedIn } = useAuth();
+  const navigate = useNavigate();
+
+  const handleApply = async (scholarshipId: string) => {
+    if (!isLoggedIn || !user) {
+      navigate("/register");
+      return;
+    }
+    
+    try {
+      await api.post('/applications', {
+        student: user.id || (user as any)._id,
+        scholarship: scholarshipId,
+        status: 'Profile Received',
+        progress: 5
+      });
+      navigate("/dashboard");
+    } catch (err) {
+      console.error("Failed to apply", err);
+      navigate("/dashboard");
+    }
+  };
+
   const [scholarshipList, setScholarshipList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -261,13 +284,13 @@ export default function Scholarships() {
               </div>
             ) : (
               <div className={viewMode === "grid" ? "grid md:grid-cols-2 xl:grid-cols-3 gap-5" : "flex flex-col gap-4"}>
-                {filtered.map(s => (
-                  viewMode === "grid" ? (
-                    <ScholarshipGridCard key={s._id || s.id} s={s} onCompare={toggleCompare} inCompare={compareList.includes(s._id || s.id)} />
-                  ) : (
-                    <ScholarshipListCard key={s._id || s.id} s={s} onCompare={toggleCompare} inCompare={compareList.includes(s._id || s.id)} />
-                  )
-                ))}
+                 {filtered.map(s => (
+                   viewMode === "grid" ? (
+                     <ScholarshipGridCard key={s._id || s.id} s={s} onCompare={toggleCompare} inCompare={compareList.includes(s._id || s.id)} onApply={handleApply} />
+                   ) : (
+                     <ScholarshipListCard key={s._id || s.id} s={s} onCompare={toggleCompare} inCompare={compareList.includes(s._id || s.id)} onApply={handleApply} />
+                   )
+                 ))}
               </div>
             )}
           </div>
@@ -308,7 +331,7 @@ function FilterChip({ label, active, onClick }: { label: string; active: boolean
   );
 }
 
-function ScholarshipGridCard({ s, onCompare, inCompare }: { s: any; onCompare: (id: string) => void; inCompare: boolean }) {
+function ScholarshipGridCard({ s, onCompare, inCompare, onApply }: { s: any; onCompare: (id: string) => void; inCompare: boolean; onApply: (id: string) => void }) {
   const { isSaved, toggle } = useSavedScholarships();
   const saved = isSaved(s.slug || s._id || s.id);
   const toggleSave = (e: React.MouseEvent) => {
@@ -403,19 +426,19 @@ function ScholarshipGridCard({ s, onCompare, inCompare }: { s: any; onCompare: (
           <Link to={`/scholarships/${s.slug || s._id || s.id}`} className="flex-1 py-2 text-xs font-semibold text-white text-center rounded-lg transition hover:opacity-90" style={{ backgroundColor: "#7B1F2E" }}>
             View Details
           </Link>
-          <Link 
-            to="/contact" 
+          <button 
+            onClick={() => onApply(s._id || s.id)}
             className="flex-1 py-2 text-xs font-semibold text-center rounded-lg border transition-all duration-200 border-[#7B1F2E] text-[#7B1F2E] hover:bg-[#7B1F2E] hover:text-white active:bg-[#7B1F2E] active:text-white"
           >
             Apply
-          </Link>
+          </button>
         </div>
       </div>
     </div>
   );
 }
 
-function ScholarshipListCard({ s, onCompare, inCompare }: { s: any; onCompare: (id: string) => void; inCompare: boolean }) {
+function ScholarshipListCard({ s, onCompare, inCompare, onApply }: { s: any; onCompare: (id: string) => void; inCompare: boolean; onApply: (id: string) => void }) {
   const statusColors: any = {
     "Open": "bg-green-100 text-green-700",
     "Closing Soon": "bg-red-100 text-red-700",
@@ -458,12 +481,12 @@ function ScholarshipListCard({ s, onCompare, inCompare }: { s: any; onCompare: (
         >
           Details
         </Link>
-        <Link 
-          to="/contact" 
+        <button 
+          onClick={() => onApply(s._id || s.id)}
           className="px-4 py-2 text-xs font-semibold rounded-lg text-center border transition-all duration-200 border-[#7B1F2E] text-[#7B1F2E] hover:bg-[#7B1F2E] hover:text-white active:bg-[#7B1F2E] active:text-white"
         >
           Apply
-        </Link>
+        </button>
       </div>
     </div>
   );

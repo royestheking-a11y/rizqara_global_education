@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router";
+import { Link, useParams, useNavigate } from "react-router";
 import { 
   Search, Calendar, Clock, ArrowRight, ChevronRight, CheckCircle, 
   Globe, Users, Award, BookOpen, Star, Bot, BarChart3, HelpCircle, 
@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { api } from "../services/api";
 import { SEO } from "../components/SEO";
+import { useAuth } from "../hooks/useAuth";
 import { 
   GenericGridSkeleton, 
   ServiceSkeleton, 
@@ -501,9 +502,19 @@ export function BlogPage() {
 // ======================== BLOG DETAILS ========================
 export function BlogDetailsPage() {
   const { slug } = useParams();
-  const id = slug; // Parameter name is 'slug' in routes but used for ID/Slug lookup in API
+  const id = slug;
+  const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
   const [post, setPost] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+
+  const handleProfileCheck = () => {
+    if (isLoggedIn) {
+      navigate("/dashboard");
+    } else {
+      navigate("/register");
+    }
+  };
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -613,7 +624,13 @@ export function BlogDetailsPage() {
         <div className="mt-6 p-5 bg-gradient-to-r from-[#7B1F2E] to-[#3D0F17] rounded-2xl text-white text-center">
           <h3 className="font-bold mb-2">Need Personalized Guidance?</h3>
           <p className="text-red-200 text-sm mb-4">Get a free profile check from our experts.</p>
-          <Link to="/contact" className="inline-block px-6 py-2.5 rounded-xl font-semibold text-sm hover:opacity-90" style={{ backgroundColor: "white", color: "#7B1F2E" }}>Free Profile Check</Link>
+          <button 
+            onClick={handleProfileCheck}
+            className="inline-block px-6 py-2.5 rounded-xl font-semibold text-sm hover:opacity-90" 
+            style={{ backgroundColor: "white", color: "#7B1F2E" }}
+          >
+            Free Profile Check
+          </button>
         </div>
       </div>
     </div>

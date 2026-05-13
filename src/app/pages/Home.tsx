@@ -11,7 +11,7 @@ import {
   AlertCircle, Sparkles, BarChart3, ShieldCheck, MapPin, Bot
 } from "lucide-react";
 import { api } from "../services/api";
-import { useSavedScholarships } from "../hooks/useAuth";
+import { useSavedScholarships, useAuth } from "../hooks/useAuth";
 import { SEO } from "../components/SEO";
 import type { Scholarship } from "../data/demoData";
 import { 
@@ -181,7 +181,16 @@ export default function Home() {
   const [heroSlides, setHeroSlides] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate    = useNavigate();
+  const { user, isLoggedIn } = useAuth();
   const intervalRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
+
+  const handleProfileCheck = () => {
+    if (isLoggedIn) {
+      navigate("/dashboard");
+    } else {
+      navigate("/register");
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -676,13 +685,13 @@ export default function Home() {
             Let our experts evaluate your profile and tell you exactly which scholarships you qualify for — 100% free, no obligations.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link
-              to="/contact"
+            <button
+              onClick={handleProfileCheck}
               className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition hover:shadow-xl"
               style={{ backgroundColor: "white", color: "#7B1F2E" }}
             >
               Request Free Profile Check <ArrowRight size={14} />
-            </Link>
+            </button>
             <Link
               to="/register"
               className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-bold text-sm border-2 text-white hover:bg-white/10 transition"
@@ -881,13 +890,13 @@ export default function Home() {
           </div>
 
           <div className="text-center mt-10">
-            <Link
-              to="/contact"
+            <button
+              onClick={handleProfileCheck}
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl text-white font-bold text-sm hover:opacity-90 transition hover:shadow-lg"
               style={{ backgroundColor: "#7B1F2E" }}
             >
               Get Free Profile Check <ArrowRight size={15} />
-            </Link>
+            </button>
           </div>
         </div>
       </section>
