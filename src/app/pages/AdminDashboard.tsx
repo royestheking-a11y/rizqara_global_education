@@ -1209,7 +1209,7 @@ function BlogManagement({ showToast }: any) {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editItem, setEditItem] = useState<any>(null);
-  const [form, setForm] = useState<any>({ title: "", slug: "", category: "", excerpt: "", image: "" });
+  const [form, setForm] = useState<any>({ title: "", slug: "", category: "", excerpt: "", content: "", author: "Admin", readTime: "5 min read", image: "" });
 
   const fetchBlogs = async () => {
     try {
@@ -1238,16 +1238,24 @@ function BlogManagement({ showToast }: any) {
         await api.put(`/blogs/${editItem._id || editItem.id}`, form);
         showToast("Blog post updated successfully");
       } else {
-        await api.post('/blogs', form);
+        await api.post('/blogs', { ...form, date: new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) });
         showToast("New blog post published");
       }
       fetchBlogs();
       setShowModal(false);
       setEditItem(null);
-      setForm({ title: "", slug: "", category: "", excerpt: "", image: "" });
+      setForm({ title: "", slug: "", category: "", excerpt: "", content: "", author: "Admin", readTime: "5 min read", image: "" });
     } catch (err) {
       showToast("Save failed", "error");
     }
+  };
+
+  const calculateReadTime = (text: string) => {
+    if (!text) return "1 min read";
+    const wordsPerMinute = 200;
+    const words = text.trim().split(/\s+/).length;
+    const minutes = Math.ceil(words / wordsPerMinute);
+    return `${minutes} min read`;
   };
 
   const handleDelete = async (id: string) => {
@@ -1286,7 +1294,7 @@ function BlogManagement({ showToast }: any) {
               <p className="text-xs text-gray-500 mt-2 line-clamp-2">{p.excerpt}</p>
               <div className="flex gap-2 mt-3">
                 <Link to={`/blog/${p.slug || p._id || p.id}`} className="flex-1 py-1.5 text-xs text-center border rounded-lg" style={{ borderColor: "#7B1F2E30", color: "#7B1F2E" }}>View</Link>
-                <button onClick={() => { setEditItem(p); setForm({ title: p.title, slug: p.slug || "", category: p.category, excerpt: p.excerpt, image: p.image }); setShowModal(true); }} className="flex-1 py-1.5 text-xs text-white rounded-lg" style={{ backgroundColor: "#7B1F2E" }}>Edit</button>
+                <button onClick={() => { setEditItem(p); setForm({ title: p.title, slug: p.slug || "", category: p.category, excerpt: p.excerpt, content: p.content || "", author: p.author || "Admin", readTime: p.readTime || "5 min read", image: p.image }); setShowModal(true); }} className="flex-1 py-1.5 text-xs text-white rounded-lg" style={{ backgroundColor: "#7B1F2E" }}>Edit</button>
                 <button onClick={() => handleDelete(p._id || p.id)} className="p-1.5 rounded hover:bg-gray-100 text-red-500 transition-colors"><Trash2 size={13} /></button>
               </div>
             </div>
@@ -1317,6 +1325,23 @@ function BlogManagement({ showToast }: any) {
               <div>
                 <label className="text-xs text-gray-500 mb-1 block">Excerpt</label>
                 <textarea value={form.excerpt} onChange={e => setForm((p: any) => ({ ...p, excerpt: e.target.value }))} rows={3} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none resize-none" />
+              </div>
+              <div>
+                <label className="text-xs text-gray-500 mb-1 block">Full Content (HTML Supported)</label>
+                <textarea value={form.content} onChange={e => {
+                  const val = e.target.value;
+                  setForm((p: any) => ({ ...p, content: val, readTime: calculateReadTime(val) }));
+                }} rows={8} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none" placeholder="Write your blog content here..." />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs text-gray-500 mb-1 block">Author</label>
+                  <input value={form.author} onChange={e => setForm((p: any) => ({ ...p, author: e.target.value }))} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none" />
+                </div>
+                <div>
+                  <label className="text-xs text-gray-500 mb-1 block">Read Time</label>
+                  <input value={form.readTime} onChange={e => setForm((p: any) => ({ ...p, readTime: e.target.value }))} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none" />
+                </div>
               </div>
               <ImageUpload value={form.image} onChange={val => setForm((p: any) => ({ ...p, image: val }))} label="Blog Cover Image" />
             </div>
