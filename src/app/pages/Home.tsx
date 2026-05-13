@@ -236,21 +236,29 @@ export default function Home() {
     fetchFaqs();
   }, []);
 
-  const getCategoryCount = (catId: string) => {
+  const getCategoryCount = (catName: string) => {
     if (!runningScholarships.length) return 0;
-    switch(catId) {
-      case "government": return runningScholarships.filter(s => s.scholarshipType === "Government").length;
-      case "university": return runningScholarships.filter(s => s.scholarshipType === "University").length;
-      case "fully-funded": return runningScholarships.filter(s => s.fundingType === "Fully Funded").length;
-      case "no-ielts": return runningScholarships.filter(s => !s.ieltsRequired).length;
-      case "bachelor": return runningScholarships.filter(s => s.degree?.includes("Bachelor")).length;
-      case "masters": return runningScholarships.filter(s => s.degree?.includes("Masters")).length;
-      case "phd": return runningScholarships.filter(s => s.degree?.includes("PhD")).length;
-      case "mbbs": return runningScholarships.filter(s => s.degree?.includes("MBBS")).length;
-      case "europe": return runningScholarships.filter(s => s.country === "Hungary" || s.country === "Romania" || s.country === "Russia").length;
-      case "asia": return runningScholarships.filter(s => s.country === "Japan" || s.country === "Saudi Arabia" || s.country === "Turkey").length;
-      default: return 0;
-    }
+    const name = catName.toLowerCase();
+    
+    if (name.includes("government")) return runningScholarships.filter(s => s.scholarshipType === "Government").length;
+    if (name.includes("university")) return runningScholarships.filter(s => s.scholarshipType === "University").length;
+    if (name.includes("fully funded")) return runningScholarships.filter(s => s.fundingType === "Fully Funded").length;
+    if (name.includes("no ielts")) return runningScholarships.filter(s => !s.ieltsRequired).length;
+    
+    if (name.includes("bachelor")) return runningScholarships.filter(s => s.degree?.includes("Bachelor")).length;
+    if (name.includes("master") || name.includes("mba") || name.includes("business")) return runningScholarships.filter(s => s.degree?.includes("Masters") || s.degree?.includes("MBA") || s.subjects?.some(sub => sub.toLowerCase().includes("business"))).length;
+    if (name.includes("phd") || name.includes("research")) return runningScholarships.filter(s => s.degree?.includes("PhD")).length;
+    if (name.includes("mbbs") || name.includes("medical")) return runningScholarships.filter(s => s.degree?.includes("MBBS") || s.subjects?.some(sub => sub.toLowerCase().includes("medical"))).length;
+    
+    if (name.includes("engineering")) return runningScholarships.filter(s => s.subjects?.some(sub => sub.toLowerCase().includes("engineering"))).length;
+    if (name.includes("arts") || name.includes("design")) return runningScholarships.filter(s => s.subjects?.some(sub => sub.toLowerCase().includes("art") || sub.toLowerCase().includes("design"))).length;
+    if (name.includes("social")) return runningScholarships.filter(s => s.subjects?.some(sub => sub.toLowerCase().includes("social"))).length;
+    if (name.includes("law") || name.includes("legal")) return runningScholarships.filter(s => s.subjects?.some(sub => sub.toLowerCase().includes("law") || sub.toLowerCase().includes("legal"))).length;
+    
+    if (name.includes("europe")) return runningScholarships.filter(s => s.country === "Hungary" || s.country === "Romania" || s.country === "Russia").length;
+    if (name.includes("asia")) return runningScholarships.filter(s => s.country === "Japan" || s.country === "Saudi Arabia" || s.country === "Turkey").length;
+    
+    return 0;
   };
 
   const goSlide = (idx: number) => {
@@ -535,7 +543,7 @@ export default function Home() {
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {categories.map((cat: any) => {
               const catId = cat._id || cat.id;
-              const count = getCategoryCount(catId);
+              const count = getCategoryCount(cat.name || catId);
               return (
                 <Link
                   key={catId}
