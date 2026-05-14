@@ -48,7 +48,7 @@ export default function Contact() {
                 { icon: <Phone size={18} style={{ color: "#7B1F2E" }} />, label: "Phone / WhatsApp", value: "+880 1915-342776" },
                 { icon: <Mail size={18} style={{ color: "#7B1F2E" }} />, label: "Email", value: "rizqaraglobaleducation@gmail.com" },
                 { icon: <MapPin size={18} style={{ color: "#7B1F2E" }} />, label: "Location", value: "Dhaka, Bangladesh" },
-                { icon: <Clock size={18} style={{ color: "#7B1F2E" }} />, label: "Office Hours", value: "Mon–Sat, 9 AM – 8 PM" },
+                { icon: <Clock size={18} style={{ color: "#7B1F2E" }} />, label: "Office Hours", value: "Sat–Thu, 9 AM – 9 PM" },
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3 py-3 border-b border-gray-50 last:border-b-0">
                   <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: "#7B1F2E10" }}>

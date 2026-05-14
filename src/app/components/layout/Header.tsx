@@ -61,7 +61,7 @@ export function Header() {
               <Mail size={11} className="opacity-80" /> rizqaraglobaleducation@gmail.com
             </a>
             <span className="flex items-center gap-1.5 text-red-200">
-              <Clock size={11} className="opacity-80" /> Mon–Sat 9:00 AM – 8:00 PM
+              <Clock size={11} className="opacity-80" /> Sat–Thu 9:00 AM – 9:00 PM
             </span>
           </div>
           <div className="flex items-center gap-4">
