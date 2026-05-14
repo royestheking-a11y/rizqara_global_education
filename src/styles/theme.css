@@ -231,9 +231,9 @@ a.text-white:active,
 .skeleton-shimmer {
   background: linear-gradient(
     90deg,
-    rgba(123, 31, 46, 0.03) 25%,
-    rgba(123, 31, 46, 0.08) 50%,
-    rgba(123, 31, 46, 0.03) 75%
+    rgba(0, 0, 0, 0.03) 25%,
+    rgba(0, 0, 0, 0.06) 50%,
+    rgba(0, 0, 0, 0.03) 75%
   );
   background-size: 200% 100%;
   animation: shimmer 2s infinite linear;

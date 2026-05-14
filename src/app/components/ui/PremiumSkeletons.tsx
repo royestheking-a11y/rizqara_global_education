@@ -2,25 +2,25 @@ import { Skeleton } from "./skeleton";
 
 export function HeroSkeleton() {
   return (
-    <section className="relative overflow-hidden min-h-[610px] flex items-center bg-[#7B1F2E]">
+    <section className="relative overflow-hidden min-h-[610px] flex items-center bg-white border-b border-gray-50">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 w-full">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
-            <Skeleton variant="dark" className="h-6 w-32 rounded-full mb-6" />
-            <Skeleton variant="dark" className="h-12 w-full max-w-md mb-4" />
-            <Skeleton variant="dark" className="h-12 w-3/4 max-w-sm mb-4" />
-            <Skeleton variant="dark" className="h-6 w-2/3 max-w-xs mb-8" />
+            <Skeleton className="h-6 w-32 rounded-full mb-6" />
+            <Skeleton className="h-12 w-full max-w-md mb-4" />
+            <Skeleton className="h-12 w-3/4 max-w-sm mb-4" />
+            <Skeleton className="h-6 w-2/3 max-w-xs mb-8" />
             <div className="flex flex-wrap gap-3 mb-10">
-              <Skeleton variant="dark" className="h-12 w-40 rounded-xl" />
-              <Skeleton variant="dark" className="h-12 w-40 rounded-xl" />
+              <Skeleton className="h-12 w-40 rounded-xl" />
+              <Skeleton className="h-12 w-40 rounded-xl" />
             </div>
-            <div className="flex flex-wrap gap-6 pt-7 border-t border-white/10">
+            <div className="flex flex-wrap gap-6 pt-7 border-t border-gray-100">
               {[1, 2, 3, 4].map(i => (
                 <div key={i} className="flex items-center gap-2.5">
-                  <Skeleton variant="dark" className="w-8 h-8 rounded-lg" />
+                  <Skeleton className="w-8 h-8 rounded-lg" />
                   <div className="space-y-1">
-                    <Skeleton variant="dark" className="h-4 w-12" />
-                    <Skeleton variant="dark" className="h-3 w-16" />
+                    <Skeleton className="h-4 w-12" />
+                    <Skeleton className="h-3 w-16" />
                   </div>
                 </div>
               ))}
@@ -162,28 +162,28 @@ export function DetailsSkeleton() {
   return (
     <div className="min-h-screen bg-[#FDF8F5]">
       {/* Hero */}
-      <div className="bg-[#7B1F2E] py-10">
+      <div className="bg-white border-b border-gray-100 py-10">
         <div className="max-w-6xl mx-auto px-4">
-          <Skeleton variant="dark" className="h-4 w-48 mb-6" />
+          <Skeleton className="h-4 w-48 mb-6" />
           <div className="flex flex-col lg:flex-row gap-8 items-start">
             <div className="flex-1 space-y-4">
               <div className="flex gap-3">
-                <Skeleton variant="dark" className="h-8 w-12" />
-                <Skeleton variant="dark" className="h-8 w-24 rounded-full" />
-                <Skeleton variant="dark" className="h-8 w-32 rounded-full" />
+                <Skeleton className="h-8 w-12" />
+                <Skeleton className="h-8 w-24 rounded-full" />
+                <Skeleton className="h-8 w-32 rounded-full" />
               </div>
-              <Skeleton variant="dark" className="h-10 w-3/4" />
-              <Skeleton variant="dark" className="h-6 w-1/2" />
+              <Skeleton className="h-10 w-3/4" />
+              <Skeleton className="h-6 w-1/2" />
               <div className="flex gap-4">
-                <Skeleton variant="dark" className="h-4 w-32" />
-                <Skeleton variant="dark" className="h-4 w-32" />
-                <Skeleton variant="dark" className="h-4 w-32" />
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-4 w-32" />
               </div>
             </div>
             <div className="flex flex-col gap-3 w-full lg:w-56">
-              <Skeleton variant="dark" className="h-12 w-full rounded-xl" />
-              <Skeleton variant="dark" className="h-12 w-full rounded-xl" />
-              <Skeleton variant="dark" className="h-12 w-full rounded-xl" />
+              <Skeleton className="h-12 w-full rounded-xl" />
+              <Skeleton className="h-12 w-full rounded-xl" />
+              <Skeleton className="h-12 w-full rounded-xl" />
             </div>
           </div>
         </div>
@@ -232,13 +232,13 @@ export function ScholarshipsSkeleton() {
   return (
     <div className="min-h-screen bg-[#FDF8F5]">
       {/* Header */}
-      <div className="bg-[#7B1F2E] py-12">
+      <div className="bg-white border-b border-gray-100 py-12">
         <div className="max-w-7xl mx-auto px-4 space-y-4">
-          <Skeleton variant="dark" className="h-10 w-3/4" />
-          <Skeleton variant="dark" className="h-6 w-1/2" />
+          <Skeleton className="h-10 w-3/4" />
+          <Skeleton className="h-6 w-1/2" />
           <div className="flex gap-3">
-            <Skeleton variant="dark" className="h-12 flex-1 rounded-xl" />
-            <Skeleton variant="dark" className="h-12 w-32 rounded-xl" />
+            <Skeleton className="h-12 flex-1 rounded-xl" />
+            <Skeleton className="h-12 w-32 rounded-xl" />
           </div>
         </div>
       </div>

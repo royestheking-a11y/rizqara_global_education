@@ -38,8 +38,8 @@ export default function Login() {
       {/* Left Side - Visual */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden" style={{ background: "linear-gradient(135deg, #7B1F2E 0%, #3D0F17 100%)" }}>
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-10"
-          style={{ backgroundImage: "url(/login.webp)" }}
+          className="absolute inset-0 bg-cover bg-center opacity-30"
+          style={{ backgroundImage: "url('/log in.png')" }}
         />
         <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10 border-8 border-white -translate-y-1/3 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full opacity-5 border-8 border-white translate-y-1/3 -translate-x-1/3" />
