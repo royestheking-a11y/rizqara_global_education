@@ -14,7 +14,7 @@ export function ScrollToTop() {
 
     // Track page views on route changes (excluding admin dashboard page views)
     if (!pathname.startsWith('/admin')) {
-      api.post('/stats/view').catch((err) => {
+      api.post('/stats/view', {}).catch((err) => {
         console.error("Failed to track page view", err);
       });
     }

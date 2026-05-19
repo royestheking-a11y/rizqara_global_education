@@ -16,7 +16,7 @@ export function WhatsAppButton() {
 
   const openChat = async (message: string) => {
     try {
-      await api.post('/stats/whatsapp-click');
+      await api.post('/stats/whatsapp-click', {});
     } catch (err) {
       console.error("Failed to track WhatsApp option click", err);
     }
@@ -28,7 +28,7 @@ export function WhatsAppButton() {
     const nextState = !isOpen;
     if (nextState) {
       try {
-        await api.post('/stats/whatsapp-click');
+        await api.post('/stats/whatsapp-click', {});
       } catch (err) {
         console.error("Failed to track WhatsApp panel open", err);
       }
