@@ -42,6 +42,7 @@ app.use('/api/stats', require('./routes/stats'));
 app.use('/api/applications', require('./routes/applications'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/categories', require('./routes/categories'));
+app.use('/api/manual-applications', require('./routes/manual-applications'));
 
 app.get('/', (req, res) => {
   res.send('Rizqara Global Education API is running...');

@@ -6,6 +6,7 @@ const Lead = require('../models/Lead');
 const Application = require('../models/Application');
 const Payment = require('../models/Payment');
 const Analytics = require('../models/Analytics');
+const ManualApplication = require('../models/ManualApplication');
 
 // Increment Page Views
 router.post('/view', async (req, res) => {
@@ -42,7 +43,25 @@ router.get('/', async (req, res) => {
     const leadCount = await Lead.countDocuments({ unread: true });
     
     // Real applications count
-    const totalApplications = await Application.countDocuments();
+    const normalAppsCount = await Application.countDocuments();
+    
+    // Manual applications count and payment calculations
+    const manualRecords = await ManualApplication.find({});
+    let totalManualApps = 0;
+    let manualRevenue = 0;
+    
+    manualRecords.forEach(student => {
+      if (student.applications && Array.isArray(student.applications)) {
+        student.applications.forEach(app => {
+          totalManualApps++;
+          if (app.payment && app.payment.status === 'Completed') {
+            manualRevenue += (app.payment.amount || 0);
+          }
+        });
+      }
+    });
+
+    const totalApplications = normalAppsCount + totalManualApps;
     
     // Pending Documents calculation
     const pendingDocsCount = await Application.countDocuments({
@@ -51,7 +70,8 @@ router.get('/', async (req, res) => {
 
     // Total Revenue calculation
     const acceptedPayments = await Payment.find({ status: 'accepted' });
-    const totalRevenueSum = acceptedPayments.reduce((acc, curr) => acc + (curr.amount || 0), 0);
+    const normalRevenue = acceptedPayments.reduce((acc, curr) => acc + (curr.amount || 0), 0);
+    const totalRevenueSum = normalRevenue + manualRevenue;
     const formattedRevenue = totalRevenueSum > 0 ? `৳ ${totalRevenueSum.toLocaleString()}` : "৳ 0";
 
     // For analytics page
@@ -85,6 +105,11 @@ router.get('/', async (req, res) => {
       pendingDocuments: pendingDocsCount,
       totalRevenue: formattedRevenue,
       
+      manualApplicationsCount: totalManualApps,
+      manualRevenue: manualRevenue,
+      normalApplicationsCount: normalAppsCount,
+      normalRevenue: normalRevenue,
+
       pageViews: pageViews, 
       profileChecks: totalLeads,
       whatsappClicks: whatsappClicks, 

@@ -11,6 +11,7 @@ import {
 import { useAuth } from "../hooks/useAuth";
 import { TableSkeleton, DashboardSkeleton, GenericGridSkeleton } from "../components/ui/PremiumSkeletons";
 import { Skeleton } from "../components/ui/skeleton";
+import ManualApplicationManagement from "../components/admin/ManualApplicationManagement";
 
 
 // === UTILITIES ===
@@ -96,6 +97,7 @@ const navItems = [
   { id: "carousel", label: "Hero Carousel", icon: <Megaphone size={15} /> },
   { id: "students", label: "Students", icon: <Users size={15} /> },
   { id: "applications", label: "Applications", icon: <FileText size={15} /> },
+  { id: "manual-applications", label: "Manual Applications", icon: <MessageCircle size={15} /> },
   { id: "notices", label: "Notices", icon: <Bell size={15} /> },
   { id: "blog", label: "Blog", icon: <BookOpen size={15} /> },
   { id: "testimonials", label: "Testimonials", icon: <Star size={15} /> },
@@ -141,6 +143,7 @@ export default function AdminDashboard() {
       case "carousel": return <CarouselManagement showToast={showToast} />;
       case "students": return <StudentManagement showToast={showToast} setActiveTab={setActiveTab} setAppFilter={setAppFilter} />;
       case "applications": return <ApplicationManagement showToast={showToast} filter={appFilter} setFilter={setAppFilter} />;
+      case "manual-applications": return <ManualApplicationManagement showToast={showToast} />;
       case "notices": return <NoticeManagement showToast={showToast} />;
       case "blog": return <BlogManagement showToast={showToast} />;
       case "testimonials": return <TestimonialManagement showToast={showToast} />;
@@ -279,6 +282,49 @@ function AdminOverview() {
             <div className="text-xs text-gray-400 mt-0.5">{s.change}</div>
           </div>
         ))}
+      </div>
+
+      {/* Individual Breakdown Grid */}
+      <div className="grid md:grid-cols-2 gap-4">
+        
+        {/* Standard Platform Stats */}
+        <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 flex items-center justify-between transition-all hover:shadow-md">
+          <div className="space-y-1">
+            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block">Standard Platform Stats</span>
+            <h4 className="text-sm font-black text-gray-800">Online Registered Applications</h4>
+            <div className="flex gap-6 pt-1.5">
+              <div>
+                <p className="text-[10px] text-gray-500 uppercase font-semibold">Applications</p>
+                <p className="text-base font-black text-[#7B1F2E]">{statsData?.normalApplicationsCount || 0}</p>
+              </div>
+              <div>
+                <p className="text-[10px] text-gray-500 uppercase font-semibold">Online Revenue</p>
+                <p className="text-base font-black text-gray-800">৳ {(statsData?.normalRevenue || 0).toLocaleString()}</p>
+              </div>
+            </div>
+          </div>
+          <div className="w-10 h-10 rounded-full bg-[#7B1F2E]/5 text-[#7B1F2E] flex items-center justify-center font-bold text-xs uppercase">Online</div>
+        </div>
+
+        {/* WhatsApp Manual Stats */}
+        <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 flex items-center justify-between transition-all hover:shadow-md">
+          <div className="space-y-1">
+            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block">WhatsApp / Offline Stats</span>
+            <h4 className="text-sm font-black text-gray-800">WhatsApp Manual Applications</h4>
+            <div className="flex gap-6 pt-1.5">
+              <div>
+                <p className="text-[10px] text-gray-500 uppercase font-semibold">Applications</p>
+                <p className="text-base font-black text-[#7B1F2E]">{statsData?.manualApplicationsCount || 0}</p>
+              </div>
+              <div>
+                <p className="text-[10px] text-gray-500 uppercase font-semibold">Manual Revenue</p>
+                <p className="text-base font-black text-green-700">৳ {(statsData?.manualRevenue || 0).toLocaleString()}</p>
+              </div>
+            </div>
+          </div>
+          <div className="w-10 h-10 rounded-full bg-green-50 text-green-700 flex items-center justify-center font-bold text-xs uppercase">Manual</div>
+        </div>
+
       </div>
 
       {/* Quick Actions */}
