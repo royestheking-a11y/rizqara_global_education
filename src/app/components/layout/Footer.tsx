@@ -88,7 +88,7 @@ export function Footer() {
                   href: "https://www.threads.com/@rizqaraglobaledu", 
                   label: "Threads" 
                 },
-                { icon: <Linkedin size={15} />, href: "#", label: "LinkedIn" },
+                { icon: <Linkedin size={15} />, href: "https://www.linkedin.com/company/rizqaraglobaleducation/", label: "LinkedIn" },
                 { icon: <Youtube size={15} />, href: "#", label: "YouTube" },
               ].map(s => (
                 <a
