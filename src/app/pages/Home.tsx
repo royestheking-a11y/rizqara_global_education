@@ -331,8 +331,6 @@ export default function Home() {
     ]
   };
 
-  const slide = heroSlides.length > 0 ? heroSlides[currentSlide] : null;
-
   if (loading) {
     return (
       <div className="min-h-screen bg-white">
@@ -344,19 +342,6 @@ export default function Home() {
     );
   }
 
-  // Fallback for slide if heroSlides is empty but other data is loading/loaded
-  const activeSlide = slide || {
-    badge: "Welcome",
-    badgeIcon: "CheckCircle",
-    title: "Start Your Journey",
-    highlight: "With RizQara",
-    subtitle: "Loading best opportunities for you...",
-    cta1: "View Scholarships",
-    cta2: "Contact Us",
-    bgGradient: "linear-gradient(135deg, #7B1F2E, #3D0F17)",
-    image: ""
-  };
-
   return (
     <div className="min-h-screen bg-white">
       <SEO 
@@ -366,187 +351,53 @@ export default function Home() {
         schema={[organizationSchema, faqSchema]}
       />
 
-      {/* ══════════════════════════════ HERO ══════════════════════════════ */}
-      <section
-        className="relative overflow-hidden min-h-[610px] flex items-center transition-all duration-700"
-        style={{ background: activeSlide.bgGradient }}
-      >
-        {/* BG image overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.08] bg-cover bg-center transition-all duration-700"
-          style={{ backgroundImage: `url(${activeSlide.image})` }}
-        />
-        <div className="absolute inset-0" style={{ background: "linear-gradient(100deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.05) 60%, transparent 100%)" }} />
-
-        {/* Decorative rings */}
-        <div className="absolute -top-20 -right-20 w-96 h-96 rounded-full border border-white/5" />
-        <div className="absolute -bottom-32 -left-32 w-[500px] h-[500px] rounded-full border border-white/5" />
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 w-full">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-
-            {/* ── LEFT: Headline + CTAs ── */}
-            <div className="flex-1 text-center lg:text-left space-y-6">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md mb-4">
-                  <HeroBadgeIcon name={slide?.badgeIcon || "CheckCircle"} />
-                  <span className="text-[10px] font-bold tracking-wider uppercase text-white">{slide?.badge || "Explore"}</span>
+      {/* ══════════════════════════════ HERO CAROUSEL ══════════════════════════════ */}
+      <section className="w-full py-4 md:py-6" style={{ backgroundColor: "#FDF8F5" }}>
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="relative w-full aspect-[21/9] md:aspect-[3/1] rounded-2xl md:rounded-3xl overflow-hidden shadow-xl border border-gray-100/50 bg-gray-50">
+            {/* Slides */}
+            {heroSlides.length > 0 ? (
+              heroSlides.map((s: any, i: number) => (
+                <div
+                  key={i}
+                  className="absolute inset-0 transition-opacity duration-700"
+                  style={{ opacity: i === currentSlide ? 1 : 0, pointerEvents: i === currentSlide ? "auto" : "none" }}
+                >
+                  <img
+                    src={s.image}
+                    alt={s.title || `Slide ${i + 1}`}
+                    className="w-full h-full object-cover"
+                    draggable={false}
+                  />
+                  {/* Subtle bottom overlay gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
                 </div>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-6">
-                  {slide?.title || "Start Your Journey"}<br />
-                  <span className="text-red-200">{slide?.highlight || "With RizQara"}</span>
-                </h1>
-                <p className="text-lg text-red-50/90 leading-relaxed max-w-xl mx-auto lg:mx-0">
-                  {slide?.subtitle || "Find your dream scholarship and study abroad opportunity today."}
-                </p>
-                <p className="text-sm text-red-100/80 mt-4 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-                  RizQara Global Education helps Bangladeshi students find suitable scholarships, compare study abroad countries, prepare documents, and apply with a clear step-by-step process. From fully funded scholarships to no IELTS study options, our platform is designed to make international education guidance easier, organized and realistic.
-                </p>
+              ))
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center" style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }}>
+                <div className="w-10 h-10 border-4 border-white/20 border-t-white rounded-full animate-spin" />
               </div>
+            )}
 
-              <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
-                <Link
-                  to="/scholarships"
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm transition-all hover:shadow-xl hover:scale-[1.02] border border-white"
-                  style={{ backgroundColor: "white", color: "#7B1F2E" }}
-                >
-                  {slide?.cta1 || "View Scholarships"} <ArrowRight size={15} />
-                </Link>
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm border-2 text-white transition-all hover:bg-white/10"
-                  style={{ borderColor: "rgba(255,255,255,0.35)" }}
-                >
-                  {slide?.cta2 || "Contact Us"}
-                </Link>
-              </div>
-
-              {/* Stats row */}
-              <div className="flex flex-wrap gap-6 pt-7 border-t border-white/10 justify-center lg:justify-start">
-                {stats.map(s => (
-                  <div key={s.label} className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(255,255,255,0.15)" }}>
-                      <span className="text-white">{s.icon}</span>
-                    </div>
-                    <div>
-                      <div className="text-lg font-black text-white leading-none">{s.value}</div>
-                      <div className="text-xs text-gray-400 leading-none mt-0.5">{s.label}</div>
-                    </div>
-                  </div>
+            {/* Dot indicators */}
+            {heroSlides.length > 1 && (
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20 bg-black/25 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+                {heroSlides.map((_: any, i: number) => (
+                  <button
+                    key={i}
+                    onClick={() => goSlide(i)}
+                    aria-label={`Go to slide ${i + 1}`}
+                    className="rounded-full transition-all duration-300 cursor-pointer"
+                    style={{
+                      width: i === currentSlide ? "18px" : "6px",
+                      height: "6px",
+                      backgroundColor: i === currentSlide ? "white" : "rgba(255,255,255,0.5)",
+                    }}
+                  />
                 ))}
               </div>
-            </div>
-
-            {/* ── RIGHT: Premium Search Card ── */}
-            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-white/10">
-              {/* Card header */}
-              <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-100" style={{ backgroundColor: "#7B1F2E08" }}>
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white flex-shrink-0" style={{ backgroundColor: "#7B1F2E" }}>
-                  <Search size={16} />
-                </div>
-                <div>
-                  <h3 className="font-bold text-gray-900 text-sm leading-none">Find Your Perfect Scholarship</h3>
-                  <p className="text-xs text-gray-400 mt-0.5">1,000+ verified scholarships across 25+ countries</p>
-                </div>
-              </div>
-
-              <form onSubmit={handleSearch} className="p-5 space-y-4">
-                {/* Keyword input */}
-                <div>
-                  <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Search Keyword</label>
-                  <div className="relative">
-                    <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                    <input
-                      type="text"
-                      value={searchQuery}
-                      onChange={e => setSearchQuery(e.target.value)}
-                      placeholder="Scholarship, university, subject..."
-                      className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#7B1F2E] focus:ring-2 focus:ring-[#7B1F2E12] transition-all bg-white focus:bg-white"
-                    />
-                  </div>
-                </div>
-
-                {/* Dropdowns */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Destination</label>
-                    <select
-                      value={selectedCountry}
-                      onChange={e => setSelectedCountry(e.target.value)}
-                      className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-gray-50 text-gray-700 focus:outline-none focus:border-[#7B1F2E] transition-all"
-                    >
-                      <option value="">Any Country</option>
-                      {["Japan","Hungary","Turkey","Russia","Romania","Saudi Arabia","China","Germany","South Korea"].map(c => (
-                        <option key={c} value={c}>{c}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Degree Level</label>
-                    <select
-                      value={selectedDegree}
-                      onChange={e => setSelectedDegree(e.target.value)}
-                      className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-gray-50 text-gray-700 focus:outline-none focus:border-[#7B1F2E] transition-all"
-                    >
-                      <option value="">Any Degree</option>
-                      {["Bachelor","Master's","PhD","MBBS","Foundation"].map(d => (
-                        <option key={d} value={d}>{d}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                {/* Quick filter chips */}
-                <div>
-                  <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Quick Filters</label>
-                  <div className="flex gap-2">
-                    {[
-                      { label: "No IELTS",     param: "ielts=false",             icon: <FileCheck size={11} /> },
-                      { label: "Fully Funded", param: "funding=Fully+Funded",    icon: <Banknote size={11} /> },
-                      { label: "Open Now",     param: "status=Open",             icon: <CheckCircle size={11} /> },
-                    ].map(f => (
-                      <button
-                        key={f.label}
-                        type="button"
-                        onClick={() => navigate(`/scholarships?${f.param}`)}
-                        className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs rounded-lg border font-semibold transition-all duration-200 border-[#7B1F2E25] text-[#7B1F2E] bg-[#7B1F2E08] hover:bg-[#7B1F2E] hover:text-white active:bg-[#7B1F2E] active:text-white active:scale-95 focus:ring-2 focus:ring-[#7B1F2E20] outline-none"
-                      >
-                        {f.icon} {f.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Search button */}
-                <button
-                  type="submit"
-                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm text-white transition-all hover:opacity-90 hover:shadow-lg"
-                  style={{ backgroundColor: "#7B1F2E" }}
-                >
-                  <Search size={14} />
-                  Search Scholarships
-                  <ArrowRight size={14} />
-                </button>
-              </form>
-
-              {/* Trust badge */}
-              <div className="px-5 pb-4 flex items-center justify-center gap-2 text-xs text-gray-400">
-                <ShieldCheck size={12} style={{ color: "#7B1F2E" }} />
-                All scholarships verified from official sources
-              </div>
-            </div>
+            )}
           </div>
-        </div>
-
-        {/* Slide controls */}
-        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2.5 z-20">
-          {heroSlides.map((_, i: number) => (
-            <button
-              key={i}
-              onClick={() => goSlide(i)}
-              className={`rounded-full transition-all ${i === currentSlide ? "w-5 h-2 bg-white" : "w-2 h-2 bg-white/35 hover:bg-white/60"}`}
-            />
-          ))}
         </div>
       </section>
 
@@ -554,12 +405,10 @@ export default function Home() {
       {/* ══════════════════════ SCHOLARSHIP CATEGORIES ════════════════════ */}
       <section className="py-16" style={{ backgroundColor: "#FDF8F5" }}>
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-            <div className="max-w-2xl">
-              <SectionLabel>Opportunity Hub</SectionLabel>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">Find Scholarships by Country, Degree and Funding Type</h2>
-              <p className="text-gray-500 leading-relaxed">Explore government, university, fully funded, no IELTS, Bachelor, Master’s, PhD and MBBS scholarships for Bangladeshi students.</p>
-            </div>
+          <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-10">
+            <SectionLabel>Opportunity Hub</SectionLabel>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">Find Scholarships by Country, Degree and Funding Type</h2>
+            <p className="text-gray-500 leading-relaxed max-w-2xl">Explore government, university, fully funded, no IELTS, Bachelor, Master’s, PhD and MBBS scholarships for Bangladeshi students.</p>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -624,7 +473,7 @@ export default function Home() {
             {countryList.map(c => (
               <Link
                 key={c._id || c.id}
-                to={`/countries/${c.id}`}
+                to={`/countries/${c.slug || c.id || c._id}`}
                 className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 border border-gray-100"
               >
                 <div className="relative h-36 overflow-hidden">
@@ -1032,25 +881,81 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {blogList.slice(0, 3).map((b: any) => (
-              <Link key={b._id || b.id} to={`/blog/${b.slug || b._id || b.id}`} className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all border border-gray-100">
-                <div className="relative h-44 overflow-hidden">
-                  <img src={b.image} alt={b.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
-                  <div className="absolute top-3 left-3">
-                    <span className="px-2.5 py-1 rounded-lg text-xs font-bold text-white" style={{ backgroundColor: "#7B1F2E" }}>{b.category}</span>
+            {blogList.slice(0, 3).map((b: any) => {
+              // Build a unified images list: prefer b.images array, fall back to b.image
+              const allImages: string[] = (b.images && b.images.length > 0)
+                ? b.images
+                : b.image ? [b.image] : [];
+              const hasMultiple = allImages.length >= 2;
+
+              return (
+                <Link key={b._id || b.id} to={`/blog/${b.slug || b._id || b.id}`} className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all border border-gray-100">
+
+                  {/* ── Image area ── */}
+                  {hasMultiple ? (
+                    /* Multi-image strip: main image left, stack right */
+                    <div className="relative h-44 overflow-hidden grid gap-0.5" style={{ gridTemplateColumns: "1fr 1fr" }}>
+                      {/* Main / first image */}
+                      <div className="relative overflow-hidden" style={{ gridRow: "span 2" }}>
+                        <img
+                          src={allImages[0]}
+                          alt={b.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                      {/* Second image */}
+                      <div className="relative overflow-hidden">
+                        <img
+                          src={allImages[1]}
+                          alt={`${b.title} 2`}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                      {/* Third image (if exists) */}
+                      {allImages[2] && (
+                        <div className="relative overflow-hidden">
+                          <img
+                            src={allImages[2]}
+                            alt={`${b.title} 3`}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                          {/* +more badge if there are even more */}
+                          {allImages.length > 3 && (
+                            <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                              <span className="text-white text-sm font-bold">+{allImages.length - 3}</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      {/* Category badge */}
+                      <div className="absolute top-3 left-3 z-10">
+                        <span className="px-2.5 py-1 rounded-lg text-xs font-bold text-white" style={{ backgroundColor: "#7B1F2E" }}>{b.category}</span>
+                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+                    </div>
+                  ) : (
+                    /* Single image — original layout */
+                    <div className="relative h-44 overflow-hidden">
+                      <img src={allImages[0] || ""} alt={b.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
+                      <div className="absolute top-3 left-3">
+                        <span className="px-2.5 py-1 rounded-lg text-xs font-bold text-white" style={{ backgroundColor: "#7B1F2E" }}>{b.category}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* ── Text content ── */}
+                  <div className="p-5">
+                    <h4 className="font-bold text-gray-900 text-sm mb-2 group-hover:text-[#7B1F2E] transition-colors line-clamp-2 leading-snug">{b.title}</h4>
+                    <p className="text-xs text-gray-500 mb-3 line-clamp-2 leading-relaxed">{b.excerpt}</p>
+                    <div className="flex items-center justify-between text-xs text-gray-400">
+                      <span className="flex items-center gap-1.5"><Calendar size={11} />{b.date}</span>
+                      <span className="flex items-center gap-1.5"><Clock size={11} />{b.readTime}</span>
+                    </div>
                   </div>
-                </div>
-                <div className="p-5">
-                  <h4 className="font-bold text-gray-900 text-sm mb-2 group-hover:text-[#7B1F2E] transition-colors line-clamp-2 leading-snug">{b.title}</h4>
-                  <p className="text-xs text-gray-500 mb-3 line-clamp-2 leading-relaxed">{b.excerpt}</p>
-                  <div className="flex items-center justify-between text-xs text-gray-400">
-                    <span className="flex items-center gap-1.5"><Calendar size={11} />{b.date}</span>
-                    <span className="flex items-center gap-1.5"><Clock size={11} />{b.readTime}</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>

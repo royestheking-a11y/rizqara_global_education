@@ -3,10 +3,11 @@ import { Link, useNavigate, useParams } from "react-router";
 import {
   LayoutDashboard, GraduationCap, Users, UserCheck, FileText, Bell, BookOpen,
   MessageSquare, MessageCircle, Star, HelpCircle, Settings, LogOut, Plus, Edit,
-  Trash2, Eye, Search, ChevronDown, X, Shield, Globe, BarChart3,
-  TrendingUp, AlertCircle, CheckCircle, Clock, ClipboardList,
+  Trash2, Eye, Search, ChevronDown, ChevronUp, X, Shield, Globe, BarChart3,
+  TrendingUp, AlertCircle, CheckCircle, Clock, ClipboardList, Image,
   DollarSign, Megaphone, Mail, Phone, ArrowLeft, MoreVertical, Paperclip, Send, ArrowRight, Receipt, Download
 } from "lucide-react";
+
 import { useAuth } from "../hooks/useAuth";
 import { TableSkeleton, DashboardSkeleton, GenericGridSkeleton } from "../components/ui/PremiumSkeletons";
 import { Skeleton } from "../components/ui/skeleton";
@@ -1992,40 +1993,13 @@ function AdminMessages() {
 
 // ======================== CAROUSEL MANAGEMENT ========================
 
-const carouselPlaceholderSvg = `
-<svg width="240" height="200" viewBox="0 0 240 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <clipPath id="clip-path">
-      <rect x="-20" y="-20" h 240 v 200 h -240 Z" />
-    </clipPath>
-  </defs>
-  <g clip-path="url(#clip-path)">
-    <rect width="240" height="200" fill="#7B1F2E" />
-    <circle cx="200" cy="50" r="100" fill="white" fill-opacity="0.05" />
-    <circle cx="40" cy="150" r="80" fill="white" fill-opacity="0.05" />
-    <rect x="20" y="40" width="200" height="10" rx="2" fill="white" fill-opacity="0.2" />
-    <rect x="20" y="60" width="150" height="8" rx="2" fill="white" fill-opacity="0.1" />
-    <rect x="20" y="140" width="80" height="25" rx="4" fill="white" />
-  </g>
-</svg>
-`;
-
 function CarouselManagement({ showToast }: any) {
   const [slides, setSlides] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editItem, setEditItem] = useState<any>(null);
-  const [form, setForm] = useState<any>({
-    title: "",
-    highlight: "",
-    subtitle: "",
-    cta1: "Explore Scholarships",
-    cta2: "Contact Us",
-    bgGradient: "linear-gradient(135deg, #7B1F2E 0%, #3D0F17 100%)",
-    image: "",
-    badgeIcon: "GraduationCap",
-    badge: ""
-  });
+  const [imageUrl, setImageUrl] = useState("");
+  const [saving, setSaving] = useState(false);
 
   const fetchSlides = async () => {
     try {
@@ -2038,67 +2012,120 @@ function CarouselManagement({ showToast }: any) {
     }
   };
 
-  useEffect(() => {
-    fetchSlides();
-  }, []);
+  useEffect(() => { fetchSlides(); }, []);
 
   if (loading) return <GenericGridSkeleton />;
 
+  const openAdd = () => { setEditItem(null); setImageUrl(""); setShowModal(true); };
+  const openEdit = (s: any) => { setEditItem(s); setImageUrl(s.image || ""); setShowModal(true); };
+  const closeModal = () => { setShowModal(false); setEditItem(null); setImageUrl(""); };
+
   const handleSave = async () => {
+    if (!imageUrl.trim()) { showToast("Please upload or enter an image URL", "error"); return; }
+    setSaving(true);
     try {
       if (editItem) {
-        await api.put(`/heroslides/${editItem.id || editItem._id}`, form);
-        showToast("Carousel slide updated");
+        await api.put(`/heroslides/${editItem._id || editItem.id}`, { image: imageUrl });
+        showToast("Slide image updated");
       } else {
-        await api.post('/heroslides', form);
-        showToast("New slide added to carousel");
+        await api.post('/heroslides', { image: imageUrl, order: slides.length });
+        showToast("Slide added to carousel");
       }
+      closeModal();
       fetchSlides();
-      setShowModal(false);
-      setEditItem(null);
-      setForm({ title: "", highlight: "", subtitle: "", cta1: "Explore Scholarships", cta2: "Contact Us", bgGradient: "linear-gradient(135deg, #7B1F2E 0%, #3D0F17 100%)", image: "", badgeIcon: "GraduationCap", badge: "" });
     } catch (err) {
-      showToast("Save failed", "error");
+      showToast(editItem ? "Failed to update slide" : "Failed to add slide", "error");
+    } finally {
+      setSaving(false);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm("Delete this slide?")) {
-      try {
-        await api.delete(`/heroslides/${id}`);
-        fetchSlides();
-        showToast("Slide deleted", "error");
-      } catch (err) {
-        showToast("Delete failed", "error");
-      }
+    if (!confirm("Delete this slide from the carousel?")) return;
+    try {
+      await api.delete(`/heroslides/${id}`);
+      showToast("Slide deleted", "error");
+      fetchSlides();
+    } catch (err) {
+      showToast("Delete failed", "error");
+    }
+  };
+
+  const moveSlide = async (idx: number, dir: "up" | "down") => {
+    const newSlides = [...slides];
+    const swapIdx = dir === "up" ? idx - 1 : idx + 1;
+    if (swapIdx < 0 || swapIdx >= newSlides.length) return;
+    [newSlides[idx], newSlides[swapIdx]] = [newSlides[swapIdx], newSlides[idx]];
+    const withOrder = newSlides.map((s, i) => ({ ...s, order: i }));
+    setSlides(withOrder);
+    try {
+      await api.patch('/heroslides/reorder', withOrder.map(s => ({ id: s._id || s.id, order: s.order })));
+      showToast("Order saved");
+    } catch {
+      showToast("Failed to save order", "error");
+      fetchSlides();
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-in fade-in duration-300">
       <div className="flex justify-between items-center">
-        <h2 className="font-bold text-gray-900 text-lg">Hero Carousel Management</h2>
-        <button onClick={() => setShowModal(true)} className="flex items-center gap-2 px-4 py-2 text-white text-sm rounded-lg font-medium" style={{ backgroundColor: "#7B1F2E" }}>
-          <Plus size={16} /> Add Slide
+        <div>
+          <h2 className="font-bold text-gray-900 text-lg">Hero Carousel</h2>
+          <p className="text-xs text-gray-500 mt-0.5">{slides.length} slide{slides.length !== 1 ? "s" : ""} · use ↑↓ to reorder</p>
+        </div>
+        <button onClick={openAdd} className="flex items-center gap-2 px-4 py-2.5 text-white text-sm rounded-xl font-semibold shadow-sm transition hover:opacity-90 active:scale-95" style={{ backgroundColor: "#7B1F2E" }}>
+          <Plus size={16} /> Add Image
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {slides.length === 0 && (
+        <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-gray-100">
+          <div className="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <Image size={32} className="text-gray-300" />
+          </div>
+          <h3 className="font-bold text-gray-900">No slides yet</h3>
+          <p className="text-sm text-gray-500 mt-1">Click "Add Image" to upload your first carousel slide.</p>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {slides.map((s: any, idx: number) => (
-          <div key={s._id || s.id || idx} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
-            <div className="h-48 relative flex items-center justify-center text-white p-8 overflow-hidden" style={{ background: s.bgGradient }}>
-              <div className="relative z-10 text-center">
-                <div className="text-[10px] font-bold uppercase tracking-wider mb-2 opacity-80">{s.badge}</div>
-                <div className="font-bold text-lg leading-tight mb-2">{s.title}</div>
-                <div className="text-sm opacity-90">{s.highlight}</div>
+          <div key={s._id || s.id || idx} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col group">
+            <div className="relative aspect-video bg-gray-100 overflow-hidden">
+              {s.image ? (
+                <img src={s.image} alt={`Slide ${idx + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-300"><Image size={40} /></div>
+              )}
+              <div className="absolute top-2 left-2 flex items-center gap-1.5">
+                {idx === 0 && (
+                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-wider text-white" style={{ backgroundColor: "#7B1F2E" }}>★ Shows First</span>
+                )}
+                <span className="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-black/50 text-white backdrop-blur-sm">#{idx + 1}</span>
               </div>
-              {s.image && <img src={s.image} className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none" alt="" />}
+              <button onClick={() => openEdit(s)} className="absolute top-2 right-2 p-1.5 rounded-lg bg-white/90 text-gray-700 hover:bg-white hover:text-[#7B1F2E] shadow-sm transition opacity-0 group-hover:opacity-100" title="Replace image">
+                <Edit size={13} />
+              </button>
             </div>
-            <div className="p-4 flex items-center justify-between bg-gray-50/50">
-              <div className="text-xs text-gray-500 font-medium">Slide #{idx + 1}</div>
-              <div className="flex gap-2">
-                <button onClick={() => { setEditItem(s); setForm(s); setShowModal(true); }} className="p-2 rounded-lg hover:bg-white hover:shadow-sm text-yellow-600 transition-all border border-transparent hover:border-gray-100"><Edit size={14} /></button>
-                <button onClick={() => handleDelete(s.id || s._id)} className="p-2 rounded-lg hover:bg-white hover:shadow-sm text-red-500 transition-all border border-transparent hover:border-gray-100"><Trash2 size={14} /></button>
+
+            <div className="p-3 flex items-center justify-between bg-gray-50/60">
+              <div className="flex items-center gap-1">
+                <button onClick={() => moveSlide(idx, "up")} disabled={idx === 0} title="Move earlier" className="p-1.5 rounded-lg text-gray-500 hover:bg-white hover:shadow-sm hover:text-[#7B1F2E] transition disabled:opacity-30 disabled:pointer-events-none">
+                  <ChevronUp size={16} />
+                </button>
+                <button onClick={() => moveSlide(idx, "down")} disabled={idx === slides.length - 1} title="Move later" className="p-1.5 rounded-lg text-gray-500 hover:bg-white hover:shadow-sm hover:text-[#7B1F2E] transition disabled:opacity-30 disabled:pointer-events-none">
+                  <ChevronDown size={16} />
+                </button>
+                <span className="text-[10px] text-gray-400 font-medium ml-1">Reorder</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <button onClick={() => openEdit(s)} className="p-1.5 rounded-lg text-yellow-500 hover:bg-yellow-50 hover:text-yellow-600 transition" title="Edit image">
+                  <Edit size={14} />
+                </button>
+                <button onClick={() => handleDelete(s._id || s.id)} className="p-1.5 rounded-lg text-red-400 hover:bg-red-50 hover:text-red-600 transition" title="Delete slide">
+                  <Trash2 size={14} />
+                </button>
               </div>
             </div>
           </div>
@@ -2107,63 +2134,29 @@ function CarouselManagement({ showToast }: any) {
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-8 overflow-y-auto max-h-[90vh]">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="font-bold text-gray-900 text-xl">{editItem ? "Edit Slide" : "Add Slide"}</h3>
-              <button onClick={() => { setShowModal(false); setEditItem(null); }} className="p-1 hover:bg-gray-100 rounded-full transition"><X size={20} /></button>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="md:col-span-2">
-                <label className="text-xs font-bold text-gray-500 uppercase mb-1.5 block">Slide Title</label>
-                <input value={form.title} onChange={e => setForm((p: any) => ({ ...p, title: e.target.value }))} className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#7B1F2E]" placeholder="e.g., Find the Right Scholarship." />
-              </div>
-              <div className="md:col-span-2">
-                <label className="text-xs font-bold text-gray-500 uppercase mb-1.5 block">Highlight Text</label>
-                <input value={form.highlight} onChange={e => setForm((p: any) => ({ ...p, highlight: e.target.value }))} className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#7B1F2E]" placeholder="e.g., Apply with Confidence." />
-              </div>
-              <div className="md:col-span-2">
-                <label className="text-xs font-bold text-gray-500 uppercase mb-1.5 block">Subtitle</label>
-                <textarea value={form.subtitle} onChange={e => setForm((p: any) => ({ ...p, subtitle: e.target.value }))} rows={2} className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#7B1F2E] resize-none" placeholder="Short description below the title..." />
-              </div>
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-7">
+            <div className="flex items-center justify-between mb-5">
               <div>
-                <label className="text-xs font-bold text-gray-500 uppercase mb-1.5 block">CTA 1 Text</label>
-                <input value={form.cta1} onChange={e => setForm((p: any) => ({ ...p, cta1: e.target.value }))} className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#7B1F2E]" />
+                <h3 className="font-bold text-gray-900 text-lg">{editItem ? "Edit Slide Image" : "Add Carousel Image"}</h3>
+                <p className="text-xs text-gray-500 mt-0.5">Recommended: 16:9 ratio (e.g. 1920×1080px)</p>
               </div>
-              <div>
-                <label className="text-xs font-bold text-gray-500 uppercase mb-1.5 block">CTA 2 Text</label>
-                <input value={form.cta2} onChange={e => setForm((p: any) => ({ ...p, cta2: e.target.value }))} className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#7B1F2E]" />
-              </div>
-              <div>
-                <label className="text-xs font-bold text-gray-500 uppercase mb-1.5 block">Badge Text</label>
-                <input value={form.badge} onChange={e => setForm((p: any) => ({ ...p, badge: e.target.value }))} className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#7B1F2E]" placeholder="e.g., 1,000+ Scholarships" />
-              </div>
-              <div>
-                <label className="text-xs font-bold text-gray-500 uppercase mb-1.5 block">Badge Icon</label>
-                <select value={form.badgeIcon} onChange={e => setForm((p: any) => ({ ...p, badgeIcon: e.target.value }))} className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none">
-                  <option value="GraduationCap">Graduation Cap</option>
-                  <option value="FileCheck">File Check</option>
-                  <option value="CheckCircle">Check Circle</option>
-                  <option value="BarChart3">Bar Chart</option>
-                </select>
-              </div>
-              <div className="md:col-span-2">
-                <label className="text-xs font-bold text-gray-500 uppercase mb-1.5 block">Background Gradient</label>
-                <input value={form.bgGradient} onChange={e => setForm((p: any) => ({ ...p, bgGradient: e.target.value }))} className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#7B1F2E]" placeholder="linear-gradient(...)" />
-                <div className="mt-2 flex gap-2">
-                  {["linear-gradient(135deg, #7B1F2E 0%, #3D0F17 100%)", "linear-gradient(135deg, #1A3A5C 0%, #0D2040 100%)", "linear-gradient(135deg, #1A3A2A 0%, #0D2018 100%)", "linear-gradient(135deg, #3D2A1A 0%, #1A1208 100%)"].map(g => (
-                    <button key={g} onClick={() => setForm((p: any) => ({ ...p, bgGradient: g }))} className="w-8 h-8 rounded-full border-2 border-white shadow-sm" style={{ background: g }} type="button" />
-                  ))}
-                </div>
-              </div>
-              <div className="md:col-span-2">
-                <ImageUpload value={form.image} onChange={val => setForm((p: any) => ({ ...p, image: val }))} label="Background Image" />
-              </div>
+              <button onClick={closeModal} className="p-1.5 hover:bg-gray-100 rounded-full transition"><X size={18} /></button>
             </div>
 
-            <div className="flex gap-3 mt-8">
-              <button onClick={handleSave} className="flex-1 py-3 text-white rounded-xl font-bold text-sm transition-all hover:opacity-90 hover:shadow-lg active:scale-[0.98]" style={{ backgroundColor: "#7B1F2E" }}>{editItem ? "Update Slide" : "Create Slide"}</button>
-              <button onClick={() => { setShowModal(false); setEditItem(null); }} className="flex-1 py-3 border border-gray-200 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-50 transition-all">Cancel</button>
+            <ImageUpload value={imageUrl} onChange={(val: string) => setImageUrl(val)} label={editItem ? "Replace Image" : "Carousel Image"} />
+
+            {imageUrl && (
+              <div className="mt-4 rounded-xl overflow-hidden border border-gray-100 aspect-video bg-gray-50">
+                <img src={imageUrl} alt="Preview" className="w-full h-full object-cover" />
+              </div>
+            )}
+
+            <div className="flex gap-3 mt-6">
+              <button onClick={handleSave} disabled={saving || !imageUrl.trim()} className="flex-1 py-3 text-white rounded-xl font-bold text-sm transition hover:opacity-90 hover:shadow-lg active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2" style={{ backgroundColor: "#7B1F2E" }}>
+                {saving ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : editItem ? <Edit size={15} /> : <Plus size={15} />}
+                {saving ? "Saving..." : editItem ? "Update Image" : "Add to Carousel"}
+              </button>
+              <button onClick={closeModal} className="flex-1 py-3 border border-gray-200 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-50 transition">Cancel</button>
             </div>
           </div>
         </div>
@@ -2173,6 +2166,7 @@ function CarouselManagement({ showToast }: any) {
 }
 
 function PaymentManagement({ showToast }: { showToast: (msg: string, type?: "success" | "error") => void }) {
+
   const [payments, setPayments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 

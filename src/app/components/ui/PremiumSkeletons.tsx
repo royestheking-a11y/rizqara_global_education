@@ -2,65 +2,9 @@ import { Skeleton } from "./skeleton";
 
 export function HeroSkeleton() {
   return (
-    <section className="relative overflow-hidden min-h-[610px] flex items-center bg-white border-b border-gray-50">
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 w-full">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <Skeleton className="h-6 w-32 rounded-full mb-6" />
-            <Skeleton className="h-12 w-full max-w-md mb-4" />
-            <Skeleton className="h-12 w-3/4 max-w-sm mb-4" />
-            <Skeleton className="h-6 w-2/3 max-w-xs mb-8" />
-            <div className="flex flex-wrap gap-3 mb-10">
-              <Skeleton className="h-12 w-40 rounded-xl" />
-              <Skeleton className="h-12 w-40 rounded-xl" />
-            </div>
-            <div className="flex flex-wrap gap-6 pt-7 border-t border-gray-100">
-              {[1, 2, 3, 4].map(i => (
-                <div key={i} className="flex items-center gap-2.5">
-                  <Skeleton className="w-8 h-8 rounded-lg" />
-                  <div className="space-y-1">
-                    <Skeleton className="h-4 w-12" />
-                    <Skeleton className="h-3 w-16" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="bg-white rounded-2xl shadow-2xl overflow-hidden p-6 space-y-6">
-            <div className="flex items-center gap-3 mb-4">
-              <Skeleton className="w-9 h-9 rounded-xl" />
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-32" />
-                <Skeleton className="h-3 w-48" />
-              </div>
-            </div>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Skeleton className="h-3 w-24" />
-                <Skeleton className="h-10 w-full rounded-xl" />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-2">
-                  <Skeleton className="h-3 w-20" />
-                  <Skeleton className="h-10 w-full rounded-xl" />
-                </div>
-                <div className="space-y-2">
-                  <Skeleton className="h-3 w-20" />
-                  <Skeleton className="h-10 w-full rounded-xl" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Skeleton className="h-3 w-24" />
-                <div className="flex gap-2">
-                  <Skeleton className="h-8 flex-1 rounded-lg" />
-                  <Skeleton className="h-8 flex-1 rounded-lg" />
-                  <Skeleton className="h-8 flex-1 rounded-lg" />
-                </div>
-              </div>
-              <Skeleton className="h-12 w-full rounded-xl" />
-            </div>
-          </div>
-        </div>
+    <section className="w-full py-4 md:py-6" style={{ backgroundColor: "#FDF8F5" }}>
+      <div className="max-w-7xl mx-auto px-4">
+        <Skeleton className="w-full aspect-[21/9] md:aspect-[3/1] rounded-2xl md:rounded-3xl" />
       </div>
     </section>
   );

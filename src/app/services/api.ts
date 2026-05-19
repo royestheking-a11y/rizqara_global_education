@@ -56,6 +56,25 @@ export const api = {
     }
     return response.json();
   },
+  patch: async (endpoint: string, data: any) => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      method: 'PATCH',
+      mode: 'cors',
+      headers: {
+        'Authorization': token ? `Bearer ${token}` : '',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      const error = new Error(errorData.message || 'API Error');
+      (error as any).status = response.status;
+      throw error;
+    }
+    return response.json();
+  },
   delete: async (endpoint: string) => {
     const token = localStorage.getItem('token');
     const response = await fetch(`${API_URL}${endpoint}`, {

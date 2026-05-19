@@ -8,6 +8,7 @@ const blogPostSchema = new mongoose.Schema({
   excerpt: { type: String },
   content: { type: String },
   image: { type: String },
+  images: [{ type: String }],
   date: { type: String },
   readTime: { type: String },
   author: { type: String },
