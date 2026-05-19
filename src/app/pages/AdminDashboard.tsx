@@ -1650,9 +1650,9 @@ function Analytics() {
       <h2 className="font-bold text-gray-900">Analytics Overview</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: "Page Views", value: statsData?.pageViews?.toLocaleString() || "0", trend: "Tracking Disabled", icon: <Eye size={22} />, color: "#7B1F2E" },
+          { label: "Page Views", value: statsData?.pageViews?.toLocaleString() || "0", trend: "Active Analytics", icon: <Eye size={22} />, color: "#7B1F2E" },
           { label: "Profile Checks", value: statsData?.profileChecks?.toLocaleString() || "0", trend: "Total Leads", icon: <UserCheck size={22} />, color: "#3B82F6" },
-          { label: "WhatsApp Clicks", value: statsData?.whatsappClicks?.toLocaleString() || "0", trend: "Tracking Disabled", icon: <MessageCircle size={22} />, color: "#10B981" },
+          { label: "WhatsApp Clicks", value: statsData?.whatsappClicks?.toLocaleString() || "0", trend: "Active Advisor Clicks", icon: <MessageCircle size={22} />, color: "#10B981" },
           { label: "Applications Started", value: statsData?.applicationsStarted?.toLocaleString() || "0", trend: "Total Applications", icon: <ClipboardList size={22} />, color: "#F59E0B" },
         ].map((s, i) => (
           <div key={i} className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 transition-all hover:shadow-md">

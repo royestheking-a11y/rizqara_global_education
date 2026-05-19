@@ -5,6 +5,35 @@ const Scholarship = require('../models/Scholarship');
 const Lead = require('../models/Lead');
 const Application = require('../models/Application');
 const Payment = require('../models/Payment');
+const Analytics = require('../models/Analytics');
+
+// Increment Page Views
+router.post('/view', async (req, res) => {
+  try {
+    const updated = await Analytics.findOneAndUpdate(
+      { metric: 'pageViews' },
+      { $inc: { value: 1 } },
+      { upsert: true, new: true }
+    );
+    res.json({ success: true, value: updated.value });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Increment WhatsApp Clicks
+router.post('/whatsapp-click', async (req, res) => {
+  try {
+    const updated = await Analytics.findOneAndUpdate(
+      { metric: 'whatsappClicks' },
+      { $inc: { value: 1 } },
+      { upsert: true, new: true }
+    );
+    res.json({ success: true, value: updated.value });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 router.get('/', async (req, res) => {
   try {
@@ -23,7 +52,6 @@ router.get('/', async (req, res) => {
     // Total Revenue calculation
     const acceptedPayments = await Payment.find({ status: 'accepted' });
     const totalRevenueSum = acceptedPayments.reduce((acc, curr) => acc + (curr.amount || 0), 0);
-    // Format to currency-like string if needed, else raw number
     const formattedRevenue = totalRevenueSum > 0 ? `৳ ${totalRevenueSum.toLocaleString()}` : "৳ 0";
 
     // For analytics page
@@ -43,6 +71,12 @@ router.get('/', async (req, res) => {
       count: c.count
     }));
 
+    // Fetch dynamic analytics page views and WhatsApp clicks
+    const pageViewsDoc = await Analytics.findOne({ metric: 'pageViews' });
+    const whatsappClicksDoc = await Analytics.findOne({ metric: 'whatsappClicks' });
+    const pageViews = pageViewsDoc ? pageViewsDoc.value : 0;
+    const whatsappClicks = whatsappClicksDoc ? whatsappClicksDoc.value : 0;
+
     res.json({
       totalStudents: studentCount,
       activeApplications: totalApplications,
@@ -51,10 +85,9 @@ router.get('/', async (req, res) => {
       pendingDocuments: pendingDocsCount,
       totalRevenue: formattedRevenue,
       
-      // Untracked metrics set to 0 instead of fake data
-      pageViews: 0, 
+      pageViews: pageViews, 
       profileChecks: totalLeads,
-      whatsappClicks: 0, 
+      whatsappClicks: whatsappClicks, 
       applicationsStarted: totalApplications,
       topCountries: topCountries
     });

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { X, MessageCircle, ChevronRight } from "lucide-react";
+import { api } from "../../services/api";
 
 const options = [
   { label: "General Inquiry", message: "Hello! I have a general inquiry about RizQara Global Education." },
@@ -13,9 +14,26 @@ export function WhatsAppButton() {
   const [isOpen, setIsOpen] = useState(false);
   const waNumber = "8801915342776";
 
-  const openChat = (message: string) => {
+  const openChat = async (message: string) => {
+    try {
+      await api.post('/stats/whatsapp-click');
+    } catch (err) {
+      console.error("Failed to track WhatsApp option click", err);
+    }
     window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`, "_blank");
     setIsOpen(false);
+  };
+
+  const toggleOpen = async () => {
+    const nextState = !isOpen;
+    if (nextState) {
+      try {
+        await api.post('/stats/whatsapp-click');
+      } catch (err) {
+        console.error("Failed to track WhatsApp panel open", err);
+      }
+    }
+    setIsOpen(nextState);
   };
 
   return (
@@ -75,7 +93,7 @@ export function WhatsAppButton() {
 
       {/* Main Button */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleOpen}
         className="fixed bottom-5 right-5 z-50 w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
         style={{ backgroundColor: "#25D366" }}
         aria-label="Chat on WhatsApp"
