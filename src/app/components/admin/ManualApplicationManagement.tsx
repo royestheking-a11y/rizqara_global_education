@@ -67,6 +67,7 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
     notes: "",
     status: "Pending",
     paymentAmount: 0,
+    paymentCurrency: "USD",
     paymentMethod: "WhatsApp Manual",
     paymentStatus: "Unpaid"
   });
@@ -77,6 +78,7 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
     notes: "",
     status: "Pending",
     paymentAmount: 0,
+    paymentCurrency: "USD",
     paymentMethod: "WhatsApp Manual",
     paymentStatus: "Unpaid"
   });
@@ -127,6 +129,7 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
         notes: "",
         status: "Pending",
         paymentAmount: 0,
+        paymentCurrency: "USD",
         paymentMethod: "WhatsApp Manual",
         paymentStatus: "Unpaid"
       });
@@ -170,6 +173,7 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
         status: newAppForm.status,
         payment: {
           amount: Number(newAppForm.paymentAmount),
+          currency: newAppForm.paymentCurrency || 'USD',
           method: newAppForm.paymentMethod,
           status: newAppForm.paymentStatus,
           date: new Date()
@@ -190,6 +194,7 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
         notes: "",
         status: "Pending",
         paymentAmount: 0,
+        paymentCurrency: "USD",
         paymentMethod: "WhatsApp Manual",
         paymentStatus: "Unpaid"
       });
@@ -304,7 +309,15 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
           </div>
           <div className="mt-4 pt-3 border-t border-gray-50 flex justify-between items-center">
             <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Today's Payments</span>
-            <span className="text-sm font-extrabold text-[#7B1F2E]">$ {(stats?.daily?.revenue || 0).toLocaleString()}</span>
+            <span className="text-sm font-extrabold text-[#7B1F2E]">
+              {stats?.daily?.revenue > 0 && stats?.daily?.revenueBDT > 0 ? (
+                <span>${stats.daily.revenue.toLocaleString()} / ৳{stats.daily.revenueBDT.toLocaleString()}</span>
+              ) : stats?.daily?.revenueBDT > 0 ? (
+                <span>৳{stats.daily.revenueBDT.toLocaleString()}</span>
+              ) : (
+                <span>${(stats?.daily?.revenue || 0).toLocaleString()}</span>
+              )}
+            </span>
           </div>
         </div>
 
@@ -320,7 +333,15 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
           </div>
           <div className="mt-4 pt-3 border-t border-gray-50 flex justify-between items-center">
             <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Monthly Revenue</span>
-            <span className="text-sm font-extrabold text-green-700">$ {(stats?.monthly?.revenue || 0).toLocaleString()}</span>
+            <span className="text-sm font-extrabold text-green-700">
+              {stats?.monthly?.revenue > 0 && stats?.monthly?.revenueBDT > 0 ? (
+                <span>${stats.monthly.revenue.toLocaleString()} / ৳{stats.monthly.revenueBDT.toLocaleString()}</span>
+              ) : stats?.monthly?.revenueBDT > 0 ? (
+                <span>৳{stats.monthly.revenueBDT.toLocaleString()}</span>
+              ) : (
+                <span>${(stats?.monthly?.revenue || 0).toLocaleString()}</span>
+              )}
+            </span>
           </div>
         </div>
 
@@ -336,7 +357,15 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
           </div>
           <div className="mt-4 pt-3 border-t border-gray-50 flex justify-between items-center">
             <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Yearly Revenue</span>
-            <span className="text-sm font-extrabold text-[#7B1F2E]">$ {(stats?.yearly?.revenue || 0).toLocaleString()}</span>
+            <span className="text-sm font-extrabold text-[#7B1F2E]">
+              {stats?.yearly?.revenue > 0 && stats?.yearly?.revenueBDT > 0 ? (
+                <span>${stats.yearly.revenue.toLocaleString()} / ৳{stats.yearly.revenueBDT.toLocaleString()}</span>
+              ) : stats?.yearly?.revenueBDT > 0 ? (
+                <span>৳{stats.yearly.revenueBDT.toLocaleString()}</span>
+              ) : (
+                <span>${(stats?.yearly?.revenue || 0).toLocaleString()}</span>
+              )}
+            </span>
           </div>
         </div>
 
@@ -388,9 +417,20 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
                   ? record.applications[record.applications.length - 1] 
                   : null;
                   
-                const totalPaid = record.applications 
-                  ? record.applications.reduce((sum: number, app: any) => sum + (app.payment?.status === "Completed" ? (app.payment?.amount || 0) : 0), 0)
-                  : 0;
+                let totalPaidUSD = 0;
+                let totalPaidBDT = 0;
+                if (record.applications) {
+                  record.applications.forEach((app: any) => {
+                    if (app.payment?.status === "Completed") {
+                      const amount = app.payment?.amount || 0;
+                      if (app.payment?.currency === "BDT") {
+                        totalPaidBDT += amount;
+                      } else {
+                        totalPaidUSD += amount;
+                      }
+                    }
+                  });
+                }
 
                 return (
                   <tr key={record._id} className="hover:bg-gray-50/50 transition">
@@ -434,7 +474,15 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
                     </td>
                     <td className="px-5 py-4 whitespace-nowrap">
                       <div>
-                        <p className="font-extrabold text-[#7B1F2E]">$ {totalPaid.toLocaleString()}</p>
+                        <p className="font-extrabold text-[#7B1F2E]">
+                          {totalPaidUSD > 0 && totalPaidBDT > 0 ? (
+                            <span>${totalPaidUSD.toLocaleString()} / ৳{totalPaidBDT.toLocaleString()}</span>
+                          ) : totalPaidBDT > 0 ? (
+                            <span>৳{totalPaidBDT.toLocaleString()}</span>
+                          ) : (
+                            <span>${totalPaidUSD.toLocaleString()}</span>
+                          )}
+                        </p>
                         <p className="text-[9px] text-gray-400 mt-0.5 font-bold uppercase tracking-wider">
                           Completed payments ({record.applications?.filter((a: any) => a.payment?.status === "Completed").length || 0} of {record.applications?.length || 0})
                         </p>
@@ -591,9 +639,20 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
               {/* Payment Details */}
               <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 space-y-3">
                 <h4 className="text-xs font-bold text-gray-800 uppercase tracking-widest border-l-2 border-gray-400 pl-2 mb-2">Initial Payment Details</h4>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                   <div>
-                    <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">Payment Amount ($)</label>
+                    <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">Currency</label>
+                    <select 
+                      value={studentForm.paymentCurrency || "USD"} 
+                      onChange={e => setStudentForm(prev => ({ ...prev, paymentCurrency: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs bg-white focus:outline-none focus:border-[#7B1F2E]"
+                    >
+                      <option value="USD">USD ($)</option>
+                      <option value="BDT">BDT (৳)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">Payment Amount</label>
                     <input 
                       type="number" 
                       value={studentForm.paymentAmount} 
@@ -759,7 +818,14 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
                       <div>
                         <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest block mb-0.5">Amount</span>
                         <div className="flex items-center border border-gray-200 rounded-lg px-2 py-1 bg-gray-50/50">
-                          <span className="text-xs font-bold text-gray-500 mr-1">$</span>
+                          <select
+                            value={app.payment?.currency || "USD"}
+                            onChange={e => handleUpdateAppStatus(app._id, { payment: { ...app.payment, currency: e.target.value } })}
+                            className="bg-transparent border-0 text-xs font-bold focus:ring-0 focus:outline-none text-gray-500 mr-1 cursor-pointer"
+                          >
+                            <option value="USD">$</option>
+                            <option value="BDT">৳</option>
+                          </select>
                           <input 
                             type="number"
                             defaultValue={app.payment?.amount || 0}
@@ -875,7 +941,7 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-3">
                 <div>
                   <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">Status</label>
                   <select 
@@ -887,7 +953,18 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
                   </select>
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">Amount ($)</label>
+                  <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">Currency</label>
+                  <select 
+                    value={newAppForm.paymentCurrency || "USD"} 
+                    onChange={e => setNewAppForm(prev => ({ ...prev, paymentCurrency: e.target.value }))}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs bg-white focus:outline-none"
+                  >
+                    <option value="USD">USD ($)</option>
+                    <option value="BDT">BDT (৳)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">Amount</label>
                   <input 
                     type="number" 
                     value={newAppForm.paymentAmount} 

@@ -798,6 +798,7 @@ function PaymentsTab() {
   
   // New Payment Form State
   const [amount, setAmount] = useState("");
+  const [currency, setCurrency] = useState("USD");
   const [purpose, setPurpose] = useState("");
   const [method, setMethod] = useState("");
   const [trxId, setTrxId] = useState("");
@@ -828,6 +829,7 @@ function PaymentsTab() {
     try {
       await api.post('/payments', {
         amount: Number(amount),
+        currency,
         method,
         transactionId: finalTrxId,
         purpose
@@ -887,7 +889,9 @@ function PaymentsTab() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-bold text-sm text-gray-900">${p.amount}</div>
+                      <div className="font-bold text-sm text-gray-900">
+                        {p.currency === "BDT" ? `৳${p.amount}` : `$${p.amount}`}
+                      </div>
                       <div className={`text-[10px] px-2 py-0.5 rounded-full font-medium mt-1 inline-block ${getStatusColor(p.status)}`}>
                         {p.status.charAt(0).toUpperCase() + p.status.slice(1)}
                       </div>
@@ -929,17 +933,34 @@ function PaymentsTab() {
           <p className="text-gray-500 text-xs mb-6">Enter the amount and reason for payment</p>
           
           <div className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1.5 ml-1 uppercase tracking-wider">Amount (USD)</label>
-              <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">$</span>
-                <input 
-                  type="number" 
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  placeholder="e.g. 100" 
-                  className="w-full pl-8 pr-4 py-3 bg-gray-50 border-none rounded-xl text-gray-900 font-bold focus:ring-2 focus:ring-[#7B1F2E20] transition-all"
-                />
+            <div className="grid grid-cols-3 gap-3">
+              <div className="col-span-1">
+                <label className="block text-xs font-bold text-gray-700 mb-1.5 ml-1 uppercase tracking-wider">Currency</label>
+                <select 
+                  value={currency}
+                  onChange={(e) => setCurrency(e.target.value)}
+                  className="w-full px-4 py-3 bg-gray-50 border-none rounded-xl text-gray-900 font-bold focus:ring-2 focus:ring-[#7B1F2E20] transition-all"
+                >
+                  <option value="USD">USD ($)</option>
+                  <option value="BDT">BDT (৳)</option>
+                </select>
+              </div>
+              <div className="col-span-2">
+                <label className="block text-xs font-bold text-gray-700 mb-1.5 ml-1 uppercase tracking-wider">
+                  Amount
+                </label>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">
+                    {currency === "BDT" ? "৳" : "$"}
+                  </span>
+                  <input 
+                    type="number" 
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    placeholder={currency === "BDT" ? "e.g. 10000" : "e.g. 100"} 
+                    className="w-full pl-8 pr-4 py-3 bg-gray-50 border-none rounded-xl text-gray-900 font-bold focus:ring-2 focus:ring-[#7B1F2E20] transition-all"
+                  />
+                </div>
               </div>
             </div>
             <div>
@@ -960,7 +981,16 @@ function PaymentsTab() {
             </div>
             <button 
               disabled={!amount || !purpose}
-              onClick={() => setPaymentStep("method")}
+              onClick={() => {
+                // If local banking methods are going to be used, nudge the user to BDT if they chose USD
+                if (currency === "USD" && parseFloat(amount) > 1000) {
+                  // A very high amount in USD might actually be in BDT
+                  if (confirm(`You entered ${amount} USD. Did you mean ${amount} BDT (৳)? Press OK to change to BDT, or Cancel to continue in USD.`)) {
+                    setCurrency("BDT");
+                  }
+                }
+                setPaymentStep("method");
+              }}
               className="w-full py-4 bg-[#7B1F2E] text-white font-bold rounded-xl text-sm shadow-lg hover:opacity-95 transition disabled:opacity-50 disabled:grayscale"
             >
               Continue to Payment Method
@@ -1013,7 +1043,14 @@ function PaymentsTab() {
                 ].map(m => (
                   <button 
                     key={m.id}
-                    onClick={() => { setMethod(m.id); setPaymentStep("instructions"); }}
+                    onClick={() => { 
+                      setMethod(m.id); 
+                      // Automatically toggle currency to BDT for local wallets if they haven't set it
+                      if (currency === "USD") {
+                        setCurrency("BDT");
+                      }
+                      setPaymentStep("instructions"); 
+                    }}
                     className={`p-3 rounded-2xl border border-transparent bg-gray-50 hover:border-[#7B1F2E50] transition-all text-center`}
                   >
                     <div className="h-8 flex items-center justify-center mb-1.5">
@@ -1040,7 +1077,7 @@ function PaymentsTab() {
               <div className="text-center mb-5">
                 <div className="inline-block px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-[10px] font-bold uppercase mb-2">Secure Credit Card</div>
                 <h3 className="text-xl font-bold text-gray-900">Pay with Stripe</h3>
-                <p className="text-gray-500 text-xs">Enter your card details to complete payment of <span className="font-bold text-[#7B1F2E]">${amount}</span></p>
+                <p className="text-gray-500 text-xs">Enter your card details to complete payment of <span className="font-bold text-[#7B1F2E]">{currency === "BDT" ? `৳${amount}` : `$${amount}`}</span></p>
               </div>
 
               <div className="space-y-3 bg-gray-50 p-4 rounded-xl border border-gray-100">
@@ -1071,7 +1108,7 @@ function PaymentsTab() {
                 }}
                 className="w-full py-4 bg-[#7B1F2E] text-white font-bold rounded-xl text-sm shadow-lg hover:opacity-95 transition flex items-center justify-center gap-2"
               >
-                <ShieldCheck size={18} /> Pay ${amount} USD
+                <ShieldCheck size={18} /> Pay {currency === "BDT" ? `৳${amount} BDT` : `$${amount} USD`}
               </button>
             </div>
           )}
@@ -1082,7 +1119,7 @@ function PaymentsTab() {
               <div className="text-center mb-5">
                 <div className="inline-block px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-[10px] font-bold uppercase mb-2">Simulated PayPal Checkout</div>
                 <h3 className="text-xl font-bold text-gray-900">Pay with PayPal</h3>
-                <p className="text-gray-500 text-xs">Complete your secure checkout for <span className="font-bold text-[#7B1F2E]">${amount}</span></p>
+                <p className="text-gray-500 text-xs">Complete your secure checkout for <span className="font-bold text-[#7B1F2E]">{currency === "BDT" ? `৳${amount}` : `$${amount}`}</span></p>
               </div>
 
               <div className="p-6 border-2 border-dashed border-gray-200 rounded-2xl bg-yellow-50/20 text-center space-y-4">
@@ -1100,7 +1137,7 @@ function PaymentsTab() {
                 }}
                 className="w-full py-4 bg-yellow-500 hover:bg-yellow-600 text-white font-bold rounded-xl text-sm shadow-lg transition flex items-center justify-center gap-2"
               >
-                <ShieldCheck size={18} /> Authorize PayPal Payment (${amount})
+                <ShieldCheck size={18} /> Authorize PayPal Payment ({currency === "BDT" ? `৳${amount}` : `$${amount}`})
               </button>
             </div>
           )}
@@ -1129,7 +1166,7 @@ function PaymentsTab() {
                 </div>
                 <div className="flex justify-between items-center text-xs pt-3 border-t border-gray-200">
                   <span className="font-bold text-gray-400 uppercase tracking-wider">Total Due</span>
-                  <span className="font-black text-lg text-[#7B1F2E]">${amount} USD</span>
+                  <span className="font-black text-lg text-[#7B1F2E]">{currency === "BDT" ? `৳${amount} BDT` : `$${amount} USD`}</span>
                 </div>
               </div>
 
@@ -1182,8 +1219,8 @@ function PaymentsTab() {
                   <span className="text-lg font-black text-gray-900 tracking-wider">01577180519</span>
                 </div>
                 <div className="flex justify-between items-center pt-4 border-t border-gray-100 relative z-10">
-                  <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Total Due (Local Eq.)</span>
-                  <span className="text-lg font-black text-[#7B1F2E]">${amount} USD</span>
+                  <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Total Due (Local BDT)</span>
+                  <span className="text-lg font-black text-[#7B1F2E]">{currency === "BDT" ? `৳${amount} BDT` : `$${amount} USD`}</span>
                 </div>
               </div>
 
@@ -1235,6 +1272,7 @@ function PaymentsTab() {
             onClick={() => {
               setPaymentStep("history");
               setAmount("");
+              setCurrency("USD");
               setPurpose("");
               setMethod("");
               setTrxId("");

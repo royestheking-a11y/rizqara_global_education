@@ -10,6 +10,11 @@ const paymentSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  currency: {
+    type: String,
+    enum: ['USD', 'BDT'],
+    default: 'USD'
+  },
   method: {
     type: String,
     enum: ['Stripe', 'PayPal', 'Wise', 'Card Payment', 'Bank Transfer', 'BKash', 'Nagad', 'Rocket'],

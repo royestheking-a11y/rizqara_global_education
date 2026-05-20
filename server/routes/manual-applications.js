@@ -19,14 +19,18 @@ router.get('/stats', async (req, res) => {
     
     let totalCount = 0;
     let totalRevenue = 0;
+    let totalRevenueBDT = 0;
     
     let dailyRevenue = 0;
+    let dailyRevenueBDT = 0;
     let dailyCount = 0;
     
     let monthlyRevenue = 0;
+    let monthlyRevenueBDT = 0;
     let monthlyCount = 0;
     
     let yearlyRevenue = 0;
+    let yearlyRevenueBDT = 0;
     let yearlyCount = 0;
     
     const now = new Date();
@@ -38,10 +42,15 @@ router.get('/stats', async (req, res) => {
       student.applications.forEach(app => {
         totalCount++;
         const amt = app.payment?.amount || 0;
+        const currency = app.payment?.currency || 'USD';
         const isPaid = app.payment?.status === 'Completed';
         
         if (isPaid) {
-          totalRevenue += amt;
+          if (currency === 'BDT') {
+            totalRevenueBDT += amt;
+          } else {
+            totalRevenue += amt;
+          }
         }
         
         const appDate = new Date(app.createdAt || student.createdAt || now);
@@ -49,19 +58,37 @@ router.get('/stats', async (req, res) => {
         // Check Daily
         if (appDate >= todayStart) {
           dailyCount++;
-          if (isPaid) dailyRevenue += amt;
+          if (isPaid) {
+            if (currency === 'BDT') {
+              dailyRevenueBDT += amt;
+            } else {
+              dailyRevenue += amt;
+            }
+          }
         }
         
         // Check Monthly
         if (appDate >= monthStart) {
           monthlyCount++;
-          if (isPaid) monthlyRevenue += amt;
+          if (isPaid) {
+            if (currency === 'BDT') {
+              monthlyRevenueBDT += amt;
+            } else {
+              monthlyRevenue += amt;
+            }
+          }
         }
         
         // Check Yearly
         if (appDate >= yearStart) {
           yearlyCount++;
-          if (isPaid) yearlyRevenue += amt;
+          if (isPaid) {
+            if (currency === 'BDT') {
+              yearlyRevenueBDT += amt;
+            } else {
+              yearlyRevenue += amt;
+            }
+          }
         }
       });
     });
@@ -69,9 +96,10 @@ router.get('/stats', async (req, res) => {
     res.json({
       totalCount,
       totalRevenue,
-      daily: { count: dailyCount, revenue: dailyRevenue },
-      monthly: { count: monthlyCount, revenue: monthlyRevenue },
-      yearly: { count: yearlyCount, revenue: yearlyRevenue }
+      totalRevenueBDT,
+      daily: { count: dailyCount, revenue: dailyRevenue, revenueBDT: dailyRevenueBDT },
+      monthly: { count: monthlyCount, revenue: monthlyRevenue, revenueBDT: monthlyRevenueBDT },
+      yearly: { count: yearlyCount, revenue: yearlyRevenue, revenueBDT: yearlyRevenueBDT }
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -102,6 +130,7 @@ router.post('/', async (req, res) => {
         status: bodyData.status || 'Pending',
         payment: {
           amount: bodyData.paymentAmount || 0,
+          currency: bodyData.paymentCurrency || 'USD',
           method: bodyData.paymentMethod || 'WhatsApp Manual',
           status: bodyData.paymentStatus || 'Unpaid',
           date: bodyData.paymentDate || new Date()

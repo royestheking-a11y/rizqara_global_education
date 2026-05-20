@@ -36,6 +36,11 @@ const manualApplicationSchema = new mongoose.Schema({
           type: Number, 
           default: 0 
         },
+        currency: {
+          type: String,
+          enum: ['USD', 'BDT'],
+          default: 'USD'
+        },
         method: { 
           type: String, 
           enum: ['Stripe', 'PayPal', 'Wise', 'Bank Transfer', 'BKash', 'Nagad', 'Rocket', 'WhatsApp Manual', 'Cash'],

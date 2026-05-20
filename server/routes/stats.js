@@ -49,13 +49,19 @@ router.get('/', async (req, res) => {
     const manualRecords = await ManualApplication.find({});
     let totalManualApps = 0;
     let manualRevenue = 0;
+    let manualRevenueBDT = 0;
     
     manualRecords.forEach(student => {
       if (student.applications && Array.isArray(student.applications)) {
         student.applications.forEach(app => {
           totalManualApps++;
           if (app.payment && app.payment.status === 'Completed') {
-            manualRevenue += (app.payment.amount || 0);
+            const currency = app.payment.currency || 'USD';
+            if (currency === 'BDT') {
+              manualRevenueBDT += (app.payment.amount || 0);
+            } else {
+              manualRevenue += (app.payment.amount || 0);
+            }
           }
         });
       }
@@ -70,9 +76,28 @@ router.get('/', async (req, res) => {
 
     // Total Revenue calculation
     const acceptedPayments = await Payment.find({ status: 'accepted' });
-    const normalRevenue = acceptedPayments.reduce((acc, curr) => acc + (curr.amount || 0), 0);
+    let normalRevenue = 0;
+    let normalRevenueBDT = 0;
+    
+    acceptedPayments.forEach(p => {
+      const currency = p.currency || 'USD';
+      if (currency === 'BDT') {
+        normalRevenueBDT += (p.amount || 0);
+      } else {
+        normalRevenue += (p.amount || 0);
+      }
+    });
+    
     const totalRevenueSum = normalRevenue + manualRevenue;
-    const formattedRevenue = totalRevenueSum > 0 ? `$${totalRevenueSum.toLocaleString()}` : "$0";
+    const totalRevenueSumBDT = normalRevenueBDT + manualRevenueBDT;
+    let formattedRevenue = "";
+    if (totalRevenueSum > 0 && totalRevenueSumBDT > 0) {
+      formattedRevenue = `$${totalRevenueSum.toLocaleString()} / ৳${totalRevenueSumBDT.toLocaleString()}`;
+    } else if (totalRevenueSumBDT > 0) {
+      formattedRevenue = `৳${totalRevenueSumBDT.toLocaleString()}`;
+    } else {
+      formattedRevenue = `$${totalRevenueSum.toLocaleString()}`;
+    }
 
     // For analytics page
     const totalLeads = await Lead.countDocuments();
@@ -107,8 +132,10 @@ router.get('/', async (req, res) => {
       
       manualApplicationsCount: totalManualApps,
       manualRevenue: manualRevenue,
+      manualRevenueBDT: manualRevenueBDT,
       normalApplicationsCount: normalAppsCount,
       normalRevenue: normalRevenue,
+      normalRevenueBDT: normalRevenueBDT,
 
       pageViews: pageViews, 
       profileChecks: totalLeads,

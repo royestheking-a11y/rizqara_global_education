@@ -2289,11 +2289,13 @@ function PaymentManagement({ showToast }: { showToast: (msg: string, type?: "suc
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2 mb-1">
-                        <img 
-                          src={p.method === 'BKash' ? '/payment/Bkash.jpg' : p.method === 'Nagad' ? '/payment/Nagad.jpg' : '/payment/Rocket.png'} 
-                          alt={p.method} 
-                          className="h-4 w-4 object-contain rounded-sm" 
-                        />
+                        {['BKash', 'Nagad', 'Rocket'].includes(p.method) && (
+                          <img 
+                            src={p.method === 'BKash' ? '/payment/Bkash.jpg' : p.method === 'Nagad' ? '/payment/Nagad.jpg' : '/payment/Rocket.png'} 
+                            alt={p.method} 
+                            className="h-4 w-4 object-contain rounded-sm" 
+                          />
+                        )}
                         <div className="inline-flex items-center px-2 py-0.5 bg-gray-100 rounded-md text-[10px] font-bold text-gray-700">
                           {p.method}
                         </div>
@@ -2305,7 +2307,7 @@ function PaymentManagement({ showToast }: { showToast: (msg: string, type?: "suc
                       <span className="text-xs font-medium text-gray-700">{p.purpose}</span>
                     </td>
                     <td className="px-6 py-4 font-black text-gray-900">
-                      ${p.amount}
+                      {p.currency === "BDT" ? `৳${p.amount}` : `$${p.amount}`}
                     </td>
                     <td className="px-6 py-4">
                       <span className={`text-[10px] px-2 py-1 rounded-lg font-bold uppercase tracking-tight ${
@@ -2357,7 +2359,8 @@ function ReceiptGenerator() {
     className: "",
     services: "",
     totalPayment: 0,
-    paid: 0
+    paid: 0,
+    currency: "USD"
   });
 
   const due = Math.max(0, data.totalPayment - data.paid);
@@ -2399,13 +2402,24 @@ function ReceiptGenerator() {
             <textarea rows={3} className="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-[#7B1F2E]/20 outline-none" value={data.services} onChange={e => setData({...data, services: e.target.value})} placeholder="e.g. University Application, Visa Support..." />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Total Payment ($)</label>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Currency</label>
+              <select 
+                className="w-full border rounded-lg p-2 text-sm bg-white focus:ring-2 focus:ring-[#7B1F2E]/20 outline-none" 
+                value={data.currency || "USD"} 
+                onChange={e => setData({...data, currency: e.target.value})}
+              >
+                <option value="USD">USD ($)</option>
+                <option value="BDT">BDT (৳)</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Total Payment</label>
               <input type="number" className="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-[#7B1F2E]/20 outline-none" value={data.totalPayment || ""} onChange={e => setData({...data, totalPayment: Number(e.target.value)})} placeholder="0" />
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Paid Amount ($)</label>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Paid Amount</label>
               <input type="number" className="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-[#7B1F2E]/20 outline-none" value={data.paid || ""} onChange={e => setData({...data, paid: Number(e.target.value)})} placeholder="0" />
             </div>
           </div>
@@ -2461,17 +2475,23 @@ function ReceiptGenerator() {
               <div className="w-full md:w-1/2 ml-auto space-y-3">
                 <div className="flex justify-between items-center text-sm">
                   <span className="font-bold text-gray-600">Total Payment:</span>
-                  <span className="font-bold text-gray-900">$ {data.totalPayment.toLocaleString()}</span>
+                  <span className="font-bold text-gray-900">
+                    {data.currency === "BDT" ? "৳" : "$"} {data.totalPayment.toLocaleString()}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center text-sm border-b pb-3">
                   <span className="font-bold text-gray-600">Amount Paid:</span>
-                  <span className="font-bold text-green-600">$ {data.paid.toLocaleString()}</span>
+                  <span className="font-bold text-green-600">
+                    {data.currency === "BDT" ? "৳" : "$"} {data.paid.toLocaleString()}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center pt-1">
                   {due > 0 ? (
                     <>
                       <span className="font-black text-lg text-[#7B1F2E] uppercase">Total Due:</span>
-                      <span className="font-black text-xl text-[#7B1F2E]">$ {due.toLocaleString()}</span>
+                      <span className="font-black text-xl text-[#7B1F2E]">
+                        {data.currency === "BDT" ? "৳" : "$"} {due.toLocaleString()}
+                      </span>
                     </>
                   ) : (
                     <>

@@ -34,12 +34,13 @@ router.post('/', async (req, res) => {
   const userId = getUserId(req);
   if (!userId) return res.status(401).json({ message: 'Unauthorized' });
 
-  const { amount, method, transactionId, purpose } = req.body;
+  const { amount, currency, method, transactionId, purpose } = req.body;
 
   try {
     const payment = new Payment({
       student: userId,
       amount,
+      currency: currency || 'USD',
       method,
       transactionId,
       purpose,
