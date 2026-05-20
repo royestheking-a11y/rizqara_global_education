@@ -353,7 +353,7 @@ export default function Home() {
 
       {/* ══════════════════════════════ HERO CAROUSEL ══════════════════════════════ */}
       <section className="w-full py-4 md:py-6" style={{ backgroundColor: "#FDF8F5" }}>
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-[1440px] mx-auto px-4 md:px-6">
           <div className="relative w-full aspect-[21/9] md:aspect-[3/1] rounded-2xl md:rounded-3xl overflow-hidden shadow-xl border border-gray-100/50 bg-gray-50">
             {/* Slides */}
             {heroSlides.length > 0 ? (
