@@ -7,6 +7,7 @@ const Application = require('../models/Application');
 const Payment = require('../models/Payment');
 const Analytics = require('../models/Analytics');
 const ManualApplication = require('../models/ManualApplication');
+const Expense = require('../models/Expense');
 
 // Increment Page Views
 router.post('/view', async (req, res) => {
@@ -99,6 +100,45 @@ router.get('/', async (req, res) => {
       formattedRevenue = `$${totalRevenueSum.toLocaleString()}`;
     }
 
+    // Fetch and calculate manual expenses
+    const expenses = await Expense.find({});
+    let totalExpenseUSD = 0;
+    let totalExpenseBDT = 0;
+    expenses.forEach(exp => {
+      const currency = exp.currency || 'BDT';
+      if (currency === 'BDT') {
+        totalExpenseBDT += (exp.amount || 0);
+      } else {
+        totalExpenseUSD += (exp.amount || 0);
+      }
+    });
+
+    let formattedExpense = "";
+    if (totalExpenseUSD > 0 && totalExpenseBDT > 0) {
+      formattedExpense = `$${totalExpenseUSD.toLocaleString()} / ৳${totalExpenseBDT.toLocaleString()}`;
+    } else if (totalExpenseBDT > 0) {
+      formattedExpense = `৳${totalExpenseBDT.toLocaleString()}`;
+    } else {
+      formattedExpense = `$${totalExpenseUSD.toLocaleString()}`;
+    }
+
+    // Calculate profit (Revenue - Expense)
+    const profitUSD = totalRevenueSum - totalExpenseUSD;
+    const profitBDT = totalRevenueSumBDT - totalExpenseBDT;
+
+    let formattedProfit = "";
+    if (profitUSD !== 0 && profitBDT !== 0) {
+      const prefixUSD = profitUSD < 0 ? "-" : "";
+      const prefixBDT = profitBDT < 0 ? "-" : "";
+      formattedProfit = `${prefixUSD}$${Math.abs(profitUSD).toLocaleString()} / ${prefixBDT}৳${Math.abs(profitBDT).toLocaleString()}`;
+    } else if (profitBDT !== 0) {
+      const prefixBDT = profitBDT < 0 ? "-" : "";
+      formattedProfit = `${prefixBDT}৳${Math.abs(profitBDT).toLocaleString()}`;
+    } else {
+      const prefixUSD = profitUSD < 0 ? "-" : "";
+      formattedProfit = `${prefixUSD}$${Math.abs(profitUSD).toLocaleString()}`;
+    }
+
     // For analytics page
     const totalLeads = await Lead.countDocuments();
 
@@ -129,6 +169,8 @@ router.get('/', async (req, res) => {
       newLeads: leadCount,
       pendingDocuments: pendingDocsCount,
       totalRevenue: formattedRevenue,
+      totalExpense: formattedExpense,
+      totalProfit: formattedProfit,
       
       manualApplicationsCount: totalManualApps,
       manualRevenue: manualRevenue,
@@ -136,6 +178,11 @@ router.get('/', async (req, res) => {
       normalApplicationsCount: normalAppsCount,
       normalRevenue: normalRevenue,
       normalRevenueBDT: normalRevenueBDT,
+
+      totalExpenseUSD: totalExpenseUSD,
+      totalExpenseBDT: totalExpenseBDT,
+      totalProfitUSD: profitUSD,
+      totalProfitBDT: profitBDT,
 
       pageViews: pageViews, 
       profileChecks: totalLeads,
