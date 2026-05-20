@@ -267,7 +267,7 @@ function AdminOverview() {
     { label: "Open Scholarships", value: statsData?.openScholarships?.toString() || "0", change: "Available", icon: <GraduationCap size={20} />, color: "#10B981" },
     { label: "New Leads", value: statsData?.newLeads?.toString() || "0", change: "Unread Messages", icon: <MessageSquare size={20} />, color: "#3B82F6" },
     { label: "Pending Documents", value: statsData?.pendingDocuments?.toString() || "0", change: "Awaiting Review", icon: <FileText size={20} />, color: "#EF4444" },
-    { label: "Total Revenue", value: statsData?.totalRevenue || "৳ 0", change: "From Accepted Payments", icon: <DollarSign size={20} />, color: "#8B5CF6" },
+    { label: "Total Revenue", value: statsData?.totalRevenue || "$0", change: "From Accepted Payments", icon: <DollarSign size={20} />, color: "#8B5CF6" },
   ];
 
   return (
@@ -299,7 +299,7 @@ function AdminOverview() {
               </div>
               <div>
                 <p className="text-[10px] text-gray-500 uppercase font-semibold">Online Revenue</p>
-                <p className="text-base font-black text-gray-800">৳ {(statsData?.normalRevenue || 0).toLocaleString()}</p>
+                <p className="text-base font-black text-gray-800">$ {(statsData?.normalRevenue || 0).toLocaleString()}</p>
               </div>
             </div>
           </div>
@@ -318,7 +318,7 @@ function AdminOverview() {
               </div>
               <div>
                 <p className="text-[10px] text-gray-500 uppercase font-semibold">Manual Revenue</p>
-                <p className="text-base font-black text-green-700">৳ {(statsData?.manualRevenue || 0).toLocaleString()}</p>
+                <p className="text-base font-black text-green-700">$ {(statsData?.manualRevenue || 0).toLocaleString()}</p>
               </div>
             </div>
           </div>
@@ -2305,7 +2305,7 @@ function PaymentManagement({ showToast }: { showToast: (msg: string, type?: "suc
                       <span className="text-xs font-medium text-gray-700">{p.purpose}</span>
                     </td>
                     <td className="px-6 py-4 font-black text-gray-900">
-                      ৳{p.amount}
+                      ${p.amount}
                     </td>
                     <td className="px-6 py-4">
                       <span className={`text-[10px] px-2 py-1 rounded-lg font-bold uppercase tracking-tight ${
@@ -2401,11 +2401,11 @@ function ReceiptGenerator() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Total Payment (৳)</label>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Total Payment ($)</label>
               <input type="number" className="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-[#7B1F2E]/20 outline-none" value={data.totalPayment || ""} onChange={e => setData({...data, totalPayment: Number(e.target.value)})} placeholder="0" />
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Paid Amount (৳)</label>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Paid Amount ($)</label>
               <input type="number" className="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-[#7B1F2E]/20 outline-none" value={data.paid || ""} onChange={e => setData({...data, paid: Number(e.target.value)})} placeholder="0" />
             </div>
           </div>
@@ -2461,17 +2461,17 @@ function ReceiptGenerator() {
               <div className="w-full md:w-1/2 ml-auto space-y-3">
                 <div className="flex justify-between items-center text-sm">
                   <span className="font-bold text-gray-600">Total Payment:</span>
-                  <span className="font-bold text-gray-900">৳ {data.totalPayment.toLocaleString()}</span>
+                  <span className="font-bold text-gray-900">$ {data.totalPayment.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between items-center text-sm border-b pb-3">
                   <span className="font-bold text-gray-600">Amount Paid:</span>
-                  <span className="font-bold text-green-600">৳ {data.paid.toLocaleString()}</span>
+                  <span className="font-bold text-green-600">$ {data.paid.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between items-center pt-1">
                   {due > 0 ? (
                     <>
                       <span className="font-black text-lg text-[#7B1F2E] uppercase">Total Due:</span>
-                      <span className="font-black text-xl text-[#7B1F2E]">৳ {due.toLocaleString()}</span>
+                      <span className="font-black text-xl text-[#7B1F2E]">$ {due.toLocaleString()}</span>
                     </>
                   ) : (
                     <>

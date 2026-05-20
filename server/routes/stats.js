@@ -72,7 +72,7 @@ router.get('/', async (req, res) => {
     const acceptedPayments = await Payment.find({ status: 'accepted' });
     const normalRevenue = acceptedPayments.reduce((acc, curr) => acc + (curr.amount || 0), 0);
     const totalRevenueSum = normalRevenue + manualRevenue;
-    const formattedRevenue = totalRevenueSum > 0 ? `৳ ${totalRevenueSum.toLocaleString()}` : "৳ 0";
+    const formattedRevenue = totalRevenueSum > 0 ? `$${totalRevenueSum.toLocaleString()}` : "$0";
 
     // For analytics page
     const totalLeads = await Lead.countDocuments();

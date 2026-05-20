@@ -5,7 +5,8 @@ import {
   Bell, CreditCard, Zap, LogOut, ChevronRight, CheckCircle, Clock,
   Upload, Star, Shield, Calendar, AlertCircle, ArrowRight, Edit,
   TrendingUp, Download, Send, Paperclip, X, UserCheck, FileBadge, 
-  MapPin, HelpCircle, Briefcase, FileInput, Lock, Activity, Sparkles, ShieldCheck, Eye
+  MapPin, HelpCircle, Briefcase, FileInput, Lock, Activity, Sparkles, ShieldCheck, Eye,
+  DollarSign, Globe
 } from "lucide-react";
 import { api } from "../services/api";
 import { useAuth, useSavedScholarships } from "../hooks/useAuth";
@@ -790,6 +791,7 @@ function NotificationsTab({ user, updateProfile }: any) {
 
 // === PAYMENTS TAB ===
 function PaymentsTab() {
+  const { user } = useAuth();
   const [payments, setPayments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [paymentStep, setPaymentStep] = useState<"history" | "details" | "method" | "instructions" | "submitting" | "success">("history");
@@ -819,14 +821,15 @@ function PaymentsTab() {
     setPaymentStep("details");
   };
 
-  const handleSubmitPayment = async () => {
-    if (!trxId) return;
+  const handleSubmitPayment = async (customTrxId?: string) => {
+    const finalTrxId = customTrxId || trxId;
+    if (!finalTrxId) return;
     setPaymentStep("submitting");
     try {
       await api.post('/payments', {
         amount: Number(amount),
         method,
-        transactionId: trxId,
+        transactionId: finalTrxId,
         purpose
       });
       setPaymentStep("success");
@@ -884,7 +887,7 @@ function PaymentsTab() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-bold text-sm text-gray-900">৳{p.amount}</div>
+                      <div className="font-bold text-sm text-gray-900">${p.amount}</div>
                       <div className={`text-[10px] px-2 py-0.5 rounded-full font-medium mt-1 inline-block ${getStatusColor(p.status)}`}>
                         {p.status.charAt(0).toUpperCase() + p.status.slice(1)}
                       </div>
@@ -927,14 +930,14 @@ function PaymentsTab() {
           
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1.5 ml-1 uppercase tracking-wider">Amount (BDT)</label>
+              <label className="block text-xs font-bold text-gray-700 mb-1.5 ml-1 uppercase tracking-wider">Amount (USD)</label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">৳</span>
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">$</span>
                 <input 
                   type="number" 
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  placeholder="e.g. 5000" 
+                  placeholder="e.g. 100" 
                   className="w-full pl-8 pr-4 py-3 bg-gray-50 border-none rounded-xl text-gray-900 font-bold focus:ring-2 focus:ring-[#7B1F2E20] transition-all"
                 />
               </div>
@@ -971,83 +974,242 @@ function PaymentsTab() {
           <button onClick={() => setPaymentStep("details")} className="text-gray-400 hover:text-gray-600 mb-4 flex items-center gap-1 text-xs font-medium">
             <ChevronRight size={14} className="rotate-180" /> Back to Details
           </button>
-          <h3 className="text-xl font-bold text-gray-900 mb-1">Select Method</h3>
-          <p className="text-gray-500 text-xs mb-6">Choose your preferred mobile banking provider</p>
+          <h3 className="text-xl font-bold text-gray-900 mb-1">Select Payment Method</h3>
+          <p className="text-gray-500 text-xs mb-6">Choose your preferred global or local payment option</p>
 
-          <div className="grid grid-cols-3 gap-3">
-            {[
-              { id: 'BKash', label: 'bKash', image: '/payment/Bkash.jpg' },
-              { id: 'Nagad', label: 'Nagad', image: '/payment/Nagad.jpg' },
-              { id: 'Rocket', label: 'Rocket', image: '/payment/Rocket.png' }
-            ].map(m => (
-              <button 
-                key={m.id}
-                onClick={() => { setMethod(m.id); setPaymentStep("instructions"); }}
-                className={`p-3 rounded-2xl border-2 transition-all text-center group relative overflow-hidden ${method === m.id ? 'border-[#7B1F2E] bg-white shadow-md' : 'border-transparent bg-gray-50 hover:border-[#7B1F2E50]'}`}
-              >
-                <div className="h-10 flex items-center justify-center mb-2">
-                  <img src={m.image} alt={m.label} className="h-full object-contain rounded-lg" />
-                </div>
-                <div className="font-bold text-gray-900 text-[10px] group-hover:text-[#7B1F2E]">{m.label}</div>
-              </button>
-            ))}
+          <div className="space-y-6">
+            {/* International Payment Options */}
+            <div>
+              <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Global / International Gateways</h4>
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { id: 'Stripe', label: 'Credit Card', desc: 'Stripe Secure', icon: <CreditCard className="text-blue-600" size={24} /> },
+                  { id: 'PayPal', label: 'PayPal', desc: 'Instant Checkout', icon: <DollarSign className="text-yellow-600" size={24} /> },
+                  { id: 'Wise', label: 'Wise Transfer', desc: 'Low-cost Wire', icon: <Globe className="text-green-600" size={24} /> }
+                ].map(m => (
+                  <button 
+                    key={m.id}
+                    onClick={() => { setMethod(m.id); setPaymentStep("instructions"); }}
+                    className={`p-4 rounded-2xl border border-transparent bg-gray-50 hover:border-[#7B1F2E50] transition-all text-center flex flex-col items-center justify-center`}
+                  >
+                    <div className="h-8 flex items-center justify-center mb-1">
+                      {m.icon}
+                    </div>
+                    <div className="font-bold text-gray-900 text-xs">{m.label}</div>
+                    <div className="text-[8px] text-gray-400 font-semibold mt-0.5">{m.desc}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Local backup options */}
+            <div>
+              <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Local Wallet / Manual Backup (South Asia)</h4>
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { id: 'BKash', label: 'bKash', image: '/payment/Bkash.jpg' },
+                  { id: 'Nagad', label: 'Nagad', image: '/payment/Nagad.jpg' },
+                  { id: 'Rocket', label: 'Rocket', image: '/payment/Rocket.png' }
+                ].map(m => (
+                  <button 
+                    key={m.id}
+                    onClick={() => { setMethod(m.id); setPaymentStep("instructions"); }}
+                    className={`p-3 rounded-2xl border border-transparent bg-gray-50 hover:border-[#7B1F2E50] transition-all text-center`}
+                  >
+                    <div className="h-8 flex items-center justify-center mb-1.5">
+                      <img src={m.image} alt={m.label} className="h-full object-contain rounded-md" />
+                    </div>
+                    <div className="font-bold text-gray-900 text-[10px]">{m.label}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       )}
 
       {paymentStep === "instructions" && (
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 animate-in zoom-in-95 duration-300">
-          <div className="text-center mb-6">
-            <div className="inline-block px-3 py-1 bg-[#7B1F2E10] text-[#7B1F2E] rounded-full text-[10px] font-bold uppercase mb-3">Manual Verification</div>
-            <h3 className="text-xl font-bold text-gray-900">Send Money</h3>
-            <p className="text-gray-500 text-xs">Please send the exact amount to the number below</p>
-          </div>
+          <button onClick={() => setPaymentStep("method")} className="text-gray-400 hover:text-gray-600 mb-4 flex items-center gap-1 text-xs font-medium">
+            <ChevronRight size={14} className="rotate-180" /> Back to Methods
+          </button>
 
-          <div className="bg-gray-50 rounded-2xl p-5 mb-6 border border-dashed border-gray-200 relative overflow-hidden">
-            <div className="absolute -right-4 -top-4 opacity-[0.03] grayscale">
-               <img src={method === 'BKash' ? '/payment/Bkash.jpg' : method === 'Nagad' ? '/payment/Nagad.jpg' : '/payment/Rocket.png'} alt="bg" className="w-32 h-32 object-contain" />
+          {/* STRIPE CARD FLOW */}
+          {method === 'Stripe' && (
+            <div className="space-y-4">
+              <div className="text-center mb-5">
+                <div className="inline-block px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-[10px] font-bold uppercase mb-2">Secure Credit Card</div>
+                <h3 className="text-xl font-bold text-gray-900">Pay with Stripe</h3>
+                <p className="text-gray-500 text-xs">Enter your card details to complete payment of <span className="font-bold text-[#7B1F2E]">${amount}</span></p>
+              </div>
+
+              <div className="space-y-3 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                <div>
+                  <label className="block text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Cardholder Name</label>
+                  <input type="text" placeholder="e.g. John Doe" defaultValue={user?.name || ""} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs bg-white focus:outline-none focus:ring-1 focus:ring-[#7B1F2E]" />
+                </div>
+                <div>
+                  <label className="block text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Card Number</label>
+                  <input type="text" placeholder="••••  ••••  ••••  ••••" maxLength={19} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs bg-white focus:outline-none focus:ring-1 focus:ring-[#7B1F2E]" />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Expiration Date</label>
+                    <input type="text" placeholder="MM/YY" maxLength={5} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs bg-white focus:outline-none focus:ring-1 focus:ring-[#7B1F2E]" />
+                  </div>
+                  <div>
+                    <label className="block text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">CVC Code</label>
+                    <input type="password" placeholder="•••" maxLength={3} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs bg-white focus:outline-none focus:ring-1 focus:ring-[#7B1F2E]" />
+                  </div>
+                </div>
+              </div>
+
+              <button 
+                onClick={() => {
+                  const simulatedTrx = 'ch_' + Math.random().toString(36).substring(2, 10).toUpperCase();
+                  handleSubmitPayment(simulatedTrx);
+                }}
+                className="w-full py-4 bg-[#7B1F2E] text-white font-bold rounded-xl text-sm shadow-lg hover:opacity-95 transition flex items-center justify-center gap-2"
+              >
+                <ShieldCheck size={18} /> Pay ${amount} USD
+              </button>
             </div>
-            <div className="flex justify-between items-center mb-4 relative z-10">
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Provider</span>
-              <div className="flex items-center gap-2">
-                <img src={method === 'BKash' ? '/payment/Bkash.jpg' : method === 'Nagad' ? '/payment/Nagad.jpg' : '/payment/Rocket.png'} alt={method} className="h-5 w-5 object-contain rounded-md" />
-                <span className="text-sm font-black text-[#7B1F2E]">{method}</span>
+          )}
+
+          {/* PAYPAL FLOW */}
+          {method === 'PayPal' && (
+            <div className="space-y-4">
+              <div className="text-center mb-5">
+                <div className="inline-block px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-[10px] font-bold uppercase mb-2">Simulated PayPal Checkout</div>
+                <h3 className="text-xl font-bold text-gray-900">Pay with PayPal</h3>
+                <p className="text-gray-500 text-xs">Complete your secure checkout for <span className="font-bold text-[#7B1F2E]">${amount}</span></p>
+              </div>
+
+              <div className="p-6 border-2 border-dashed border-gray-200 rounded-2xl bg-yellow-50/20 text-center space-y-4">
+                <div className="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center mx-auto text-yellow-700 font-extrabold text-lg">P</div>
+                <div>
+                  <p className="text-xs text-gray-600 font-medium">Logged in as: <span className="font-bold">{user?.email || "student@rizqara.com"}</span></p>
+                  <p className="text-[10px] text-gray-400 mt-1">PayPal sandbox environment connected</p>
+                </div>
+              </div>
+
+              <button 
+                onClick={() => {
+                  const simulatedTrx = 'PAYID-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+                  handleSubmitPayment(simulatedTrx);
+                }}
+                className="w-full py-4 bg-yellow-500 hover:bg-yellow-600 text-white font-bold rounded-xl text-sm shadow-lg transition flex items-center justify-center gap-2"
+              >
+                <ShieldCheck size={18} /> Authorize PayPal Payment (${amount})
+              </button>
+            </div>
+          )}
+
+          {/* WISE / BANK TRANSFER FLOW */}
+          {method === 'Wise' && (
+            <div className="space-y-4">
+              <div className="text-center mb-5">
+                <div className="inline-block px-3 py-1 bg-green-50 text-green-700 rounded-full text-[10px] font-bold uppercase mb-2">Wise Bank Wire</div>
+                <h3 className="text-xl font-bold text-gray-900">Wise Transfer Details</h3>
+                <p className="text-gray-500 text-xs">Send funds directly to our global operating account</p>
+              </div>
+
+              <div className="bg-gray-50 rounded-2xl p-5 mb-5 border border-dashed border-gray-200 space-y-3 relative overflow-hidden">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-bold text-gray-400 uppercase tracking-wider">Wise Account Email</span>
+                  <span className="font-black text-gray-900">finance@rizqara.com</span>
+                </div>
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-bold text-gray-400 uppercase tracking-wider">Account Holder</span>
+                  <span className="font-black text-gray-900">RizQara Global Ltd</span>
+                </div>
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-bold text-gray-400 uppercase tracking-wider">Reference Code</span>
+                  <span className="font-mono font-bold text-[#7B1F2E]">{user?.id?.substring(0, 8).toUpperCase() || "RZQ-STUD"}</span>
+                </div>
+                <div className="flex justify-between items-center text-xs pt-3 border-t border-gray-200">
+                  <span className="font-bold text-gray-400 uppercase tracking-wider">Total Due</span>
+                  <span className="font-black text-lg text-[#7B1F2E]">${amount} USD</span>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Transaction Ref / Reference ID</label>
+                  <input 
+                    type="text" 
+                    value={trxId}
+                    onChange={(e) => setTrxId(e.target.value)}
+                    placeholder="Enter Transfer ID or Reference Code" 
+                    className="w-full px-4 py-2 border border-gray-200 rounded-xl text-xs bg-white focus:outline-none"
+                  />
+                  <p className="text-[9px] text-gray-400 mt-1 italic">Enter the unique transaction reference after wire transfer completes.</p>
+                </div>
+
+                <button 
+                  disabled={!trxId}
+                  onClick={() => handleSubmitPayment()}
+                  className="w-full py-4 bg-[#7B1F2E] text-white font-bold rounded-xl text-sm shadow-lg hover:opacity-95 transition flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  <ShieldCheck size={18} /> Submit Wise Transfer Details
+                </button>
               </div>
             </div>
-            <div className="flex justify-between items-center mb-4 relative z-10">
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Personal Number</span>
-              <span className="text-lg font-black text-gray-900 tracking-wider">01577180519</span>
-            </div>
-            <div className="flex justify-between items-center pt-4 border-t border-gray-100 relative z-10">
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Amount to Send</span>
-              <span className="text-lg font-black text-[#7B1F2E]">৳{amount}</span>
-            </div>
-          </div>
+          )}
 
-          <div className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1.5 ml-1 uppercase tracking-wider">Transaction ID (TrxID)</label>
-              <input 
-                type="text" 
-                value={trxId}
-                onChange={(e) => setTrxId(e.target.value)}
-                placeholder="Enter 10-digit Transaction ID" 
-                className="w-full px-4 py-3 bg-gray-50 border-none rounded-xl text-gray-900 font-bold placeholder:font-medium placeholder:text-gray-300 focus:ring-2 focus:ring-[#7B1F2E20] transition-all"
-              />
-              <p className="text-[10px] text-gray-400 mt-2 italic px-1">Example: 8K9L2M5N3P. You will find this in the SMS from {method} after sending money.</p>
+          {/* LOCAL MANUAL BACKUP FLOW */}
+          {(method === 'BKash' || method === 'Nagad' || method === 'Rocket') && (
+            <div className="space-y-4">
+              <div className="text-center mb-6">
+                <div className="inline-block px-3 py-1 bg-[#7B1F2E10] text-[#7B1F2E] rounded-full text-[10px] font-bold uppercase mb-3">Mobile Banking Backup</div>
+                <h3 className="text-xl font-bold text-gray-900">Send Money via {method}</h3>
+                <p className="text-gray-500 text-xs">Please send the exact amount to our local backup number</p>
+              </div>
+
+              <div className="bg-gray-50 rounded-2xl p-5 mb-6 border border-dashed border-gray-200 relative overflow-hidden">
+                <div className="absolute -right-4 -top-4 opacity-[0.03] grayscale">
+                   <img src={method === 'BKash' ? '/payment/Bkash.jpg' : method === 'Nagad' ? '/payment/Nagad.jpg' : '/payment/Rocket.png'} alt="bg" className="w-32 h-32 object-contain" />
+                </div>
+                <div className="flex justify-between items-center mb-4 relative z-10">
+                  <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Provider</span>
+                  <div className="flex items-center gap-2">
+                    <img src={method === 'BKash' ? '/payment/Bkash.jpg' : method === 'Nagad' ? '/payment/Nagad.jpg' : '/payment/Rocket.png'} alt={method} className="h-5 w-5 object-contain rounded-md" />
+                    <span className="text-sm font-black text-[#7B1F2E]">{method}</span>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center mb-4 relative z-10">
+                  <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Backup Phone</span>
+                  <span className="text-lg font-black text-gray-900 tracking-wider">01577180519</span>
+                </div>
+                <div className="flex justify-between items-center pt-4 border-t border-gray-100 relative z-10">
+                  <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Total Due (Local Eq.)</span>
+                  <span className="text-lg font-black text-[#7B1F2E]">${amount} USD</span>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5 ml-1 uppercase tracking-wider">Transaction ID (TrxID)</label>
+                  <input 
+                    type="text" 
+                    value={trxId}
+                    onChange={(e) => setTrxId(e.target.value)}
+                    placeholder="Enter Transaction ID" 
+                    className="w-full px-4 py-3 bg-gray-50 border-none rounded-xl text-gray-900 font-bold placeholder:font-medium placeholder:text-gray-300 focus:ring-2 focus:ring-[#7B1F2E20] transition-all"
+                  />
+                  <p className="text-[10px] text-gray-400 mt-2 italic px-1">Example: 8K9L2M5N3P. Enter this from your {method} confirmation SMS.</p>
+                </div>
+                
+                <button 
+                  onClick={() => handleSubmitPayment()}
+                  disabled={!trxId}
+                  className="w-full py-4 bg-[#7B1F2E] text-white font-bold rounded-xl text-sm shadow-lg hover:opacity-95 transition flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  <ShieldCheck size={18} /> Confirm Payment Submission
+                </button>
+              </div>
             </div>
-            
-            <button 
-              onClick={handleSubmitPayment}
-              disabled={!trxId}
-              className="w-full py-4 bg-[#7B1F2E] text-white font-bold rounded-xl text-sm shadow-lg hover:opacity-95 transition flex items-center justify-center gap-2 disabled:opacity-50"
-            >
-              <ShieldCheck size={18} /> Confirm Payment Submission
-            </button>
-            <button onClick={() => setPaymentStep("method")} className="w-full py-2 text-gray-400 text-xs font-medium hover:text-gray-600 transition">
-              Choose different method
-            </button>
-          </div>
+          )}
         </div>
       )}
 
@@ -1098,7 +1260,7 @@ function AITab({ user }: any) {
     setLoading(true);
     setResponse("");
     setTimeout(() => {
-      setResponse(`Based on your profile (GPA: ${user.gpa || "N/A"}, Target: ${user.targetCountry || "Not set"}, Budget: ${user.budget || "Not set"}):\n\n✅ Best Match: Stipendium Hungaricum 2027 (Hungary)\n📊 Match Score: 92%\n💰 Funding: Fully Funded\n📋 IELTS: Not Required (MOI Accepted)\n\n📝 Required Documents:\n• MOI Certificate from college\n• Transcripts (all years)\n• Motivation Letter (we can help write this)\n• Recommendation letters (2)\n• CV (we can help prepare)\n\n⭐ RizQara Tip: Hungary has the highest acceptance rate for Bangladeshi students. Start applying now for 2027!\n\n⚠️ Disclaimer: This is AI-generated guidance. Always verify from official sources.`);
+      setResponse(`Based on your profile (GPA: ${user.gpa || "N/A"}, Target: ${user.targetCountry || "Not set"}, Budget: ${user.budget || "Not set"}):\n\n✅ Best Match: Stipendium Hungaricum 2027 (Hungary)\n📊 Match Score: 92%\n💰 Funding: Fully Funded\n📋 IELTS: Not Required (MOI Accepted)\n\n📝 Required Documents:\n• MOI Certificate from college\n• Transcripts (all years)\n• Motivation Letter (we can help write this)\n• Recommendation letters (2)\n• CV (we can help prepare)\n\n⭐ RizQara Tip: Hungary has the highest acceptance rate for international students. Start applying now for 2027!\n\n⚠️ Disclaimer: This is AI-generated guidance. Always verify from official sources.`);
       setLoading(false);
     }, 1800);
   };

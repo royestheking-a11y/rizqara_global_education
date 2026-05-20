@@ -404,9 +404,9 @@ export default function Scholarships() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
       <SEO 
-        title="Scholarships for Bangladeshi Students | Fully Funded & No IELTS Options"
-        description="Explore government, university, fully funded, no IELTS, Bachelor, Master’s, PhD and MBBS scholarships for Bangladeshi students."
-        keywords="scholarships for Bangladeshi students, fully funded scholarship Bangladesh, no IELTS scholarship, study abroad scholarship"
+        title="Scholarships for International Students | Fully Funded & No IELTS Options"
+        description="Explore government, university, fully funded, no IELTS, Bachelor, Master’s, PhD and MBBS scholarships for international students."
+        keywords="scholarships for international students, fully funded scholarship global, no IELTS scholarship, study abroad scholarship"
         canonical="/scholarships"
       />
       

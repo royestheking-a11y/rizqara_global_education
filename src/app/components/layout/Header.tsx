@@ -66,7 +66,7 @@ export function Header() {
           </div>
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1 text-red-200">
-              <Globe size={11} /> EN / BN
+              <Globe size={11} /> EN (Global) / USD
             </span>
             <a
               href="https://wa.me/8801915342776"

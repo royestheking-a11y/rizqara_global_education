@@ -304,7 +304,7 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
           </div>
           <div className="mt-4 pt-3 border-t border-gray-50 flex justify-between items-center">
             <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Today's Payments</span>
-            <span className="text-sm font-extrabold text-[#7B1F2E]">৳ {(stats?.daily?.revenue || 0).toLocaleString()}</span>
+            <span className="text-sm font-extrabold text-[#7B1F2E]">$ {(stats?.daily?.revenue || 0).toLocaleString()}</span>
           </div>
         </div>
 
@@ -320,7 +320,7 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
           </div>
           <div className="mt-4 pt-3 border-t border-gray-50 flex justify-between items-center">
             <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Monthly Revenue</span>
-            <span className="text-sm font-extrabold text-green-700">৳ {(stats?.monthly?.revenue || 0).toLocaleString()}</span>
+            <span className="text-sm font-extrabold text-green-700">$ {(stats?.monthly?.revenue || 0).toLocaleString()}</span>
           </div>
         </div>
 
@@ -336,7 +336,7 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
           </div>
           <div className="mt-4 pt-3 border-t border-gray-50 flex justify-between items-center">
             <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Yearly Revenue</span>
-            <span className="text-sm font-extrabold text-[#7B1F2E]">৳ {(stats?.yearly?.revenue || 0).toLocaleString()}</span>
+            <span className="text-sm font-extrabold text-[#7B1F2E]">$ {(stats?.yearly?.revenue || 0).toLocaleString()}</span>
           </div>
         </div>
 
@@ -434,7 +434,7 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
                     </td>
                     <td className="px-5 py-4 whitespace-nowrap">
                       <div>
-                        <p className="font-extrabold text-[#7B1F2E]">৳ {totalPaid.toLocaleString()}</p>
+                        <p className="font-extrabold text-[#7B1F2E]">$ {totalPaid.toLocaleString()}</p>
                         <p className="text-[9px] text-gray-400 mt-0.5 font-bold uppercase tracking-wider">
                           Completed payments ({record.applications?.filter((a: any) => a.payment?.status === "Completed").length || 0} of {record.applications?.length || 0})
                         </p>
@@ -593,7 +593,7 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
                 <h4 className="text-xs font-bold text-gray-800 uppercase tracking-widest border-l-2 border-gray-400 pl-2 mb-2">Initial Payment Details</h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <div>
-                    <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">Payment Amount (৳)</label>
+                    <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">Payment Amount ($)</label>
                     <input 
                       type="number" 
                       value={studentForm.paymentAmount} 
@@ -608,7 +608,7 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
                       onChange={e => setStudentForm(prev => ({ ...prev, paymentMethod: e.target.value }))}
                       className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs bg-white focus:outline-none focus:border-[#7B1F2E]"
                     >
-                      {['BKash', 'Nagad', 'Rocket', 'Bank Transfer', 'WhatsApp Manual', 'Cash'].map(m => <option key={m} value={m}>{m}</option>)}
+                      {['Stripe', 'PayPal', 'Wise', 'Bank Transfer', 'BKash', 'Nagad', 'Rocket', 'WhatsApp Manual', 'Cash'].map(m => <option key={m} value={m}>{m}</option>)}
                     </select>
                   </div>
                   <div>
@@ -759,7 +759,7 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
                       <div>
                         <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest block mb-0.5">Amount</span>
                         <div className="flex items-center border border-gray-200 rounded-lg px-2 py-1 bg-gray-50/50">
-                          <span className="text-xs font-bold text-gray-500 mr-1">৳</span>
+                          <span className="text-xs font-bold text-gray-500 mr-1">$</span>
                           <input 
                             type="number"
                             defaultValue={app.payment?.amount || 0}
@@ -777,7 +777,7 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
                           onChange={e => handleUpdateAppStatus(app._id, { payment: { ...app.payment, method: e.target.value } })}
                           className="px-2 py-1 border border-gray-200 rounded-lg text-xs bg-white w-full font-bold focus:outline-none text-gray-700"
                         >
-                          {['BKash', 'Nagad', 'Rocket', 'Bank Transfer', 'WhatsApp Manual', 'Cash'].map(m => <option key={m} value={m}>{m}</option>)}
+                          {['Stripe', 'PayPal', 'Wise', 'Bank Transfer', 'BKash', 'Nagad', 'Rocket', 'WhatsApp Manual', 'Cash'].map(m => <option key={m} value={m}>{m}</option>)}
                         </select>
                       </div>
 
@@ -887,7 +887,7 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
                   </select>
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">Amount (৳)</label>
+                  <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">Amount ($)</label>
                   <input 
                     type="number" 
                     value={newAppForm.paymentAmount} 
@@ -905,7 +905,7 @@ export default function ManualApplicationManagement({ showToast }: { showToast: 
                     onChange={e => setNewAppForm(prev => ({ ...prev, paymentMethod: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs bg-white focus:outline-none"
                   >
-                    {['BKash', 'Nagad', 'Rocket', 'Bank Transfer', 'WhatsApp Manual', 'Cash'].map(m => <option key={m} value={m}>{m}</option>)}
+                    {['Stripe', 'PayPal', 'Wise', 'Bank Transfer', 'BKash', 'Nagad', 'Rocket', 'WhatsApp Manual', 'Cash'].map(m => <option key={m} value={m}>{m}</option>)}
                   </select>
                 </div>
                 <div>

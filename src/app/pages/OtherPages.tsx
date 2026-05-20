@@ -45,9 +45,9 @@ export function CountriesPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
       <SEO 
-        title="Study Abroad Countries for Bangladeshi Students | Cost, Visa & Scholarships"
-        description="Compare study abroad countries including Japan, Russia, Turkey, Saudi Arabia, Hungary, Romania, Italy, China and more for Bangladeshi students."
-        keywords="best countries to study abroad from Bangladesh, low cost study abroad, study in Europe from Bangladesh"
+        title="Study Abroad Countries for International Students | Cost, Visa & Scholarships"
+        description="Compare study abroad countries including Japan, Russia, Turkey, Saudi Arabia, Hungary, Romania, Italy, China and more for international students."
+        keywords="best countries to study abroad, low cost study abroad, study in Europe"
         canonical="/countries"
       />
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-12">
@@ -149,9 +149,9 @@ export function CountryDetailsPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
       <SEO 
-        title={`Study in ${country.name} from Bangladesh | Cost, Visa & Scholarships`}
-        description={`Learn about tuition fees, living costs, IELTS requirements, and scholarships for studying in ${country.name} for Bangladeshi students.`}
-        keywords={`study in ${country.name} from Bangladesh, ${country.name} student visa cost, ${country.name} scholarship for Bangladeshi students`}
+        title={`Study in ${country.name} | Cost, Visa & Scholarships`}
+        description={`Learn about tuition fees, living costs, IELTS requirements, and scholarships for studying in ${country.name} for international students.`}
+        keywords={`study in ${country.name}, ${country.name} student visa cost, ${country.name} scholarship for international students`}
         canonical={`/countries/${country.slug || country._id}`}
         ogImage={country.image}
         schema={[{
@@ -257,9 +257,9 @@ export function ServicesPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
       <SEO 
-        title="Study Abroad Consultancy Services in Bangladesh | RizQara Global Education"
+        title="Study Abroad Consultancy Services | RizQara Global Education"
         description="Get profile evaluation, scholarship matching, university shortlisting, SOP, CV, recommendation letter, application and visa guidance support."
-        keywords="study abroad consultancy Bangladesh, scholarship application support, SOP writing Bangladesh, visa guidance Bangladesh"
+        keywords="study abroad consultancy, scholarship application support, SOP writing, visa guidance"
         canonical="/services"
       />
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-12 text-center">
@@ -335,9 +335,9 @@ export function ServiceDetailsPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
       <SEO 
-        title={`${service.title} | Study Abroad Services in Bangladesh`}
+        title={`${service.title} | Study Abroad Services`}
         description={service.description}
-        keywords={`${service.title} Bangladesh, study abroad ${service.title}, scholarship support Bangladesh`}
+        keywords={`${service.title}, study abroad ${service.title}, scholarship support`}
         canonical={`/services/${service.slug || service._id}`}
         ogImage={service.image}
       />
@@ -440,9 +440,9 @@ export function BlogPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
       <SEO 
-        title="Study Abroad Blog Bangladesh | Scholarship, Visa & Admission Tips"
+        title="Study Abroad Blog | Scholarship, Visa & Admission Tips"
         description="Read useful guides about scholarships, no IELTS study abroad, university admission, SOP writing, visa preparation and country-wise study options."
-        keywords="study abroad blog Bangladesh, scholarship guidance, admission tips"
+        keywords="study abroad blog, scholarship guidance, admission tips"
         canonical="/blog"
       />
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-12">
@@ -664,8 +664,8 @@ export function NoticePage() {
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
       <SEO 
         title="Scholarship Notices & Deadline Updates | RizQara Global Education"
-        description="Get latest scholarship notices, deadline reminders, embassy updates, application announcements and study abroad news for Bangladeshi students."
-        keywords="scholarship notices Bangladesh, scholarship deadlines, latest scholarship updates"
+        description="Get latest scholarship notices, deadline reminders, embassy updates, application announcements and study abroad news for international students."
+        keywords="scholarship notices, scholarship deadlines, latest scholarship updates"
         canonical="/notice"
       />
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-12 text-center">
@@ -738,8 +738,8 @@ export function SuccessGalleryPage() {
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
       <SEO 
         title="Student Success Gallery | RizQara Global Education Achievements"
-        description="View the success stories of Bangladeshi students who achieved their study abroad dreams and scholarships with RizQara Global Education."
-        keywords="study abroad success stories, scholarship winners Bangladesh"
+        description="View the success stories of international students who achieved their study abroad dreams and scholarships with RizQara Global Education."
+        keywords="study abroad success stories, scholarship winners global"
         canonical="/success-gallery"
       />
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-12 text-center">
@@ -796,16 +796,16 @@ export function AboutPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
       <SEO 
-        title="About RizQara Global Education | Scholarship Guidance Platform Bangladesh"
-        description="RizQara Global Education helps Bangladeshi students find scholarships, prepare documents, apply to universities and track their study abroad journey."
-        keywords="RizQara Global Education, about study abroad consultancy Bangladesh"
+        title="About RizQara Global Education | International Scholarship Guidance Platform"
+        description="RizQara Global Education helps international students find scholarships, prepare documents, apply to universities and track their study abroad journey."
+        keywords="RizQara Global Education, about study abroad consultancy"
         canonical="/about"
       />
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-16 text-center">
         <div className="max-w-4xl mx-auto px-4">
           <h1 className="text-3xl font-bold text-white mb-3">About RizQara Global Education</h1>
           <p className="text-red-200 max-w-2xl mx-auto leading-relaxed">
-            Bangladesh's premier scholarship portal and study abroad consultancy, dedicated to helping students achieve their global education dreams.
+            Your premier international scholarship portal and study abroad consultancy, dedicated to helping students achieve their global education dreams.
           </p>
         </div>
       </div>
@@ -814,10 +814,10 @@ export function AboutPage() {
           <div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-              RizQara Global Education was founded with a single mission: to make study abroad accessible and achievable for every Bangladeshi student, regardless of their financial background.
+              RizQara Global Education was founded with a single mission: to make study abroad accessible and achievable for every student, regardless of their financial background or country of origin.
             </p>
             <p className="text-gray-600 leading-relaxed">
-              We believe every student deserves accurate, verified information and genuine guidance — not false promises. Our platform combines cutting-edge technology with expert human guidance to deliver the most comprehensive scholarship service in Bangladesh.
+              We believe every student deserves accurate, verified information and genuine guidance — not false promises. Our platform combines cutting-edge technology with expert human guidance to deliver the most comprehensive scholarship service.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -989,11 +989,11 @@ export function AIGuidePage() {
 
   const generateResponse = (q: string) => {
     const ql = q.toLowerCase();
-    if (ql.includes("mext") || ql.includes("japan")) return "MEXT Scholarship 2027 – Japan\n\nStatus: Open (Deadline ~May 2026)\nFunds: Fully Funded: Tuition + ¥117,000-144,000/month + airfare\nDegrees: Bachelor, Master's, PhD, Research\nIELTS: Not required (Embassy screening)\n\nKey Documents Needed:\n• Passport\n• Academic certificates & transcripts\n• Research plan/SOP\n• 2 recommendation letters\n• Medical certificate\n• Photos\n\nProcess: Apply via Japanese Embassy Dhaka → Primary screening → Interview → University placement\n\nRizQara Tip: Strong GPA (4.5+) recommended. Start Japanese basics. Embassy route has better success rate.\n\nDisclaimer: Verify all information from official mext.go.jp website.";
-    if (ql.includes("hungary") || ql.includes("stipendium")) return "Stipendium Hungaricum 2027\n\nStatus: Opening November 2026\nFunds: Fully Funded: Tuition + HUF 43,700/month + dorm\nDegrees: Bachelor, Master's, PhD, Foundation\nIELTS: NOT required — MOI accepted!\n\nKey Documents:\n• Passport\n• Academic transcripts\n• MOI certificate from your college\n• Motivation letter (1-2 pages)\n• 2 recommendation letters\n• CV\n• Medical certificate\n• Police clearance\n• Photos\n\nProcess: Apply on Stipendium portal → Select 3 universities → Document upload → Tempus review → University acceptance\n\nRizQara's Top Pick for Bangladeshi students!\nHighest acceptance rate. Easy process. MOI accepted.\n\nDisclaimer: Verify from official stipendiumhungaricum.hu";
-    if (ql.includes("no ielts") || ql.includes("moi") || ql.includes("without ielts")) return "Top No-IELTS Scholarship Options for Bangladesh 2027\n\n1. Hungary – Stipendium Hungaricum\n   • MOI Accepted\n   • Fully Funded\n   • High acceptance\n\n2. Romania – Government Scholarship\n   • MOI Accepted\n   • Fully Funded\n   • Easy process\n\n3. Russia – Government Scholarship\n   • No language cert needed\n   • Russian language training provided\n   • Best for MBBS\n\n4. Saudi Arabia – Government\n   • MOI/English cert needed\n   • For Muslim students\n\n5. Turkey – Türkiye Scholarship\n   • English ability test\n   • No IELTS for some programs\n\nHow to get MOI Certificate:\nContact your HSC/Degree college principal → Request English medium instruction letter → Get signed and stamped\n\nDisclaimer: Always verify requirements from official sources.";
-    if (ql.includes("mbbs") || ql.includes("medicine") || ql.includes("doctor")) return "MBBS Abroad Without IELTS – Top Options 2027\n\n1. Russia (BEST for MBBS)\n   • 5-6 year program\n   • WHO recognized\n   • Government scholarship available\n   • Russian language training included\n   • Cost: Free (scholarship) or $3,000-6,000/year\n   • Requirements: HSC Biology+Chemistry, good grades\n\n2. Romania\n   • 6 year MD program\n   • EU degree\n   • Government scholarship available\n   • Cost: Free (scholarship) or €4,000-6,000/year\n\n3. Bulgaria\n   • EU medical degree\n   • No IELTS\n   • Self-funded ~€5,000/year\n\n4. Moldova\n   • Budget-friendly option\n   • WHO recognized\n   • ~$3,000/year\n\nImportant:\n• BMDC recognition is crucial — check before applying\n• Total duration: 5-6 years + 1 year internship\n• Required: Good Biology & Chemistry grades\n\nDisclaimer: Verify BMDC recognition before choosing any MBBS program abroad.";
-    return "RizQara AI Scholarship Guide\n\nBased on your query, here are our top recommendations for Bangladeshi students in 2027:\n\nBest Fully Funded Scholarships:\n1. Hungary – Stipendium Hungaricum (Easiest, MOI accepted)\n2. Romania – Government Scholarship (High acceptance)\n3. Japan – MEXT (Prestigious, No IELTS)\n4. Russia – Government Scholarship (Best for MBBS)\n5. Turkey – Türkiye Scholarships (Competitive)\n\nGeneral Requirements:\n• MOI certificate from your college/university\n• Academic transcripts (all years)\n• Motivation letter / SOP\n• Recommendation letters (2-3)\n• Valid passport\n• Medical certificate\n• Police clearance (some countries)\n\nStart Now:\n1. Get MOI certificate from your institution\n2. Book a free profile check with RizQara\n3. Start preparing documents early (takes 4-6 weeks)\n\nContact RizQara: +880 1725-350352\nWhatsApp: Chat with our advisors\n\nDisclaimer: This is AI-assisted guidance for initial support. Always verify information from official scholarship websites before applying.";
+    if (ql.includes("mext") || ql.includes("japan")) return "MEXT Scholarship 2027 – Japan\n\nStatus: Open (Deadline ~May 2026)\nFunds: Fully Funded: Tuition + ¥117,000-144,000/month + airfare\nDegrees: Bachelor, Master's, PhD, Research\nIELTS: Not required (Embassy screening)\n\nKey Documents Needed:\n• Passport\n• Academic certificates & transcripts\n• Research plan/SOP\n• 2 recommendation letters\n• Medical certificate\n• Photos\n\nProcess: Apply via Japanese Embassy in your country → Primary screening → Interview → University placement\n\nRizQara Tip: Strong GPA (4.5+) recommended. Start Japanese basics. Embassy route has better success rate.\n\nDisclaimer: Verify all information from official mext.go.jp website.";
+    if (ql.includes("hungary") || ql.includes("stipendium")) return "Stipendium Hungaricum 2027\n\nStatus: Opening November 2026\nFunds: Fully Funded: Tuition + HUF 43,700/month + dorm\nDegrees: Bachelor, Master's, PhD, Foundation\nIELTS: NOT required — MOI accepted!\n\nKey Documents:\n• Passport\n• Academic transcripts\n• MOI certificate from your college\n• Motivation letter (1-2 pages)\n• 2 recommendation letters\n• CV\n• Medical certificate\n• Police clearance\n• Photos\n\nProcess: Apply on Stipendium portal → Select 3 universities → Document upload → Tempus review → University acceptance\n\nRizQara's Top Pick for international students!\nHighest acceptance rate. Easy process. MOI accepted.\n\nDisclaimer: Verify from official stipendiumhungaricum.hu";
+    if (ql.includes("no ielts") || ql.includes("moi") || ql.includes("without ielts")) return "Top No-IELTS Scholarship Options for International Students 2027\n\n1. Hungary – Stipendium Hungaricum\n   • MOI Accepted\n   • Fully Funded\n   • High acceptance\n\n2. Romania – Government Scholarship\n   • MOI Accepted\n   • Fully Funded\n   • Easy process\n\n3. Russia – Government Scholarship\n   • No language cert needed\n   • Russian language training provided\n   • Best for MBBS\n\n4. Saudi Arabia – Government\n   • MOI/English cert needed\n   • For Muslim students\n\n5. Turkey – Türkiye Scholarship\n   • English ability test\n   • No IELTS for some programs\n\nHow to get MOI Certificate:\nContact your high school/college principal → Request English medium instruction letter → Get signed and stamped\n\nDisclaimer: Always verify requirements from official sources.";
+    if (ql.includes("mbbs") || ql.includes("medicine") || ql.includes("doctor")) return "MBBS Abroad Without IELTS – Top Options 2027\n\n1. Russia (BEST for MBBS)\n   • 5-6 year program\n   • WHO recognized\n   • Government scholarship available\n   • Russian language training included\n   • Cost: Free (scholarship) or $3,000-6,000/year\n   • Requirements: HSC Biology+Chemistry, good grades\n\n2. Romania\n   • 6 year MD program\n   • EU degree\n   • Government scholarship available\n   • Cost: Free (scholarship) or €4,000-6,000/year\n\n3. Bulgaria\n   • EU medical degree\n   • No IELTS\n   • Self-funded ~€5,000/year\n\n4. Moldova\n   • Budget-friendly option\n   • WHO recognized\n   • ~$3,000/year\n\nImportant:\n• Global medical council / WHO recognition is crucial — check before applying\n• Total duration: 5-6 years + 1 year internship\n• Required: Good Biology & Chemistry grades\n\nDisclaimer: Verify local medical council recognition before choosing any MBBS program abroad.";
+    return "RizQara AI Scholarship Guide\n\nBased on your query, here are our top recommendations for international students in 2027:\n\nBest Fully Funded Scholarships:\n1. Hungary – Stipendium Hungaricum (Easiest, MOI accepted)\n2. Romania – Government Scholarship (High acceptance)\n3. Japan – MEXT (Prestigious, No IELTS)\n4. Russia – Government Scholarship (Best for MBBS)\n5. Turkey – Türkiye Scholarships (Competitive)\n\nGeneral Requirements:\n• MOI certificate from your college/university\n• Academic transcripts (all years)\n• Motivation letter / SOP\n• Recommendation letters (2-3)\n• Valid passport\n• Medical certificate\n• Police clearance (some countries)\n\nStart Now:\n1. Get MOI certificate from your institution\n2. Book a free profile check with RizQara\n3. Start preparing documents early (takes 4-6 weeks)\n\nContact RizQara: +880 1915-342776\nWhatsApp: Chat with our advisors\n\nDisclaimer: This is AI-assisted guidance for initial support. Always verify information from official scholarship websites before applying.";
   };
 
   return (
@@ -1001,7 +1001,7 @@ export function AIGuidePage() {
       <SEO 
         title="AI Scholarship Guide | Personalized Matching by RizQara"
         description="Use our AI-powered scholarship guide to find the best matching opportunities based on your academic profile and preferences."
-        keywords="AI scholarship matching, personalized scholarship guide Bangladesh"
+        keywords="AI scholarship matching, personalized scholarship guide international"
         canonical="/ai-guide"
       />
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-12 text-center">
@@ -1098,10 +1098,10 @@ export function NoIELTSPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F5" }}>
       <SEO 
-        title="Study Abroad Without IELTS for Bangladeshi Students | 2027 Guide"
-        description="Find fully funded scholarships and universities that don't require IELTS for Bangladeshi students. Learn about MOI, Duolingo, and other alternatives."
-        keywords="study abroad without IELTS from Bangladesh, no IELTS scholarship 2027, MOI accepted universities"
-        canonical="/no-ielts-scholarships-for-bangladeshi-students"
+        title="Study Abroad Without IELTS for International Students | 2027 Guide"
+        description="Find fully funded scholarships and universities that don't require IELTS for international students. Learn about MOI, Duolingo, and other alternatives."
+        keywords="study abroad without IELTS, no IELTS scholarship 2027, MOI accepted universities"
+        canonical="/no-ielts-scholarships-for-international-students"
       />
       
       <div style={{ background: "linear-gradient(135deg, #7B1F2E, #3D0F17)" }} className="py-16 text-center">
@@ -1112,7 +1112,7 @@ export function NoIELTSPage() {
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-white mb-4">Study Abroad Without IELTS</h1>
           <p className="text-red-100 text-lg max-w-2xl mx-auto leading-relaxed">
-            Discover 500+ scholarships and universities in Japan, Hungary, Russia, and more that accept MOI or have no IELTS requirements for Bangladeshi students.
+            Discover 500+ scholarships and universities in Japan, Hungary, Russia, and more that accept MOI or have no IELTS requirements for international students.
           </p>
         </div>
       </div>

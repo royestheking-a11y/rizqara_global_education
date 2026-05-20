@@ -38,7 +38,7 @@ const manualApplicationSchema = new mongoose.Schema({
         },
         method: { 
           type: String, 
-          enum: ['BKash', 'Nagad', 'Rocket', 'Bank Transfer', 'WhatsApp Manual', 'Cash'],
+          enum: ['Stripe', 'PayPal', 'Wise', 'Bank Transfer', 'BKash', 'Nagad', 'Rocket', 'WhatsApp Manual', 'Cash'],
           default: 'WhatsApp Manual' 
         },
         status: {

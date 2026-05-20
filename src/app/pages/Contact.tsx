@@ -27,7 +27,7 @@ export default function Contact() {
       <SEO 
         title="Contact Us & Free Profile Check | RizQara Global Education"
         description="Get a free profile check for scholarships. Contact RizQara Global Education for study abroad guidance, university admission, and visa support."
-        keywords="contact RizQara, free scholarship profile check, study abroad consultation Bangladesh"
+        keywords="contact RizQara, free scholarship profile check, study abroad consultation"
         canonical="/contact"
       />
       {/* Header */}
@@ -47,7 +47,7 @@ export default function Contact() {
               {[
                 { icon: <Phone size={18} style={{ color: "#7B1F2E" }} />, label: "Phone / WhatsApp", value: "+880 1915-342776" },
                 { icon: <Mail size={18} style={{ color: "#7B1F2E" }} />, label: "Email", value: "rizqaraglobaleducation@gmail.com" },
-                { icon: <MapPin size={18} style={{ color: "#7B1F2E" }} />, label: "Location", value: "Dhaka, Bangladesh" },
+                { icon: <MapPin size={18} style={{ color: "#7B1F2E" }} />, label: "Location", value: "Global Offices" },
                 { icon: <Clock size={18} style={{ color: "#7B1F2E" }} />, label: "Office Hours", value: "Sat–Thu, 9 AM – 9 PM" },
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3 py-3 border-b border-gray-50 last:border-b-0">
@@ -129,7 +129,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <label className="text-xs text-gray-500 mb-1 block">Phone / WhatsApp *</label>
-                      <input required value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))} placeholder="+880 1712-345678" className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7B1F2E12]" />
+                      <input required value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))} placeholder="+1 234 567 8900" className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7B1F2E12]" />
                     </div>
                   </div>
                   <div>
@@ -162,7 +162,7 @@ export default function Contact() {
                     <label className="text-xs text-gray-500 mb-1 block">Budget</label>
                     <select value={form.budget} onChange={e => setForm(p => ({ ...p, budget: e.target.value }))} className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#7B1F2E12]">
                       <option value="">Select your budget</option>
-                      {["Want fully funded", "Up to 2 lakh BDT", "Up to 5 lakh BDT", "Up to 10 lakh BDT", "Open to all options"].map(b => <option key={b} value={b}>{b}</option>)}
+                      {["Want fully funded", "Up to $2,000 USD", "Up to $5,000 USD", "Up to $10,000 USD", "Open to all options"].map(b => <option key={b} value={b}>{b}</option>)}
                     </select>
                   </div>
                   <div>

@@ -71,7 +71,7 @@ export const router = createBrowserRouter([
       { path: "contact", Component: Contact },
       { path: "faq", Component: FAQPage },
       { path: "ai-guide", Component: AIGuidePage },
-      { path: "no-ielts-scholarships-for-bangladeshi-students", Component: NoIELTSPage },
+      { path: "no-ielts-scholarships-for-international-students", Component: NoIELTSPage },
       { path: "privacy-policy", Component: PrivacyPolicyPage },
       { path: "terms-conditions", Component: TermsConditionsPage },
       { path: "refund-policy", Component: RefundPolicyPage },

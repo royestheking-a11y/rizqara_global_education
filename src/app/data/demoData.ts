@@ -242,7 +242,7 @@ export const scholarships: Scholarship[] = [
     livingCost: "€150-300/month from scholarship",
     status: "Upcoming",
     difficulty: "Medium",
-    description: "Stipendium Hungaricum is Hungary's premier government scholarship program offering full study grants to students from partner countries. Bangladesh is a partner country with excellent acceptance rates.",
+    description: "Stipendium Hungaricum is Hungary's premier government scholarship program offering full study grants to students from partner countries with excellent acceptance rates worldwide.",
     benefits: ["Full tuition waiver", "Monthly stipend HUF 43,700", "Dormitory accommodation", "Health insurance", "No IELTS required with MOI"],
     eligibility: ["Any degree level", "Strong academic record", "MOI certificate or IELTS 5.5+", "Under 45 years of age"],
     requiredDocuments: ["Passport", "Degree certificates", "Transcripts", "MOI/IELTS certificate", "Motivation letter", "CV", "Reference letters", "Medical certificate"],
@@ -259,7 +259,7 @@ export const scholarships: Scholarship[] = [
     language: "English/Hungarian",
     daysLeft: 245,
     isVerified: true,
-    rizqaraNote: "Best option for Bangladeshi students! MOI is accepted. High acceptance rate. Medical and engineering programs are excellent."
+    rizqaraNote: "Best option for international students! MOI is accepted. High acceptance rate. Medical and engineering programs are excellent."
   },
   {
     id: "turkey-turkiye-scholarship",
@@ -296,7 +296,7 @@ export const scholarships: Scholarship[] = [
     language: "English/Turkish",
     daysLeft: 285,
     isVerified: true,
-    rizqaraNote: "Very popular among Bangladeshi students. Apply early as competition is high from South Asia."
+    rizqaraNote: "Very popular among international students. Apply early as competition is high."
   },
   {
     id: "russia-government-scholarship",
@@ -390,7 +390,7 @@ export const scholarships: Scholarship[] = [
     livingCost: "€65-85/month",
     status: "Upcoming",
     difficulty: "Easy",
-    description: "Romania offers government scholarships to international students through a bilateral agreement. This is one of the most accessible European scholarships for Bangladeshi students with an acceptance rate above 60%.",
+    description: "Romania offers government scholarships to international students through a bilateral agreement. This is one of the most accessible European scholarships for international students with an acceptance rate above 60%.",
     benefits: ["Full tuition waiver", "Dormitory accommodation", "Monthly allowance €65-85", "Romanian language preparatory year included"],
     eligibility: ["Under 35", "Min GPA requirement", "MOI or IELTS 5.0+", "Good health"],
     requiredDocuments: ["Passport", "Degree certificates", "Transcripts", "MOI certificate", "Motivation letter", "Medical certificate", "Police clearance", "Photos"],
@@ -407,7 +407,7 @@ export const scholarships: Scholarship[] = [
     language: "English/Romanian",
     daysLeft: 325,
     isVerified: true,
-    rizqaraNote: "Highest acceptance rate for Bangladeshi students. Easy process, MOI accepted. Strong medical and engineering programs."
+    rizqaraNote: "Highest acceptance rate for international students. Easy process, MOI accepted. Strong medical and engineering programs."
   },
   {
     id: "china-csc-scholarship",
@@ -488,10 +488,10 @@ export const scholarships: Scholarship[] = [
 // ======================== COUNTRIES ========================
 export const countries: Country[] = [
   { id: "japan", name: "Japan", flag: "🇯🇵", continent: "Asia", tuitionRange: "¥0 (Fully Funded Available)", livingCost: "¥80,000-150,000/month", ieltsRequired: false, popularSubjects: ["Engineering", "Science", "Technology", "Medicine"], scholarshipCount: 12, description: "Japan offers world-class education with the prestigious MEXT scholarship. No IELTS required for government scholarships.", partTimeWork: true, prPathway: true, image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800&auto=format&fit=crop", currency: "JPY", language: "Japanese/English" },
-  { id: "hungary", name: "Hungary", flag: "🇭🇺", continent: "Europe", tuitionRange: "Free (Stipendium Hungaricum)", livingCost: "€300-600/month", ieltsRequired: false, popularSubjects: ["Medicine", "Engineering", "IT", "Business"], scholarshipCount: 8, description: "Hungary's Stipendium Hungaricum is the easiest fully-funded European scholarship for Bangladeshi students. MOI accepted.", partTimeWork: true, prPathway: false, image: "https://images.unsplash.com/photo-1551867633-194f125bddfa?q=80&w=800&auto=format&fit=crop", currency: "HUF", language: "English/Hungarian" },
+  { id: "hungary", name: "Hungary", flag: "🇭🇺", continent: "Europe", tuitionRange: "Free (Stipendium Hungaricum)", livingCost: "€300-600/month", ieltsRequired: false, popularSubjects: ["Medicine", "Engineering", "IT", "Business"], scholarshipCount: 8, description: "Hungary's Stipendium Hungaricum is the easiest fully-funded European scholarship for international students. MOI accepted.", partTimeWork: true, prPathway: false, image: "https://images.unsplash.com/photo-1551867633-194f125bddfa?q=80&w=800&auto=format&fit=crop", currency: "HUF", language: "English/Hungarian" },
   { id: "turkey", name: "Turkey", flag: "🇹🇷", continent: "Europe/Asia", tuitionRange: "Free (Govt Scholarship)", livingCost: "₺5,000-10,000/month", ieltsRequired: false, popularSubjects: ["Engineering", "Medicine", "Social Sciences", "Arts"], scholarshipCount: 10, description: "Turkey bridges East and West with excellent universities and generous Türkiye Scholarships covering all expenses.", partTimeWork: false, prPathway: false, image: "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=800&auto=format&fit=crop", currency: "TRY", language: "Turkish/English" },
   { id: "russia", name: "Russia", flag: "🇷🇺", continent: "Europe/Asia", tuitionRange: "Free (Govt) / $2,000-8,000/year", livingCost: "$300-600/month", ieltsRequired: false, popularSubjects: ["Medicine (MBBS)", "Engineering", "Natural Sciences"], scholarshipCount: 9, description: "Russia is the top destination for MBBS abroad without IELTS. Russian government scholarships include language training.", partTimeWork: false, prPathway: false, image: "https://images.unsplash.com/photo-1512495039889-52a3b799c9bc?q=80&w=800&auto=format&fit=crop", currency: "RUB", language: "Russian (training provided)" },
-  { id: "romania", name: "Romania", flag: "🇷🇴", continent: "Europe", tuitionRange: "Free (Govt Scholarship)", livingCost: "€300-500/month", ieltsRequired: false, popularSubjects: ["Medicine", "Engineering", "Science", "Law"], scholarshipCount: 6, description: "Romania offers the highest acceptance rate European scholarship for Bangladeshi students. MOI accepted and easy process.", partTimeWork: true, prPathway: false, image: "https://images.unsplash.com/photo-1589656966895-2f33e7653819?auto=format&fit=crop&w=1200&q=80", currency: "RON", language: "English/Romanian" },
+  { id: "romania", name: "Romania", flag: "🇷🇴", continent: "Europe", tuitionRange: "Free (Govt Scholarship)", livingCost: "€300-500/month", ieltsRequired: false, popularSubjects: ["Medicine", "Engineering", "Science", "Law"], scholarshipCount: 6, description: "Romania offers the highest acceptance rate European scholarship for international students. MOI accepted and easy process.", partTimeWork: true, prPathway: false, image: "https://images.unsplash.com/photo-1589656966895-2f33e7653819?auto=format&fit=crop&w=1200&q=80", currency: "RON", language: "English/Romanian" },
   { id: "saudi-arabia", name: "Saudi Arabia", flag: "🇸🇦", continent: "Middle East", tuitionRange: "Free (Govt Scholarship)", livingCost: "SAR 800-1,500/month", ieltsRequired: false, popularSubjects: ["Islamic Studies", "Medicine", "Engineering", "Business"], scholarshipCount: 5, description: "Saudi Arabia offers generous scholarships for Muslim students with full coverage including accommodation and stipend.", partTimeWork: false, prPathway: false, image: "https://images.unsplash.com/photo-1586724230021-4c3838663c58?auto=format&fit=crop&w=1200&q=80", currency: "SAR", language: "Arabic/English" },
   { id: "china", name: "China", flag: "🇨🇳", continent: "Asia", tuitionRange: "Free (CSC) / $3,000-10,000/year", livingCost: "¥2,000-5,000/month", ieltsRequired: false, popularSubjects: ["Engineering", "Medicine", "Business", "Sciences"], scholarshipCount: 15, description: "China offers the most scholarships globally through CSC. No IELTS for Chinese language programs. Many English programs available.", partTimeWork: false, prPathway: false, image: "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?q=80&w=800&auto=format&fit=crop", currency: "CNY", language: "Chinese/English" },
   { id: "germany", name: "Germany", flag: "🇩🇪", continent: "Europe", tuitionRange: "€0-1,500/semester (public)", livingCost: "€800-1,200/month", ieltsRequired: true, popularSubjects: ["Engineering", "Science", "Business", "Arts"], scholarshipCount: 7, description: "Germany offers almost free education at public universities. DAAD scholarships are available for outstanding students.", partTimeWork: true, prPathway: true, image: "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?q=80&w=800&auto=format&fit=crop", currency: "EUR", language: "German/English" },
@@ -503,10 +503,10 @@ export const countries: Country[] = [
 export const blogPosts: BlogPost[] = [
   {
     id: "1",
-    title: "How to Apply for MEXT Scholarship from Bangladesh – Complete Guide 2027",
-    slug: "mext-scholarship-bangladesh-guide-2027",
+    title: "How to Apply for MEXT Scholarship – Complete Global Guide 2027",
+    slug: "mext-scholarship-global-guide-2027",
     category: "Scholarship Guide",
-    excerpt: "MEXT is Japan's government scholarship — one of the most prestigious in Asia. Here's a complete step-by-step guide for Bangladeshi students.",
+    excerpt: "MEXT is Japan's government scholarship — one of the most prestigious in Asia. Here's a complete step-by-step guide for international students.",
     content: "MEXT Scholarship is fully funded by the Japanese government...",
     image: "https://images.unsplash.com/photo-1526481280693-3bfa75ac8efd?q=80&w=800&auto=format&fit=crop",
     date: "May 10, 2026",
@@ -520,7 +520,7 @@ export const blogPosts: BlogPost[] = [
     slug: "study-abroad-without-ielts-2027",
     category: "No IELTS Study Abroad",
     excerpt: "Don't have IELTS? You can still study in Europe, Asia, and the Middle East. Here are the top 10 countries that accept MOI or don't require IELTS.",
-    content: "Many Bangladeshi students assume IELTS is mandatory for studying abroad...",
+    content: "Many international students assume IELTS is mandatory for studying abroad...",
     image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop",
     date: "May 8, 2026",
     readTime: "6 min read",
@@ -542,11 +542,11 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: "4",
-    title: "MBBS Abroad Without IELTS – Russia, Romania, Bangladesh Guide",
+    title: "MBBS Abroad Without IELTS – Russia, Romania, Global Guide",
     slug: "mbbs-abroad-without-ielts",
     category: "MBBS Abroad",
     excerpt: "Want to become a doctor abroad without IELTS? Russia and Romania are your best options. Complete cost, process, and recognition guide.",
-    content: "MBBS abroad is a dream for thousands of Bangladeshi students...",
+    content: "MBBS abroad is a dream for thousands of international students...",
     image: "https://images.unsplash.com/photo-1576091160550-2173bdd99625?q=80&w=800&auto=format&fit=crop",
     date: "May 2, 2026",
     readTime: "7 min read",
@@ -555,10 +555,10 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: "5",
-    title: "Stipendium Hungaricum 2027 – Complete Application Guide for Bangladesh",
-    slug: "stipendium-hungaricum-2027-bangladesh",
+    title: "Stipendium Hungaricum 2027 – Complete Application Guide",
+    slug: "stipendium-hungaricum-2027-global",
     category: "Scholarship Guide",
-    excerpt: "Stipendium Hungaricum is Hungary's flagship scholarship — the best option for Bangladeshi students looking for a funded European education.",
+    excerpt: "Stipendium Hungaricum is Hungary's flagship scholarship — the best option for international students looking for a funded European education.",
     content: "Stipendium Hungaricum is offered by the Hungarian government to students from partner countries...",
     image: "https://images.unsplash.com/photo-1551867633-194f125bddfa?q=80&w=800&auto=format&fit=crop",
     date: "April 28, 2026",
@@ -568,16 +568,16 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: "6",
-    title: "Low Budget Study Abroad Options for Bangladeshi Students in 2027",
-    slug: "low-budget-study-abroad-bangladeshi-students",
+    title: "Low Budget Study Abroad Options for International Students in 2027",
+    slug: "low-budget-study-abroad-international-students",
     category: "Country Guide",
-    excerpt: "Studying abroad on a budget is possible! Here are the most affordable countries and programs with scholarships for Bangladeshi students.",
+    excerpt: "Studying abroad on a budget is possible! Here are the most affordable countries and programs with scholarships for international students.",
     content: "Many students think studying abroad requires huge financial resources...",
     image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop",
     date: "April 25, 2026",
     readTime: "5 min read",
     author: "RizQara Research Team",
-    tags: ["Low Budget", "Affordable", "Scholarship", "Bangladesh"]
+    tags: ["Low Budget", "Affordable", "Scholarship", "Global"]
   }
 ];
 
@@ -595,7 +595,7 @@ export const notices: Notice[] = [
   {
     id: "2",
     title: "MEXT Scholarship 2027 – Application Now Open",
-    content: "Japan's MEXT Scholarship applications are now open. Bangladeshi students can apply through the Japanese Embassy Dhaka. The deadline is approximately end of May 2026. Start preparing your documents now.",
+    content: "Japan's MEXT Scholarship applications are now open. International students can apply through their local Japanese Embassy. The deadline is approximately end of May 2026. Start preparing your documents now.",
     category: "New Scholarship Open",
     date: "May 10, 2026",
     isUrgent: false,
@@ -613,7 +613,7 @@ export const notices: Notice[] = [
   {
     id: "4",
     title: "Romania Embassy – Document Authentication Update",
-    content: "Romanian Embassy Dhaka has updated their document authentication requirements. All certificates must now be authenticated by the Ministry of Foreign Affairs before submission.",
+    content: "The Romanian Embassy has updated their document authentication requirements. All certificates must now be authenticated by the Ministry of Foreign Affairs before submission.",
     category: "Embassy Update",
     date: "May 6, 2026",
     isUrgent: true,
@@ -716,7 +716,7 @@ export const services: Service[] = [
     title: "Full Scholarship Guidance",
     description: "End-to-end scholarship application support from document preparation to final submission and visa guidance.",
     icon: "GraduationCap",
-    price: "৳ 15,000 - 25,000",
+    price: "$150 - $250",
     features: ["Profile evaluation & scholarship selection", "Document checklist & review", "SOP & CV writing support", "Application form assistance", "Interview preparation", "Visa file guidance", "Dashboard tracking"],
     isFree: false
   },
@@ -725,7 +725,7 @@ export const services: Service[] = [
     title: "SOP & CV Writing",
     description: "Professional Statement of Purpose and CV preparation by scholarship application experts.",
     icon: "FileText",
-    price: "৳ 3,000 - 8,000",
+    price: "$30 - $80",
     features: ["Custom SOP for target scholarship", "Professional CV formatting", "Motivation letter writing", "Unlimited revisions", "Plagiarism-free writing"],
     isFree: false
   },
@@ -734,7 +734,7 @@ export const services: Service[] = [
     title: "Visa File Guidance",
     description: "Complete visa application support including document preparation, form filling, and embassy interview preparation.",
     icon: "Plane",
-    price: "৳ 5,000 - 10,000",
+    price: "$50 - $100",
     features: ["Visa document checklist", "Form filling assistance", "Financial document guidance", "Embassy interview prep", "SOP for visa", "Insurance guidance"],
     isFree: false
   },
@@ -743,7 +743,7 @@ export const services: Service[] = [
     title: "Document Preparation",
     description: "Complete document preparation service including translation, attestation guidance, and document formatting.",
     icon: "FolderOpen",
-    price: "৳ 2,000 - 5,000",
+    price: "$20 - $50",
     features: ["Document checklist creation", "Translation guidance", "Attestation process guide", "Notarization support", "Document formatting"],
     isFree: false
   },
@@ -752,7 +752,7 @@ export const services: Service[] = [
     title: "Interview Preparation",
     description: "Mock interview sessions with scholarship and visa interview coaching by experienced counselors.",
     icon: "MessageCircle",
-    price: "৳ 2,000 - 4,000",
+    price: "$20 - $40",
     features: ["Mock interview sessions (3)", "Common question preparation", "Confidence building tips", "Body language guidance", "Feedback & improvement"],
     isFree: false
   }
@@ -762,13 +762,13 @@ export const services: Service[] = [
 export const faqs: FAQItem[] = [
   { id: "1", question: "Can I study abroad without IELTS?", answer: "Yes! Many countries like Japan (MEXT), Hungary (Stipendium Hungaricum), Romania, Russia, Turkey, and Saudi Arabia accept MOI (Medium of Instruction) certificate instead of IELTS for government scholarships. RizQara will guide you on which options match your profile.", category: "General" },
   { id: "2", question: "What is a MOI certificate and who issues it?", answer: "MOI (Medium of Instruction) certificate is a document from your previous educational institution stating that your medium of instruction was English. Your school or college principal issues this. It is accepted by many European and Asian universities as proof of English proficiency.", category: "Documents" },
-  { id: "3", question: "Can I apply with a low budget?", answer: "Absolutely! Countries like Russia, Romania, Hungary, Turkey, and Saudi Arabia offer fully funded scholarships with no tuition fees and monthly stipends. The only cost may be visa fees, flight, and initial living expenses (approximately BDT 1-3 lakhs).", category: "Financial" },
-  { id: "4", question: "Do all scholarships cover full tuition?", answer: "Not all. There are three types: Fully Funded (tuition + accommodation + stipend), Partially Funded (only tuition or only accommodation), and Self-Funded (no financial support). RizQara focuses on fully funded opportunities for Bangladeshi students.", category: "Scholarships" },
+  { id: "3", question: "Can I apply with a low budget?", answer: "Absolutely! Countries like Russia, Romania, Hungary, Turkey, and Saudi Arabia offer fully funded scholarships with no tuition fees and monthly stipends. The only cost may be visa fees, flight, and initial living expenses (approximately $1,000 - $3,000).", category: "Financial" },
+  { id: "4", question: "Do all scholarships cover full tuition?", answer: "Not all. There are three types: Fully Funded (tuition + accommodation + stipend), Partially Funded (only tuition or only accommodation), and Self-Funded (no financial support). RizQara focuses on fully funded opportunities for international students.", category: "Scholarships" },
   { id: "5", question: "What documents are typically needed for scholarship applications?", answer: "Basic documents include: Passport, SSC & HSC certificates and mark sheets, CV, SOP/Motivation letter, Recommendation letters (2-3), MOI or IELTS certificate, Medical certificate, Police clearance, and photos. Additional documents may be required per scholarship.", category: "Documents" },
   { id: "6", question: "Can RizQara apply on my behalf?", answer: "RizQara guides and supports the application process. We help you prepare all documents, fill forms, and submit applications. However, some scholarship portals require personal login, so we guide you through the submission process together.", category: "Services" },
   { id: "7", question: "How can I track my application?", answer: "Once you register on RizQara's platform, you get access to a personal student dashboard where you can track your application status, view pending documents, communicate with your advisor, and see every step of the process.", category: "Dashboard" },
   { id: "8", question: "Is the profile check really free?", answer: "Yes! RizQara offers a completely free profile evaluation for all students. Just fill out the Free Profile Check form with your academic details and we will review your profile and suggest suitable scholarships within 48 hours.", category: "Services" },
-  { id: "9", question: "Which countries are best for Bangladeshi students?", answer: "Based on acceptance rates and affordability, the best countries are: Hungary (Stipendium - highest acceptance), Romania (easy process, fully funded), Russia (MBBS, no IELTS), Turkey (good universities), Japan (MEXT, prestigious), and Saudi Arabia (for Muslim students).", category: "Countries" },
+  { id: "9", question: "Which countries are best for international students?", answer: "Based on acceptance rates and affordability, the best countries are: Hungary (Stipendium - highest acceptance), Romania (easy process, fully funded), Russia (MBBS, no IELTS), Turkey (good universities), Japan (MEXT, prestigious), and Saudi Arabia (for Muslim students).", category: "Countries" },
   { id: "10", question: "Can I apply for multiple scholarships at once?", answer: "Yes, you can apply for multiple scholarships simultaneously. In fact, we recommend applying to 3-5 scholarships to maximize your chances. RizQara's dashboard helps you track all your applications in one place.", category: "Scholarships" },
   { id: "11", question: "Is MBBS abroad possible without IELTS?", answer: "Yes! Russia and Romania are the best destinations for MBBS without IELTS. Russian government scholarships include a Russian language preparatory year. Both countries have WHO-recognized medical universities.", category: "MBBS" },
   { id: "12", question: "How do I know if a scholarship is legitimate?", answer: "All scholarships listed on RizQara are verified from official government and university sources. Look for the 'Verified' badge on scholarship cards. Always check the official website link provided on each scholarship details page.", category: "Scholarships" }
@@ -778,17 +778,17 @@ export const faqs: FAQItem[] = [
 export const demoStudents = [
   {
     id: "student-001",
-    name: "Md. Karim Hossain",
-    email: "karim@example.com",
-    phone: "+880 1712-345678",
-    country: "Bangladesh",
-    educationLevel: "HSC Completed",
-    gpa: "4.83",
+    name: "Alex Johnson",
+    email: "alex@example.com",
+    phone: "+1 555-0199",
+    country: "United States",
+    educationLevel: "High School Completed",
+    gpa: "3.85",
     targetDegree: "Bachelor",
     targetCountry: "Hungary",
     targetSubject: "Computer Engineering",
-    ieltsStatus: "No IELTS",
-    budget: "5 lakh",
+    ieltsStatus: "English Speaker",
+    budget: "$5,000",
     passportStatus: "Have Passport",
     preferredIntake: "September 2027",
     profileCompletion: 72,

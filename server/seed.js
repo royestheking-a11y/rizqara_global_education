@@ -709,7 +709,7 @@ const services = [
     title: "Full Scholarship Guidance",
     description: "End-to-end scholarship application support from document preparation to final submission and visa guidance.",
     icon: "GraduationCap",
-    price: "৳ 15,000 - 25,000",
+    price: "$150 - $250",
     features: ["Profile evaluation & scholarship selection", "Document checklist & review", "SOP & CV writing support", "Application form assistance", "Interview preparation", "Visa file guidance", "Dashboard tracking"],
     isFree: false
   },
@@ -718,7 +718,7 @@ const services = [
     title: "SOP & CV Writing",
     description: "Professional Statement of Purpose and CV preparation by scholarship application experts.",
     icon: "FileText",
-    price: "৳ 3,000 - 8,000",
+    price: "$30 - $80",
     features: ["Custom SOP for target scholarship", "Professional CV formatting", "Motivation letter writing", "Unlimited revisions", "Plagiarism-free writing"],
     isFree: false
   },
@@ -727,7 +727,7 @@ const services = [
     title: "Visa File Guidance",
     description: "Complete visa application support including document preparation, form filling, and embassy interview preparation.",
     icon: "Plane",
-    price: "৳ 5,000 - 10,000",
+    price: "$50 - $100",
     features: ["Visa document checklist", "Form filling assistance", "Financial document guidance", "Embassy interview prep", "SOP for visa", "Insurance guidance"],
     isFree: false
   },
@@ -736,7 +736,7 @@ const services = [
     title: "Document Preparation",
     description: "Complete document preparation service including translation, attestation guidance, and document formatting.",
     icon: "FolderOpen",
-    price: "৳ 2,000 - 5,000",
+    price: "$20 - $50",
     features: ["Document checklist creation", "Translation guidance", "Attestation process guide", "Notarization support", "Document formatting"],
     isFree: false
   },
@@ -745,7 +745,7 @@ const services = [
     title: "Interview Preparation",
     description: "Mock interview sessions with scholarship and visa interview coaching by experienced counselors.",
     icon: "MessageCircle",
-    price: "৳ 2,000 - 4,000",
+    price: "$20 - $40",
     features: ["Mock interview sessions (3)", "Common question preparation", "Confidence building tips", "Body language guidance", "Feedback & improvement"],
     isFree: false
   }
@@ -779,7 +779,7 @@ const faqs = [
   },
   {
     question: "How much budget do I need for a fully funded scholarship?",
-    answer: "While the scholarship covers major costs, you should budget for initial expenses like visa fees, health insurance, airfare (if not covered), and approximately 1-2 months of initial living costs. Typically, BDT 1.5 to 3 lakhs is sufficient for the entire process.",
+    answer: "While the scholarship covers major costs, you should budget for initial expenses like visa fees, health insurance, airfare (if not covered), and approximately 1-2 months of initial living costs. Typically, $1,500 to $3,000 is sufficient for the entire process.",
     category: "Financial"
   },
   {
@@ -794,7 +794,7 @@ const faqs = [
   },
   {
     question: "Which countries are best for MBBS abroad without IELTS?",
-    answer: "Russia and Romania are currently the best destinations for MBBS without IELTS. They offer high-quality medical education recognized by WHO and BMDC, with significantly lower tuition fees compared to private medical colleges in Bangladesh.",
+    answer: "Russia and Romania are currently the best destinations for MBBS without IELTS. They offer high-quality medical education recognized by WHO and global medical councils, with significantly lower tuition fees compared to private medical colleges in western countries.",
     category: "Medical"
   }
 ];

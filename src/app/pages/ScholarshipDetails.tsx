@@ -125,7 +125,7 @@ export default function ScholarshipDetails() {
   const scholarshipSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": `${s.name} for Bangladeshi Students`,
+    "headline": `${s.name} for International Students`,
     "description": s.description || `Apply for ${s.name} in ${s.country}. Explore eligibility, benefits, and application process.`,
     "image": s.image || "/og-image.png",
     "author": {
@@ -171,9 +171,9 @@ export default function ScholarshipDetails() {
   return (
     <div className="min-h-screen relative" style={{ backgroundColor: "#FDF8F5" }}>
       <SEO 
-        title={`${s.name} | Scholarship Details for Bangladeshi Students`}
-        description={`Detailed guide on ${s.name} for Bangladeshi students. Learn about eligibility, required documents, and how to apply successfully.`}
-        keywords={`${s.name}, ${s.country} scholarship, study in ${s.country} from Bangladesh, scholarship application guide`}
+        title={`${s.name} | Scholarship Details for International Students`}
+        description={`Detailed guide on ${s.name} for international students. Learn about eligibility, required documents, and how to apply successfully.`}
+        keywords={`${s.name}, ${s.country} scholarship, study in ${s.country} abroad, scholarship application guide`}
         canonical={`/scholarships/${s.slug || s._id}`}
         ogImage={s.image || "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop"}
         schema={[scholarshipSchema, breadcrumbSchema]}
@@ -447,7 +447,7 @@ export default function ScholarshipDetails() {
                     </div>
                     <div className="mt-5 p-4 rounded-2xl" style={{ backgroundColor: "#7B1F2E08", border: "1px solid #7B1F2E20" }}>
                       <p className="text-sm" style={{ color: "#7B1F2E" }}>
-                        <strong className="flex items-center gap-1.5 mb-1.5"><Lightbulb size={16} /> RizQara Pro Tip:</strong> Start collecting your documents early. Translation and attestation can take 2-4 weeks in Bangladesh.
+                        <strong className="flex items-center gap-1.5 mb-1.5"><Lightbulb size={16} /> RizQara Pro Tip:</strong> Start collecting your documents early. Translation and attestation can take 2-4 weeks.
                       </p>
                     </div>
                   </div>
@@ -644,7 +644,7 @@ export default function ScholarshipDetails() {
                   { key: "language", label: s.ieltsRequired ? "Do you have IELTS 5.5+ or English proficiency certificate?" : "Do you have MOI certificate or IELTS?" },
                   { key: "passport", label: "Do you have a valid passport?" },
                   { key: "degree", label: `Are you applying for ${s.degree.join(" or ")}?` },
-                  { key: "nationality", label: "Are you a Bangladeshi/international student from a partner country?" },
+                  { key: "nationality", label: "Are you an international student?" },
                 ].map(q => (
                   <div key={q.key}>
                     <p className="text-sm text-gray-700 mb-2">{q.label}</p>

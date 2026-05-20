@@ -115,12 +115,12 @@ function generateAIResponse(query: string): string {
     return "MEXT Scholarship 2027 – Japan's Premier Government Scholarship:\n\nStatus: Open (Deadline ~May 2026)\nFully Funded: Tuition + ¥117,000-144,000/month stipend + airfare\nDegrees: Bachelor, Master's, PhD\nIELTS: Not always required\nDifficulty: Competitive\n\nApplication Route: Japanese Embassy Dhaka\nKey Documents: Application form, Academic certificates, Research plan, Recommendation letters\n\nRizQara's Tip: Embassy route has better acceptance. Strong GPA (4.5+) recommended.\n\nContact RizQara for personalized MEXT guidance!";
   }
   if (q.includes("budget") || q.includes("low cost") || q.includes("affordable") || q.includes("lakh")) {
-    return "Low Budget Study Abroad Options for You:\n\nFully Funded (Your cost ≈ BDT 1-2 lakh for travel/setup):\n Hungary – Stipendium Hungaricum\n Romania – Government Scholarship\n Russia – Government Scholarship\n Saudi Arabia – Government Scholarship\n\nBudget-Friendly Self-Funded:\n Malaysia – $3,000-5,000/year total\n Philippines – $2,500-4,000/year\n Indonesia – $2,000-3,500/year\n\nRecommendation: Apply for Stipendium Hungaricum (Hungary) – highest acceptance rate for Bangladeshi students!\n\nGet your free profile check from RizQara today!";
+    return "Low Budget Study Abroad Options for You:\n\nFully Funded (Your cost ≈ $1,000-2,000 for travel/visa/setup):\n Hungary – Stipendium Hungaricum\n Romania – Government Scholarship\n Russia – Government Scholarship\n Saudi Arabia – Government Scholarship\n\nBudget-Friendly Self-Funded:\n Malaysia – $3,000-5,000/year total\n Philippines – $2,500-4,000/year\n Indonesia – $2,000-3,500/year\n\nRecommendation: Apply for Stipendium Hungaricum (Hungary) – highest acceptance rate for international students!\n\nGet your free profile check from RizQara today!";
   }
   if (q.includes("gpa") || q.includes("result") || q.includes("score")) {
     return "Based on typical GPA requirements:\n\nGPA 4.5-5.0: Japan MEXT, Korea GKS, China CSC, Turkey Türkiye Scholarship\nGPA 3.5-4.5: Hungary Stipendium, Romania Govt, Saudi Arabia, Russia MBBS\nGPA 2.5-3.5: Malaysia self-funded, Russia self-funded, Eastern Europe private universities\n\nImportant: Even with lower GPA, a strong SOP, recommendation letters, and relevant extracurriculars can strengthen your application.\n\nShare your exact GPA with RizQara for a personalized scholarship match!";
   }
-  return "Based on your query, here are some recommendations:\n\nTop Scholarships for Bangladeshi Students 2027:\n• Stipendium Hungaricum (Hungary) – Easiest fully funded European scholarship\n• MEXT (Japan) – Most prestigious, no IELTS\n• Romanian Government Scholarship – High acceptance rate\n• Russian Government Scholarship – Best for MBBS\n• Türkiye Scholarship – Competitive but excellent\n\nNext Steps:\n1. Complete your free profile check with RizQara\n2. Prepare MOI certificate from your institution\n3. Start collecting academic certificates\n4. Book a consultation with our advisors\n\nDisclaimer: AI guidance is for initial support only. Always verify from official scholarship websites.\n\nContact RizQara for personalized advice!";
+  return "Based on your query, here are some recommendations:\n\nTop Scholarships for International Students 2027:\n• Stipendium Hungaricum (Hungary) – Easiest fully funded European scholarship\n• MEXT (Japan) – Most prestigious, no IELTS\n• Romanian Government Scholarship – High acceptance rate\n• Russian Government Scholarship – Best for MBBS\n• Türkiye Scholarship – Competitive but excellent\n\nNext Steps:\n1. Complete your free profile check with RizQara\n2. Prepare MOI certificate from your institution\n3. Start collecting academic certificates\n4. Book a consultation with our advisors\n\nDisclaimer: AI guidance is for initial support only. Always verify from official scholarship websites.\n\nContact RizQara for personalized advice!";
 }
 
 // ─── HOME PAGE ────────────────────────────────────────────────────
@@ -135,8 +135,8 @@ const organizationSchema = {
     "@type": "ContactPoint",
     "telephone": "+8801915342776",
     "contactType": "customer service",
-    "areaServed": "BD",
-    "availableLanguage": ["English", "Bengali"]
+    "areaServed": "Worldwide",
+    "availableLanguage": ["English"]
   }
 };
 
@@ -146,10 +146,10 @@ const faqSchema = {
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How to get a fully funded scholarship from Bangladesh?",
+      "name": "How to get a fully funded scholarship as an international student?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "To get a fully funded scholarship, you need to maintain a high GPA, participate in extracurricular activities, and have a strong SOP. RizQara Global Education provides a personalized roadmap for Bangladeshi students to achieve this."
+        "text": "To get a fully funded scholarship, you need to maintain a high GPA, participate in extracurricular activities, and have a strong SOP. RizQara Global Education provides a personalized roadmap for international students to achieve this."
       }
     },
     {
@@ -314,7 +314,7 @@ export default function Home() {
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "Can I study abroad without IELTS from Bangladesh?",
+        "name": "Can I study abroad without IELTS as an international student?",
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Yes, some countries and universities may accept MOI or alternative English proof, but requirements vary by scholarship, university and program."
@@ -345,9 +345,9 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       <SEO 
-        title="RizQara Global Education | Study Abroad & Scholarship Guidance in Bangladesh"
-        description="Find scholarships, study abroad options, university admission guidance, SOP/CV support, and visa file guidance for Bangladeshi students with RizQara Global Education."
-        keywords="study abroad Bangladesh, scholarship guidance Bangladesh, foreign university admission, RizQara Global Education, বিদেশে উচ্চশিক্ষা, স্কলারশিপ আবেদন"
+        title="RizQara Global Education | Study Abroad & International Scholarship Guidance"
+        description="Find scholarships, study abroad options, university admission guidance, SOP/CV support, and visa file guidance for international students with RizQara Global Education."
+        keywords="study abroad scholarships, international scholarship guidance, foreign university admission, RizQara Global Education, study abroad without IELTS"
         schema={[organizationSchema, faqSchema]}
       />
 
@@ -408,7 +408,7 @@ export default function Home() {
           <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-10">
             <SectionLabel>Opportunity Hub</SectionLabel>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">Find Scholarships by Country, Degree and Funding Type</h2>
-            <p className="text-gray-500 leading-relaxed max-w-2xl">Explore government, university, fully funded, no IELTS, Bachelor, Master’s, PhD and MBBS scholarships for Bangladeshi students.</p>
+            <p className="text-gray-500 leading-relaxed max-w-2xl">Explore government, university, fully funded, no IELTS, Bachelor, Master’s, PhD and MBBS scholarships for international students.</p>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -443,7 +443,7 @@ export default function Home() {
           <div className="text-center mb-10">
             <SectionLabel>Open Now</SectionLabel>
             <h2 className="text-3xl font-bold text-gray-900 mb-2">Currently Open Scholarships</h2>
-            <p className="text-gray-500">Don't miss out! These programs are currently accepting applications from Bangladeshi students.</p>
+            <p className="text-gray-500">Don't miss out! These programs are currently accepting applications from international students.</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
@@ -461,7 +461,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
             <div>
               <SectionLabel>Global Reach</SectionLabel>
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Study Abroad Countries for Bangladeshi Students</h2>
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">Study Abroad Countries for International Students</h2>
               <p className="text-gray-500">Explore educational opportunities in your dream destination.</p>
             </div>
             <Link to="/countries" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition hover:opacity-90 flex-shrink-0" style={{ backgroundColor: "#7B1F2E" }}>
@@ -609,7 +609,7 @@ export default function Home() {
                   type="text"
                   value={aiQuery}
                   onChange={e => setAiQuery(e.target.value)}
-                  placeholder='e.g., "My GPA is 4.83, no IELTS, budget 5 lakh. Which countries can I apply?"'
+                  placeholder='e.g., "My GPA is 3.8, no IELTS, budget $5,000. Which countries can I apply?"'
                   className="flex-1 px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#7B1F2E] focus:ring-2 focus:ring-[#7B1F2E10] transition-all bg-gray-50 focus:bg-white"
                 />
                 <button
@@ -1160,9 +1160,9 @@ function HomeFAQ({ items }: { items?: any[] }) {
     { q: "Are these scholarships fully funded?", a: "Most government scholarships we assist with (like MEXT Japan, Stipendium Hungaricum) are fully funded, covering tuition, living allowance, and accommodation." },
     { q: "Can I apply for more than one scholarship at a time?", a: "Yes, you can apply for multiple scholarships to increase your chances. RizQara helps you manage multiple applications simultaneously." },
     { q: "Is there an age limit for scholarship applications?", a: "Age limits vary by country. Generally, Bachelor's limit is 21-25, Master's is 30-35, and PhD is 35-45. Romania has no strict age limit for certain programs." },
-    { q: "How much budget do I need for a fully funded scholarship?", a: "While the scholarship covers major costs, you should budget for initial expenses like visa fees and health insurance, typically BDT 1.5 to 3 lakhs." },
+    { q: "How much budget do I need for a fully funded scholarship?", a: "While the scholarship covers major costs, you should budget for initial expenses like visa fees and health insurance, typically $1,500 to $3,000." },
     { q: "Does RizQara guarantee visa approval?", a: "While no one can guarantee a visa, RizQara has a 95%+ success rate through meticulous document preparation and mock interview sessions." },
-    { q: "Which countries are best for MBBS abroad without IELTS?", a: "Russia and Romania are the best destinations for MBBS without IELTS, offering high-quality education recognized by WHO and BMDC at lower costs." }
+    { q: "Which countries are best for MBBS abroad without IELTS?", a: "Russia and Romania are the best destinations for MBBS without IELTS, offering high-quality education recognized by WHO and global medical councils at lower costs." }
   ];
 
   const displayItems = items || defaultItems;

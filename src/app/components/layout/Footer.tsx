@@ -51,8 +51,8 @@ export function Footer() {
               <Logo variant="dark" size="md" />
             </div>
             <p className="text-gray-500 text-sm leading-relaxed mb-5">
-              RizQara Global Education is Bangladesh's premier scholarship portal and study abroad consultancy.
-              We help students find fully-funded scholarships, prepare documents, and achieve their global education dreams.
+              RizQara Global Education is a premier international scholarship portal and study abroad consultancy.
+              We help students from all around the world find fully-funded scholarships, prepare documents, and achieve their global education dreams.
             </p>
             <div className="flex flex-col gap-3 text-sm">
               <a href="tel:+8801915342776" className="flex items-center gap-3 text-gray-600 hover:text-[#7B1F2E] transition-colors group">
@@ -71,7 +71,7 @@ export function Footer() {
                 <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: "#7B1F2E10" }}>
                   <MapPin size={13} style={{ color: "#7B1F2E" }} />
                 </div>
-                Dhaka, Bangladesh
+                Global Offices
               </div>
             </div>
             <div className="flex flex-wrap gap-2.5 mt-6">
@@ -129,7 +129,7 @@ export function Footer() {
                 { label: "Success Gallery",  path: "/success-gallery" },
                 { label: "About Us",         path: "/about" },
                 { label: "Contact",          path: "/contact" },
-                { label: "No IELTS Guide",   path: "/no-ielts-scholarships-for-bangladeshi-students" },
+                { label: "No IELTS Guide",   path: "/no-ielts-scholarships-for-international-students" },
               ].map(link => (
                 <li key={link.path}>
                   <Link
