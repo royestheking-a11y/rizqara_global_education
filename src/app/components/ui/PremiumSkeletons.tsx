@@ -4,7 +4,7 @@ export function HeroSkeleton() {
   return (
     <section className="w-full py-4 md:py-6" style={{ backgroundColor: "#FDF8F5" }}>
       <div className="max-w-7xl mx-auto px-4">
-        <Skeleton className="w-full aspect-[21/9] md:aspect-[3/1] rounded-2xl md:rounded-3xl" />
+        <Skeleton className="w-full aspect-[16/9] md:aspect-[21/9] rounded-2xl md:rounded-3xl" />
       </div>
     </section>
   );
