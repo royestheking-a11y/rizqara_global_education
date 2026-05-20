@@ -299,7 +299,15 @@ function AdminOverview() {
               </div>
               <div>
                 <p className="text-[10px] text-gray-500 uppercase font-semibold">Online Revenue</p>
-                <p className="text-base font-black text-gray-800">$ {(statsData?.normalRevenue || 0).toLocaleString()}</p>
+                <p className="text-base font-black text-gray-800">
+                  {statsData?.normalRevenue > 0 && statsData?.normalRevenueBDT > 0 ? (
+                    `$${statsData.normalRevenue.toLocaleString()} / ৳${statsData.normalRevenueBDT.toLocaleString()}`
+                  ) : statsData?.normalRevenueBDT > 0 ? (
+                    `৳${statsData.normalRevenueBDT.toLocaleString()}`
+                  ) : (
+                    `$${(statsData?.normalRevenue || 0).toLocaleString()}`
+                  )}
+                </p>
               </div>
             </div>
           </div>
@@ -318,7 +326,15 @@ function AdminOverview() {
               </div>
               <div>
                 <p className="text-[10px] text-gray-500 uppercase font-semibold">Manual Revenue</p>
-                <p className="text-base font-black text-green-700">$ {(statsData?.manualRevenue || 0).toLocaleString()}</p>
+                <p className="text-base font-black text-green-700">
+                  {statsData?.manualRevenue > 0 && statsData?.manualRevenueBDT > 0 ? (
+                    `$${statsData.manualRevenue.toLocaleString()} / ৳${statsData.manualRevenueBDT.toLocaleString()}`
+                  ) : statsData?.manualRevenueBDT > 0 ? (
+                    `৳${statsData.manualRevenueBDT.toLocaleString()}`
+                  ) : (
+                    `$${(statsData?.manualRevenue || 0).toLocaleString()}`
+                  )}
+                </p>
               </div>
             </div>
           </div>
