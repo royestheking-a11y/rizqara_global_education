@@ -109,7 +109,7 @@ export default function Contact() {
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Request Submitted!</h3>
                 <p className="text-gray-500 mb-4">Thank you {form.name}! RizQara team will review your profile and get back to you within 48 hours.</p>
                 <p className="text-sm text-gray-400">You can also reach us on WhatsApp for faster response.</p>
-                <a href="https://wa.me/8801725350352" target="_blank" rel="noopener noreferrer"
+                <a href="https://wa.me/8801915342776" target="_blank" rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 mt-4 px-6 py-3 rounded-xl text-white font-semibold text-sm hover:opacity-90 transition-all duration-300 group"
                   style={{ backgroundColor: "#25D366" }}>
                   <svg viewBox="0 0 24 24" width="16" height="16" fill="white" className="group-hover:scale-110 transition-transform">

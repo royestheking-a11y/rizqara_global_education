@@ -1034,9 +1034,9 @@ export function AIGuidePage() {
             </div>
           </div>
           <div className="p-5">
-            <div className="flex gap-2 mb-4">
+            <div className="flex flex-col sm:flex-row gap-3 mb-4">
               <input type="text" value={query} onChange={e => setQuery(e.target.value)} onKeyDown={e => e.key === "Enter" && ask(query)} placeholder='e.g., "My GPA is 4.83, no IELTS, what scholarships can I apply for?"' className="flex-1 px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder:text-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1F2E12]" />
-              <button onClick={() => ask(query)} disabled={loading} className="px-5 py-3 text-white rounded-xl text-sm font-medium hover:opacity-90 disabled:opacity-60 flex items-center gap-2 transition" style={{ backgroundColor: "#7B1F2E" }}>
+              <button onClick={() => ask(query)} disabled={loading} className="px-5 py-3 text-white rounded-xl text-sm font-medium hover:opacity-90 disabled:opacity-60 flex items-center justify-center gap-2 transition flex-shrink-0" style={{ backgroundColor: "#7B1F2E" }}>
                 {loading ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : "Ask AI"}
               </button>
             </div>

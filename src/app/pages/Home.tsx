@@ -604,7 +604,7 @@ export default function Home() {
             </div>
 
             <div className="p-5">
-              <form onSubmit={handleAI} className="flex gap-3 mb-4">
+              <form onSubmit={handleAI} className="flex flex-col sm:flex-row gap-3 mb-4">
                 <input
                   type="text"
                   value={aiQuery}
@@ -615,7 +615,7 @@ export default function Home() {
                 <button
                   type="submit"
                   disabled={aiLoading}
-                  className="px-5 py-3 text-white rounded-xl text-sm font-bold transition hover:opacity-90 flex items-center gap-2 flex-shrink-0"
+                  className="px-5 py-3 text-white rounded-xl text-sm font-bold transition hover:opacity-90 flex items-center justify-center gap-2 flex-shrink-0"
                   style={{ backgroundColor: "#7B1F2E" }}
                 >
                   {aiLoading
@@ -995,13 +995,15 @@ export default function Home() {
                 Scholarship, university admission, document preparation ও application tracking — সবকিছু এখন সহজ ও organized.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link
-                  to="/contact"
+                <a
+                  href="https://wa.me/8801915342776"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition hover:shadow-xl"
                   style={{ backgroundColor: "white", color: "#7B1F2E" }}
                 >
                   <Phone size={14} /> Talk to Advisor
-                </Link>
+                </a>
                 <Link
                   to="/register"
                   className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-sm border-2 text-white hover:bg-white/10 transition"
@@ -1010,7 +1012,7 @@ export default function Home() {
                   <GraduationCap size={14} /> Create Free Account
                 </Link>
                 <a
-                  href="https://wa.me/8801725350352"
+                  href="https://wa.me/8801915342776"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-sm border-2 text-white hover:bg-[#25D366] transition-all duration-300 group"
